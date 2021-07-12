@@ -34,6 +34,7 @@ public class CarCharging extends AppCompatActivity {
 
         //recyclerView.setLayoutManager(new LinearLayoutManager(this));
         //recyclerView.setAdapter(recyclerAdapter);
+        Intent fromPreCar = getIntent();
 
         Button search = findViewById(R.id.searchButton);
         latitude = findViewById(R.id.latitude);

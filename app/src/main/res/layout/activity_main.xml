@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,37 +8,34 @@
 
     <Button
         android:id="@+id/OCTranspo"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginLeft="32dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="128dp"
         android:text="OCTranspo Bus"
         app:layout_constraintBottom_toTopOf="@+id/CarCharge"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.397" />
 
     <Button
         android:id="@+id/CarCharge"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/OCTranspo"
         android:layout_alignStart="@+id/OCTranspo"
         android:layout_alignLeft="@+id/OCTranspo"
-        android:layout_marginStart="0dp"
-        android:layout_marginLeft="0dp"
         android:layout_marginTop="32dp"
         android:text="Electric Car Charging"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintHorizontal_bias="0.853"
+        app:layout_constraintStart_toStartOf="@+id/MovieInfo"
+        app:layout_constraintTop_toBottomOf="@+id/OCTranspo" />
 
     <Button
         android:id="@+id/Soccer"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/MovieInfo"
-        android:layout_marginStart="32dp"
-        android:layout_marginLeft="32dp"
         android:layout_marginTop="32dp"
         android:text="Soccer Game"
         app:layout_constraintStart_toStartOf="parent"
@@ -46,15 +43,11 @@
 
     <Button
         android:id="@+id/MovieInfo"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/CarCharge"
-        android:layout_marginStart="32dp"
-        android:layout_marginLeft="32dp"
         android:layout_marginTop="32dp"
         android:text="Movie Information"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/CarCharge" />
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

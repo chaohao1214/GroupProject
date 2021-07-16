@@ -7,9 +7,14 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.snackbar.Snackbar;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -32,7 +37,7 @@ public class SearchBus extends AppCompatActivity {
         Button searchBusBtn = findViewById(R.id.searchBusButton);
         searchView = findViewById(R.id.searchView);
         LinearLayoutManager mgr = new LinearLayoutManager(this);
-mgr.setStackFromEnd(true);
+        mgr.setStackFromEnd(true);
         mgr.setReverseLayout(true);
 
         searchView.setLayoutManager(mgr);
@@ -60,6 +65,29 @@ mgr.setStackFromEnd(true);
 
             busInfo = itemView.findViewById(R.id.busInfo);
             timeInfo = itemView.findViewById(R.id.timeView);
+
+            itemView.setOnClickListener(click ->{
+                AlertDialog.Builder builder = new AlertDialog.Builder(SearchBus.this);
+                builder.setMessage("Do you want to delete this message: " + busInfo.getText())
+                        .setTitle("Queestions:")
+                        .setPositiveButton("Yes",(dialog, cl)->{
+                            //position = getAbsoluteAdapterPosition(); always turn red
+                            position = getAdapterPosition();
+                            BusMessage removeMessage = searchMessage.get(position);
+                            searchMessage.remove(position);
+                            busAdt.notifyItemRemoved(position);
+                            Snackbar.make(busInfo,"You deleted message #" + position, Snackbar.LENGTH_LONG)
+                                    .setAction("Undo", clk ->{
+                                        searchMessage.add(position,removeMessage);
+                                        busAdt.notifyItemInserted(position);
+                                    })
+                                    .show();
+                        })
+                        .setNegativeButton("No",(dialog, cl) ->{
+
+                        })
+                        .create().show();
+            });
         }
 
         public void setPosition(int position) {

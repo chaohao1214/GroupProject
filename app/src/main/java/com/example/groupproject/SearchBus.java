@@ -1,6 +1,8 @@
 package com.example.groupproject;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,8 +34,13 @@ public class SearchBus extends AppCompatActivity {
 
         //receive info from previous page
         Intent fromPreOC = getIntent();
-
+        // save the content that entered before
+        SharedPreferences prefs = getSharedPreferences("MyData", Context.MODE_PRIVATE);
+        String searchBusInfo = prefs.getString("BusNumber","");
         EditText busMsg = findViewById(R.id.searchBox);
+        busMsg.setText(searchBusInfo);
+
+
         Button searchBusBtn = findViewById(R.id.searchBusButton);
         searchView = findViewById(R.id.searchView);
         LinearLayoutManager mgr = new LinearLayoutManager(this);
@@ -47,9 +54,15 @@ public class SearchBus extends AppCompatActivity {
         searchBusBtn.setOnClickListener(clk ->{
             BusMessage thisMessage = new BusMessage(busMsg.getText().toString(),1, new Date());
             searchMessage.add(thisMessage);
-            busMsg.setText("");
+
             busAdt.notifyItemInserted(searchMessage.size()-1);
            // searchView.smoothScrollToPosition(0);
+            SharedPreferences.Editor editor = prefs.edit();
+            EditText busMsgText = findViewById(R.id.searchBox);
+            editor.putString("BusNumber", busMsgText.getText().toString());
+            busMsg.setText("");
+            editor.apply();
+
         });
 
     }

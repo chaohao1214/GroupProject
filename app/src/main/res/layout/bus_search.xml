@@ -13,7 +13,7 @@
         android:layout_marginEnd="32dp"
         android:layout_marginRight="32dp"
         android:ems="10"
-        android:inputType="textPersonName"
+        android:inputType="number"
         android:text="BusNumber"
         app:layout_constraintEnd_toStartOf="@+id/searchBusButton"
         app:layout_constraintHorizontal_bias="0.494"

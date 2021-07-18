@@ -22,15 +22,17 @@ public class SoccerActivitySecond extends AppCompatActivity {
     AlertDialog.Builder popDialog;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.soccer_activity_second);
-
+        SharedPreferences prefs = getSharedPreferences("MyData", Context.MODE_PRIVATE);
         // GRABBING
         EditText editName = findViewById(R.id.editName);
         TextView welcome = findViewById(R.id.welcome);
         Button editYourNameButton = findViewById(R.id.editYourNameButton);
+        editName.setText(prefs.getString("Name", ""));
         Button toNextPage = findViewById(R.id.toNextPage);
 
 
@@ -43,6 +45,9 @@ public class SoccerActivitySecond extends AppCompatActivity {
 
         editYourNameButton.setOnClickListener(clk->{
             String greeting = getString(R.string.greeting);
+            SharedPreferences.Editor  editor = prefs.edit();
+            editor.putString("Name", editName.getText().toString());
+            editor.apply();
             welcome.setText(greeting.concat(" ")+editName.getText().toString().toUpperCase());
         });
         toNextPage.setOnClickListener(new View.OnClickListener() {

@@ -22,7 +22,7 @@ public class SoccerActivityThird extends AppCompatActivity {
 
         itemList = new LinkedList<>();
 
-        recyclerView = findViewById(R.id(R.id.recyclerView);
+        //recyclerView = findViewById(R.id(R.id.recyclerView);
 
         Intent fromPrePage = getIntent();
 

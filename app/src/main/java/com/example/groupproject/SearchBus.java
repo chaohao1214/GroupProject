@@ -82,9 +82,9 @@ public class SearchBus extends AppCompatActivity {
         searchBusBtn.setOnClickListener(clk ->{
             BusMessage thisMessage = new BusMessage(busMsg.getText().toString(),1, sdf.format(new Date()));
             searchMessage.add(thisMessage);
-
             busAdt.notifyItemInserted(searchMessage.size()-1);
-           // searchView.smoothScrollToPosition(0);
+
+
             SharedPreferences.Editor editor = prefs.edit();
             EditText busMsgText = findViewById(R.id.searchBox);
             editor.putString("BusNumber", busMsgText.getText().toString());
@@ -99,6 +99,7 @@ public class SearchBus extends AppCompatActivity {
             newRow.put(MyOpenHelper.col_time_sent, thisMessage.getTimeSearch());
             long id = db.insert(MyOpenHelper.TABLE_NAME, MyOpenHelper.col_message, newRow);
             thisMessage.setId(id);
+
         });
 
     }
@@ -120,15 +121,24 @@ public class SearchBus extends AppCompatActivity {
                 builder.setMessage("Do you want to delete this message: " + busInfo.getText())
                         .setTitle("Queestions:")
                         .setPositiveButton("Yes",(dialog, cl)->{
-                            //position = getAbsoluteAdapterPosition(); always turn red
+                            //position = getAbsoluteAdapterPosition(); always turn red ???
                             position = getAdapterPosition();
                             BusMessage removeMessage = searchMessage.get(position);
                             searchMessage.remove(position);
                             busAdt.notifyItemRemoved(position);
+
+                            //set to delete data in database
+                            db.delete(MyOpenHelper.TABLE_NAME, "_id=?", new String[]
+                                    { Long.toString(removeMessage.getId())});
+
                             Snackbar.make(busInfo,"You deleted message #" + position, Snackbar.LENGTH_LONG)
                                     .setAction("Undo", clk ->{
                                         searchMessage.add(position,removeMessage);
                                         busAdt.notifyItemInserted(position);
+                                        // delete action for data
+                                        db.execSQL("Insert into " + MyOpenHelper.TABLE_NAME + " values('" +
+                                                removeMessage.getId() + "','" + removeMessage.getMessage() + "','"
+                                        +removeMessage.getBusMesg() + "','" + removeMessage.getTimeSearch() +"');");
                                     })
                                     .show();
                         })
@@ -192,7 +202,7 @@ public class SearchBus extends AppCompatActivity {
         public BusMessage(String message, int searchButtonInfo, String time, long id) {
             this.message = message;
             this.busMesg = searchButtonInfo;
-            this.timeSearch = timeSearch;
+            this.timeSearch = time;
             setId(id);
 
         }

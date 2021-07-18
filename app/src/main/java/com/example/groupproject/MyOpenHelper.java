@@ -18,6 +18,7 @@ public class MyOpenHelper  extends SQLiteOpenHelper {
         super(context, name, null, version);
     }
 
+    // DDL  create table
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE " + TABLE_NAME + "(_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -27,5 +28,6 @@ public class MyOpenHelper  extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
             db.execSQL("drop table if exists " + TABLE_NAME);
+            onCreate(db);
     }
 }

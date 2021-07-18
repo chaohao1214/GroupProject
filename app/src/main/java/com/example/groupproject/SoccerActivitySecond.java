@@ -52,10 +52,6 @@ public class SoccerActivitySecond extends AppCompatActivity {
             }
         });
 
-
-
-
-
     }
     public void thankyouToast(){
         Context context = getApplicationContext();

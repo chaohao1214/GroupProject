@@ -1,8 +1,11 @@
 package com.example.groupproject;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,10 +31,34 @@ public class SearchBus extends AppCompatActivity {
     MyBusAdapter busAdt = new MyBusAdapter();
     SimpleDateFormat sdf = new SimpleDateFormat("EEEE, dd-MMM-yyyy hh-mm-ss a", Locale.getDefault());
     ArrayList<BusMessage> searchMessage = new ArrayList<>();
+    SQLiteDatabase db;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.bus_search);
+
+        // create database
+        MyOpenHelper opener = new MyOpenHelper(this);
+        db = opener.getWritableDatabase();
+        Cursor results = db.rawQuery("Select * from " + MyOpenHelper.TABLE_NAME + ";", null);
+
+        //meta data
+        int _idCol = results.getColumnIndex("_id");
+        int messageCol = results.getColumnIndex(MyOpenHelper.col_message);
+        int searchButtonInfoCol = results.getColumnIndex(MyOpenHelper.search_button_info);
+        int timeCol = results.getColumnIndex(MyOpenHelper.col_time_sent);
+
+        // set data attributes
+        while(results.moveToNext()){
+            long id = results.getInt(_idCol);
+            String message = results.getString(messageCol);
+            String time = results.getString(timeCol);
+            int searchButtonInfo = results.getInt(searchButtonInfoCol);
+            searchMessage.add(new BusMessage(message,searchButtonInfo,time,id));
+
+        }
 
         //receive info from previous page
         Intent fromPreOC = getIntent();
@@ -53,7 +80,7 @@ public class SearchBus extends AppCompatActivity {
         searchView.setAdapter(busAdt);
 
         searchBusBtn.setOnClickListener(clk ->{
-            BusMessage thisMessage = new BusMessage(busMsg.getText().toString(),1, new Date());
+            BusMessage thisMessage = new BusMessage(busMsg.getText().toString(),1, sdf.format(new Date()));
             searchMessage.add(thisMessage);
 
             busAdt.notifyItemInserted(searchMessage.size()-1);
@@ -64,6 +91,14 @@ public class SearchBus extends AppCompatActivity {
             busMsg.setText("");
             editor.apply();
             Toast.makeText(getApplicationContext(),  "Bus route is loading...", Toast.LENGTH_SHORT).show();
+
+            // get and insert data
+            ContentValues newRow = new ContentValues();
+            newRow.put(MyOpenHelper.col_message, thisMessage.getMessage());
+            newRow.put(MyOpenHelper.search_button_info, thisMessage.getBusMesg());
+            newRow.put(MyOpenHelper.col_time_sent, thisMessage.getTimeSearch());
+            long id = db.insert(MyOpenHelper.TABLE_NAME, MyOpenHelper.col_message, newRow);
+            thisMessage.setId(id);
         });
 
     }
@@ -123,7 +158,7 @@ public class SearchBus extends AppCompatActivity {
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         RowViews busRowLayout = (RowViews) holder;
         busRowLayout.busInfo.setText(searchMessage.get(position).getMessage());
-        busRowLayout.timeInfo.setText(sdf.format(searchMessage.get(position).getTimeSearch()));
+        busRowLayout.timeInfo.setText(searchMessage.get(position).getTimeSearch());
         busRowLayout.setPosition(position);
     }
 
@@ -137,12 +172,29 @@ public class SearchBus extends AppCompatActivity {
     private class BusMessage{
         String message;
         int busMesg;
-        Date timeSearch;
+        String timeSearch;
+        long id;
 
-        public BusMessage(String message, int busMsg, Date timeSearch){
+        public void setId(long l){
+            id = l;
+        }
+
+        public long getId(){
+            return id;
+        }
+
+        public BusMessage(String message, int busMsg, String timeSearch){
             this.message = message;
             this.busMesg = busMsg;
             this.timeSearch = timeSearch;
+        }
+
+        public BusMessage(String message, int searchButtonInfo, String time, long id) {
+            this.message = message;
+            this.busMesg = searchButtonInfo;
+            this.timeSearch = timeSearch;
+            setId(id);
+
         }
 
         public String getMessage(){
@@ -152,7 +204,7 @@ public class SearchBus extends AppCompatActivity {
             return busMesg;
         }
 
-        public Date getTimeSearch() {
+        public String getTimeSearch() {
             return timeSearch;
         }
     }

@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -62,7 +63,7 @@ public class SearchBus extends AppCompatActivity {
             editor.putString("BusNumber", busMsgText.getText().toString());
             busMsg.setText("");
             editor.apply();
-
+            Toast.makeText(getApplicationContext(),  "Bus route is loading...", Toast.LENGTH_SHORT).show();
         });
 
     }

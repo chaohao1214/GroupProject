@@ -18,12 +18,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class SoccerActivitySecond extends AppCompatActivity {
+    RatingBar ratingBar ;
+    AlertDialog.Builder popDialog;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.soccer_activity_second);
-        Intent fromPrePage = getIntent();
 
         // GRABBING
         EditText editName = findViewById(R.id.editName);
@@ -31,15 +33,18 @@ public class SoccerActivitySecond extends AppCompatActivity {
         Button editYourNameButton = findViewById(R.id.editYourNameButton);
         Button toNextPage = findViewById(R.id.toNextPage);
 
+
+        Intent fromPrePage = getIntent();
+
         //called methods
         showToastMessage();
         ratingBarDialogBox();
-
+        editYourName();
 
         editYourNameButton.setOnClickListener(clk->{
-                String greeting = getString(R.string.greeting);
-                welcome.setText(greeting.concat(" ")+editName.getText().toString().toUpperCase());
-            });
+            String greeting = getString(R.string.greeting);
+            welcome.setText(greeting.concat(" ")+editName.getText().toString().toUpperCase());
+        });
         toNextPage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -49,52 +54,59 @@ public class SoccerActivitySecond extends AppCompatActivity {
 
 
 
+
+
+    }
+    public void thankyouToast(){
+        Context context = getApplicationContext();
+        CharSequence message = "Thank you";
+        int duration = Toast.LENGTH_LONG;
+        Toast toast = Toast.makeText(context, message, duration);
+        toast.show();
     }
 
     public void openSoccerGamesApiApp(){
         Intent intent = new Intent(this, SoccerActivityThird.class);
         startActivity(intent);
     }
-    public void showToastMessage(){
+    public void showToastMessage( ){
         Context context = getApplicationContext();
-        CharSequence WelcomeMessage = "Hello, Welcome to Salih's App!";
+        CharSequence message = "Hello, Welcome to Salih's App!";
         int duration = Toast.LENGTH_LONG;
-        Toast toast = Toast.makeText(context, WelcomeMessage, duration);
+        Toast toast = Toast.makeText(context, message, duration);
         toast.show();
     }
 
     @SuppressLint("ResourceType")
     public void ratingBarDialogBox () {
 
-         AlertDialog.Builder popDialog = new AlertDialog.Builder(this);
-         RatingBar ratingBar = new RatingBar(this);
+        popDialog = new AlertDialog.Builder(this);
+        ratingBar = new RatingBar(this);
         popDialog.setView(ratingBar);
-        ratingBar.setMax(6);
+        //ratingBar.setMax(6);
         ratingBar.setNumStars(5);
         popDialog.setIcon(android.R.drawable.btn_star_big_on);
         popDialog.setTitle("Did you like the app? ");
 
         popDialog.setPositiveButton("Yes", (dialog, cl) ->{
-
-                        SharedPreferences prefs =getApplicationContext().getSharedPreferences("MyPref", 0);
-                        ratingBar.setNumStars(5);
-                        int ratingValue = ratingBar.getNumStars();
-
-                        SharedPreferences.Editor editor = prefs.edit();
-                        editor.putInt("numStars", ratingValue);//put value
-                        editor.commit();
-
+                        thankyouToast();
                         dialog.dismiss();
                         })
 
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
+                        thankyouToast();
                         dialog.cancel();
+
                     }
                 });
         popDialog.create();
         popDialog.show();
+
+    }
+    public void editYourName ( ){
+
 
     }
 

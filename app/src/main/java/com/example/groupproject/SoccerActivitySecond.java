@@ -51,11 +51,18 @@ public class SoccerActivitySecond extends AppCompatActivity {
             editor.apply();
             welcome.setText(greeting.concat(" ")+editName.getText().toString().toUpperCase());
         });
-        toNextPage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openSoccerGamesApiApp();
-            }
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(SoccerActivitySecond.this);
+        toNextPage.setOnClickListener( clk ->{
+            builder.setMessage("Are you sure you want to go to the next page ? \n" )
+                    .setTitle("Question")
+                    .setNegativeButton("No", (dialog, cl) -> {})
+                    .setPositiveButton("Yes", (dialog, cl) -> {
+
+                        openSoccerGamesApiApp();
+
+                    }).create().show();
+
         });
 
     }

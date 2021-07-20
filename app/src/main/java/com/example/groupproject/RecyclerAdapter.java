@@ -1,11 +1,14 @@
 package com.example.groupproject;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
@@ -24,6 +27,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         View view = layoutInflater.inflate(R.layout.soccer_row_item, parent,false);
         ViewHolder viewholder = new ViewHolder(view);
+
+
         return viewholder;
     }
 
@@ -40,8 +45,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
     class ViewHolder extends RecyclerView.ViewHolder{
 
-        ImageView imageView;
-        TextView title, value;
+
+        TextView title ;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -49,6 +54,11 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
            // imageView = itemView.findViewById(R.id.imageView);
             title = itemView.findViewById(R.id.titleText);
             //value = itemView.findViewById(R.id.valueText);
+            itemView.setOnClickListener(click -> {
+
+            });
+
+
 
         }
     }

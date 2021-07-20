@@ -33,6 +33,8 @@ public class SoccerActivityThird extends AppCompatActivity {
 
         recyclerView.setAdapter(recyclerAdapter);
 
+        itemList.add("Football News, Live Scores, Results Transfers | Goal.com");
+
         for (int i =1; i<50 ; i++){
             itemList.add("Article"+(i));
         }

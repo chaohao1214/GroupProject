@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -21,13 +22,15 @@ public class SoccerActivityThird extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.soccer_activity_third);
 
-        itemList = new LinkedList<>();
+        itemList = new ArrayList<>();
 
         recyclerView = findViewById(R.id.recycler);
 
+
+
         recyclerAdapter = new RecyclerAdapter(itemList);
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
 
         recyclerView.setAdapter(recyclerAdapter);
 

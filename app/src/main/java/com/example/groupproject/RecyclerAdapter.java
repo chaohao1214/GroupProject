@@ -14,9 +14,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
     private static final String TAG = "RecyclerAdapter";
     List<String> itemList;
-
-    public RecyclerAdapter(List<String> infoList) {
-        this.itemList = infoList;
+    public RecyclerAdapter(List<String> itemList) {
+        this.itemList = itemList;
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.example.groupproject;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
@@ -22,11 +23,34 @@ public class SoccerActivityThird extends AppCompatActivity {
 
         itemList = new LinkedList<>();
 
-        //recyclerView = findViewById(R.id(R.id.recyclerView);
+        recyclerView = findViewById(R.id.recycler);
+
+        recyclerAdapter = new RecyclerAdapter(itemList);
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        recyclerView.setAdapter(recyclerAdapter);
 
         Intent fromPrePage = getIntent();
 
-        itemList.add("list1 ");
+        itemList.add("Aricle 1");
+        itemList.add("Aricle 2");
+        itemList.add("Aricle 3");
+        itemList.add("Aricle 4");
+        itemList.add("Aricle 5");
+        itemList.add("Aricle 6");
+        itemList.add("Aricle 7");
+        itemList.add("Aricle 8");
+        itemList.add("Aricle 9");
+        itemList.add("Aricle 10");
+        itemList.add("Aricle 11");
+        itemList.add("Aricle 12");
+        itemList.add("Aricle 13");
+        itemList.add("Aricle 14");
+        itemList.add("Aricle 15");
+        itemList.add("Aricle 16");
+
+
 
     }
 }

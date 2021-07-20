@@ -30,8 +30,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(RecyclerAdapter.ViewHolder holder, int position) {
-        holder.title.setText(itemList.get(position));
-        //holder.value.setText(String.valueOf(position));
+        holder.itemTitle.setText(itemList.get(position));
+      //  holder.itemTitle.setText(String.valueOf(position));
     }
 
     @Override
@@ -40,15 +40,13 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     }
 
     class ViewHolder extends RecyclerView.ViewHolder{
-        ImageView imageView;
-        TextView title, value;
+
+        TextView itemTitle;
 
         public ViewHolder(View itemView) {
             super(itemView);
 
-//            imageView = itemView.findViewById(R.id.imageView);
-//            title = itemView.findViewById(R.id.titleText);
-//            value = itemView.findViewById(R.id.valueText);
+            itemTitle = itemView.findViewById(R.id.article);
 
         }
     }

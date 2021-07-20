@@ -32,7 +32,7 @@ public class SoccerActivitySecond extends AppCompatActivity {
         EditText editName = findViewById(R.id.editName);
         TextView welcome = findViewById(R.id.welcome);
         Button editYourNameButton = findViewById(R.id.editYourNameButton);
-        editName.setText(prefs.getString("Name", ""));
+
         Button toNextPage = findViewById(R.id.toNextPage);
 
 
@@ -43,6 +43,7 @@ public class SoccerActivitySecond extends AppCompatActivity {
         ratingBarDialogBox();
         editYourName();
 
+        editName.setText(prefs.getString("Name", ""));
         editYourNameButton.setOnClickListener(clk->{
             String greeting = getString(R.string.greeting);
             SharedPreferences.Editor  editor = prefs.edit();
@@ -85,13 +86,16 @@ public class SoccerActivitySecond extends AppCompatActivity {
         ratingBar = new RatingBar(this);
         popDialog.setView(ratingBar);
         //ratingBar.setMax(6);
-        ratingBar.setNumStars(5);
+        //ratingBar.setNumStars(5);
         popDialog.setIcon(android.R.drawable.btn_star_big_on);
         popDialog.setTitle("Did you like the app? ");
+
+
 
         popDialog.setPositiveButton("Yes", (dialog, cl) ->{
                         thankyouToast();
                         dialog.dismiss();
+
                         })
 
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {

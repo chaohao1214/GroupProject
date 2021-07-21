@@ -7,15 +7,10 @@
     android:visibility="visible"
     tools:context=".MainActivity">
 
-<Button
-        android:layout_marginStart="124dp"
-        android:layout_marginLeft="124dp"
-        android:layout_marginTop="32dp"
-        android:text="OCTranspo Bus"
-        app:layout_constraintBottom_toTopOf="@+id/CarCharge"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.315" />
+    <Button
+        android:id="@+id/OCTranspo"
+        android:layout_width="411dp"
+        android:layout_height="wrap_content"
         android:text="OCTranspo Bus"
         app:layout_constraintBottom_toTopOf="@+id/CarCharge"
         app:layout_constraintTop_toTopOf="parent" />
@@ -62,7 +57,7 @@
         android:layout_height="48dp"
         android:text="Soccer Game"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/MovieInfo"
+        app:layout_constraintTop_toBottomOf="@+id/movie_info"
         tools:layout_editor_absoluteX="5dp" />
 
 

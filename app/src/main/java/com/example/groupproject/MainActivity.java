@@ -21,16 +21,17 @@ public class MainActivity extends AppCompatActivity {
         ImageButton movie = findViewById(R.id.movie_info);
 
         movie.setOnClickListener(clk -> {
-            Intent movieFinder = new Intent(MainActivity.this, MovieInfo.class);
-            startActivity(movieFinder);
+                    Intent movieFinder = new Intent(MainActivity.this, MovieInfo.class);
+                    startActivity(movieFinder);
+                });
 
-        Button OCTranspo = findViewById(R.id.OCTranspo);
+            Button OCTranspo = findViewById(R.id.OCTranspo);
 
-        OCTranspo.setOnClickListener(clk ->{
-            //button to next page
-            Intent nextPageOC = new Intent(MainActivity.this,SearchBus.class);
-            startActivity(nextPageOC);
+            OCTranspo.setOnClickListener(clk -> {
+                //button to next page
+                Intent nextPageOC = new Intent(MainActivity.this, SearchBus.class);
+                startActivity(nextPageOC);
 
-        });
-    }
+            });
+        }
 }

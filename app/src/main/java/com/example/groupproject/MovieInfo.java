@@ -100,7 +100,7 @@ public class MovieInfo extends AppCompatActivity {
 
            @Override
            public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-               View vw = getLayoutInflater().inflate(R.layout.search_view, parent, false);
+               View vw = getLayoutInflater().inflate(R.layout.search_view_movie, parent, false);
                return new RowViews(vw);
            }
 

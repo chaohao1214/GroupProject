@@ -14,18 +14,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Button btn = findViewById(R.id.CarCharge);
+        Button carCharge = findViewById(R.id.CarCharge);
 
-        btn.setOnClickListener(clk -> {
-            openCarChargingStationLocator();
+        carCharge.setOnClickListener(clk -> {
+            // go to next page
+            Intent nextPageCar = new Intent(MainActivity.this,SearchStation.class);
+            startActivity(nextPageCar);
         });
     }
-
-    public void openCarChargingStationLocator(){
-        Intent nextPageCar = new Intent(this,CarCharging.class);
-        startActivity(nextPageCar);
-    }
-
-
 
 }

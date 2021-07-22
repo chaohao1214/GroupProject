@@ -9,9 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.GroupProject">
-        <activity android:name=".SearchResultRecyclerview"></activity>
-        <activity android:name=".searchresult" />
-        <activity android:name=".CarCharging" />
+        <activity android:name=".SearchStation"></activity>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -9,6 +9,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.GroupProject">
 
+        <activity android:name=".SoccerActivityThird"></activity>
+        <activity android:name=".SoccerActivitySecond" />
+
         <activity android:name=".SearchStation"></activity>
         <activity android:name=".MovieInfo"></activity>
         <activity android:name=".SearchBus"></activity>

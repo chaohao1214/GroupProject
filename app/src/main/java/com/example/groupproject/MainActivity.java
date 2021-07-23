@@ -3,6 +3,7 @@ package com.example.groupproject;
 import androidx.appcompat.app.AppCompatActivity;
 
 
+import android.view.View;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ImageButton;
@@ -17,6 +18,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+        Button carCharge = findViewById(R.id.CarCharge);
+
+        carCharge.setOnClickListener(clk -> {
+            // go to next page
+            Intent nextPageCar = new Intent(MainActivity.this,SearchStation.class);
+            startActivity(nextPageCar);
+        });
+    }
 
         ImageButton movie = findViewById(R.id.movie_info);
 
@@ -34,4 +44,5 @@ public class MainActivity extends AppCompatActivity {
 
             });
         }
+
 }

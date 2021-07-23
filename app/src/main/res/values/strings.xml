@@ -1,5 +1,8 @@
 <resources>
     <string name="app_name">GroupProject</string>
+
+    <string name="greeting">WELCOME</string>
+
     <string name="movieWelcome">Welcome to Movie Finder</string>
     <string name="askTitle">Movie Title</string >
     <string name="hiddenText">e.g The Matrix</string >

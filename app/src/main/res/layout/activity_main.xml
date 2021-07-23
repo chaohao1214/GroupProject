@@ -4,32 +4,47 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:visibility="visible"
     tools:context=".MainActivity">
 
     <Button
         android:id="@+id/OCTranspo"
-        android:layout_width="match_parent"
+        android:layout_width="411dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="128dp"
         android:text="OCTranspo Bus"
         app:layout_constraintBottom_toTopOf="@+id/CarCharge"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.397" />
+        app:layout_constraintTop_toTopOf="parent" />
+
+
 
     <Button
         android:id="@+id/CarCharge"
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/OCTranspo"
         android:layout_alignStart="@+id/OCTranspo"
         android:layout_alignLeft="@+id/OCTranspo"
         android:layout_marginTop="32dp"
+
         android:text="Electric Car Charging"
+        app:layout_constraintBottom_toTopOf="@+id/Soccer"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+
+    <ImageButton
+        android:id="@+id/movie_info"
+        android:layout_width="282dp"
+        android:layout_height="110dp"
+        android:layout_marginStart="64dp"
+        android:layout_marginLeft="64dp"
+        android:layout_marginEnd="64dp"
+        android:layout_marginRight="64dp"
+        android:layout_marginBottom="88dp"
+        android:contentDescription="movieFinder"
+        android:scaleType="center"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.853"
-        app:layout_constraintStart_toStartOf="@+id/MovieInfo"
-        app:layout_constraintTop_toBottomOf="@+id/OCTranspo" />
 
     <Button
         android:id="@+id/Soccer"
@@ -37,17 +52,19 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/MovieInfo"
         android:layout_marginTop="32dp"
-        android:text="Soccer Game"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/MovieInfo" />
 
-    <Button
-        android:id="@+id/MovieInfo"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/CarCharge"
-        android:layout_marginTop="32dp"
-        android:text="Movie Information"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/CarCharge" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/movie_icon1"
+        tools:ignore="MissingConstraints" />
+
+        android:text="Electric Car Charging"
+        app:layout_constraintBottom_toTopOf="@+id/MovieInfo"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="16dp" />
+
+
+
+
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

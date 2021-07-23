@@ -40,25 +40,25 @@ public class SearchBus extends AppCompatActivity {
         setContentView(R.layout.bus_search);
 
         // create database
-        MyOpenHelper opener = new MyOpenHelper(this);
-        db = opener.getWritableDatabase();
-        Cursor results = db.rawQuery("Select * from " + MyOpenHelper.TABLE_NAME + ";", null);
+//        MyOpenHelper opener = new MyOpenHelper(this);
+//        db = opener.getWritableDatabase();
+//        Cursor results = db.rawQuery("Select * from " + MyOpenHelper.TABLE_NAME + ";", null);
 
         //meta data
-        int _idCol = results.getColumnIndex("_id");
-        int messageCol = results.getColumnIndex(MyOpenHelper.col_message);
-        int searchButtonInfoCol = results.getColumnIndex(MyOpenHelper.search_button_info);
-        int timeCol = results.getColumnIndex(MyOpenHelper.col_time_sent);
+//        int _idCol = results.getColumnIndex("_id");
+//        int messageCol = results.getColumnIndex(MyOpenHelper.col_message);
+//        int searchButtonInfoCol = results.getColumnIndex(MyOpenHelper.search_button_info);
+//        int timeCol = results.getColumnIndex(MyOpenHelper.col_time_sent);
 
         // set data attributes
-        while(results.moveToNext()){
-            long id = results.getInt(_idCol);
-            String message = results.getString(messageCol);
-            String time = results.getString(timeCol);
-            int searchButtonInfo = results.getInt(searchButtonInfoCol);
-            searchMessage.add(new BusMessage(message,searchButtonInfo,time,id));
-
-        }
+//        while(results.moveToNext()){
+//            long id = results.getInt(_idCol);
+//            String message = results.getString(messageCol);
+//            String time = results.getString(timeCol);
+//            int searchButtonInfo = results.getInt(searchButtonInfoCol);
+//            searchMessage.add(new BusMessage(message,searchButtonInfo,time,id));
+//
+//        }
 
         //receive info from previous page
         Intent fromPreOC = getIntent();
@@ -93,12 +93,12 @@ public class SearchBus extends AppCompatActivity {
             Toast.makeText(getApplicationContext(),  "Bus route is loading...", Toast.LENGTH_SHORT).show();
 
             // get and insert data
-            ContentValues newRow = new ContentValues();
-            newRow.put(MyOpenHelper.col_message, thisMessage.getMessage());
-            newRow.put(MyOpenHelper.search_button_info, thisMessage.getBusMesg());
-            newRow.put(MyOpenHelper.col_time_sent, thisMessage.getTimeSearch());
-            long id = db.insert(MyOpenHelper.TABLE_NAME, MyOpenHelper.col_message, newRow);
-            thisMessage.setId(id);
+//            ContentValues newRow = new ContentValues();
+//            newRow.put(MyOpenHelper.col_message, thisMessage.getMessage());
+//            newRow.put(MyOpenHelper.search_button_info, thisMessage.getBusMesg());
+//            newRow.put(MyOpenHelper.col_time_sent, thisMessage.getTimeSearch());
+//            long id = db.insert(MyOpenHelper.TABLE_NAME, MyOpenHelper.col_message, newRow);
+//            thisMessage.setId(id);
 
         });
 
@@ -128,17 +128,17 @@ public class SearchBus extends AppCompatActivity {
                             busAdt.notifyItemRemoved(position);
 
                             //set to delete data in database
-                            db.delete(MyOpenHelper.TABLE_NAME, "_id=?", new String[]
-                                    { Long.toString(removeMessage.getId())});
+//                            db.delete(MyOpenHelper.TABLE_NAME, "_id=?", new String[]
+//                                    { Long.toString(removeMessage.getId())});
 
                             Snackbar.make(busInfo,"You deleted message #" + position, Snackbar.LENGTH_LONG)
                                     .setAction("Undo", clk ->{
                                         searchMessage.add(position,removeMessage);
                                         busAdt.notifyItemInserted(position);
                                         // delete action for data
-                                        db.execSQL("Insert into " + MyOpenHelper.TABLE_NAME + " values('" +
-                                                removeMessage.getId() + "','" + removeMessage.getMessage() + "','"
-                                        +removeMessage.getBusMesg() + "','" + removeMessage.getTimeSearch() +"');");
+//                                        db.execSQL("Insert into " + MyOpenHelper.TABLE_NAME + " values('" +
+//                                                removeMessage.getId() + "','" + removeMessage.getMessage() + "','"
+//                                        +removeMessage.getBusMesg() + "','" + removeMessage.getTimeSearch() +"');");
                                     })
                                     .show();
                         })

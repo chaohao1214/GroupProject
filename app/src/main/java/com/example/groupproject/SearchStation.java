@@ -40,33 +40,36 @@ public class SearchStation extends AppCompatActivity {
         setContentView(R.layout.station_search);
 
         // create database
-        MyOpenHelper opener = new MyOpenHelper(this);
-        db = opener.getWritableDatabase();
-        Cursor results = db.rawQuery("Select * from " + MyOpenHelper.TABLE_NAME + ";", null);
+//        MyOpenHelperCar opener = new MyOpenHelperCar(this);
+//        db = opener.getWritableDatabase();
+//        Cursor results = db.rawQuery("Select * from " + MyOpenHelperCar.TABLE_NAME + ";", null);
 
         //meta data
-        int _idCol = results.getColumnIndex("_id");
-        int messageCol = results.getColumnIndex(MyOpenHelper.col_message);
-        int searchButtonInfoCol = results.getColumnIndex(MyOpenHelper.search_button_info);
-        int timeCol = results.getColumnIndex(MyOpenHelper.col_time_sent);
+//        int _idCol = results.getColumnIndex("_id");
+//        int messageCol = results.getColumnIndex(MyOpenHelperCar.col_message);
+//        int searchButtonInfoCol = results.getColumnIndex(MyOpenHelperCar.search_button_info);
+//        int timeCol = results.getColumnIndex(MyOpenHelperCar.col_time_sent);
 
         // set data attributes
-        while(results.moveToNext()){
-            long id = results.getInt(_idCol);
-            String message = results.getString(messageCol);
-            String time = results.getString(timeCol);
-            int searchButtonInfo = results.getInt(searchButtonInfoCol);
-            searchMessage.add(new StationMessage(message,searchButtonInfo,time,id));
-
-        }
+//        while(results.moveToNext()){
+//            long id = results.getInt(_idCol);
+//            String message = results.getString(messageCol);
+//            String time = results.getString(timeCol);
+//            int searchButtonInfo = results.getInt(searchButtonInfoCol);
+//            searchMessage.add(new StationMessage(message,searchButtonInfo,time,id));
+//
+//        }
 
         //receive info from previous page
         Intent fromPreOC = getIntent();
         // save the content that entered before
         SharedPreferences prefs = getSharedPreferences("MyData", Context.MODE_PRIVATE);
-        String searchStationInfo = prefs.getString("Longitude","");
-        EditText stationMsg = findViewById(R.id.searchBox);
-        stationMsg.setText(searchStationInfo);
+        String searchLongitudeInfo = prefs.getString("Longitude","");
+        String searchLatiitudeInfo = prefs.getString("Latitude","");
+        EditText stationLongitudeMsg = findViewById(R.id.searchBox);
+        //EditText stationLatitudeMsg = findViewById(R.id.searchBoxLatitude);
+        stationLongitudeMsg.setText(searchLongitudeInfo);
+       // stationLatitudeMsg.setText(searchLatiitudeInfo);
 
 
         Button searchStationBtn = findViewById(R.id.searchStationButton);
@@ -80,7 +83,7 @@ public class SearchStation extends AppCompatActivity {
         searchView.setAdapter(stationAdt);
 
         searchStationBtn.setOnClickListener(clk ->{
-            StationMessage thisMessage = new StationMessage(stationMsg.getText().toString(),1, sdf.format(new Date()));
+            StationMessage thisMessage = new StationMessage(stationLongitudeMsg.getText().toString(),1, sdf.format(new Date()));
             searchMessage.add(thisMessage);
             stationAdt.notifyItemInserted(searchMessage.size()-1);
 
@@ -88,17 +91,17 @@ public class SearchStation extends AppCompatActivity {
             SharedPreferences.Editor editor = prefs.edit();
             EditText stationMsgText = findViewById(R.id.searchBox);
             editor.putString("Longitude", stationMsgText.getText().toString());
-            stationMsg.setText("");
+            stationLongitudeMsg.setText("");
             editor.apply();
             Toast.makeText(getApplicationContext(),  "Station list is loading...", Toast.LENGTH_SHORT).show();
 
             // get and insert data
-            ContentValues newRow = new ContentValues();
-            newRow.put(MyOpenHelper.col_message, thisMessage.getMessage());
-            newRow.put(MyOpenHelper.search_button_info, thisMessage.getBusMesg());
-            newRow.put(MyOpenHelper.col_time_sent, thisMessage.getTimeSearch());
-            long id = db.insert(MyOpenHelper.TABLE_NAME, MyOpenHelper.col_message, newRow);
-            thisMessage.setId(id);
+//            ContentValues newRow = new ContentValues();
+//            newRow.put(MyOpenHelperCar.col_message, thisMessage.getMessage());
+//            newRow.put(MyOpenHelperCar.search_button_info, thisMessage.getStationMesg());
+//            newRow.put(MyOpenHelperCar.col_time_sent, thisMessage.getTimeSearch());
+//            long id = db.insert(MyOpenHelperCar.TABLE_NAME, MyOpenHelperCar.col_message, newRow);
+//            thisMessage.setId(id);
 
         });
 
@@ -128,17 +131,17 @@ public class SearchStation extends AppCompatActivity {
                             stationAdt.notifyItemRemoved(position);
 
                             //set to delete data in database
-                            db.delete(MyOpenHelper.TABLE_NAME, "_id=?", new String[]
-                                    { Long.toString(removeMessage.getId())});
+//                            db.delete(MyOpenHelperCar.TABLE_NAME, "_id=?", new String[]
+//                                    { Long.toString(removeMessage.getId())});
 
                             Snackbar.make(stationInfo,"You deleted message #" + position, Snackbar.LENGTH_LONG)
                                     .setAction("Undo", clk ->{
                                         searchMessage.add(position,removeMessage);
                                         stationAdt.notifyItemInserted(position);
                                         // delete action for data
-                                        db.execSQL("Insert into " + MyOpenHelper.TABLE_NAME + " values('" +
-                                                removeMessage.getId() + "','" + removeMessage.getMessage() + "','"
-                                                +removeMessage.getBusMesg() + "','" + removeMessage.getTimeSearch() +"');");
+//                                        db.execSQL("Insert into " + MyOpenHelperCar.TABLE_NAME + " values('" +
+//                                                removeMessage.getId() + "','" + removeMessage.getMessage() + "','"
+//                                                +removeMessage.getStationMesg() + "','" + removeMessage.getTimeSearch() +"');");
                                     })
                                     .show();
                         })
@@ -160,7 +163,7 @@ public class SearchStation extends AppCompatActivity {
 
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View v = getLayoutInflater().inflate(R.layout.search_view, parent,false);//row in a recyclerview, bus
+            View v = getLayoutInflater().inflate(R.layout.search_view_car, parent,false);//row in a recyclerview, bus
             return new RowViews(v);
         }
 
@@ -181,7 +184,7 @@ public class SearchStation extends AppCompatActivity {
 
     private class StationMessage {
         String message;
-        int busMesg;
+        int stationMesg;
         String timeSearch;
         long id;
 
@@ -195,13 +198,13 @@ public class SearchStation extends AppCompatActivity {
 
         public StationMessage(String message, int busMsg, String timeSearch){
             this.message = message;
-            this.busMesg = busMsg;
+            this.stationMesg = busMsg;
             this.timeSearch = timeSearch;
         }
 
         public StationMessage(String message, int searchButtonInfo, String time, long id) {
             this.message = message;
-            this.busMesg = searchButtonInfo;
+            this.stationMesg = searchButtonInfo;
             this.timeSearch = time;
             setId(id);
 
@@ -210,8 +213,8 @@ public class SearchStation extends AppCompatActivity {
         public String getMessage(){
             return  message;
         }
-        public int getBusMesg(){
-            return busMesg;
+        public int getStationMesg(){
+            return stationMesg;
         }
 
         public String getTimeSearch() {

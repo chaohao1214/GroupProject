@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 
-public class MyOpenHelper  extends SQLiteOpenHelper {
+public class MyOpenHelperCar extends SQLiteOpenHelper {
     public static final String name ="StationDatabase";
     public static final int version =3;
     public static final String TABLE_NAME = "Messages";
@@ -14,7 +14,7 @@ public class MyOpenHelper  extends SQLiteOpenHelper {
     public static final String search_button_info = "SearchButton";
     public static final String col_time_sent = "TimeSent";
 
-    public MyOpenHelper(Context context) {
+    public MyOpenHelperCar(Context context) {
         super(context, name, null, version);
     }
 

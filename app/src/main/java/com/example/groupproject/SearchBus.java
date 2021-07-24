@@ -42,7 +42,7 @@ public class SearchBus extends AppCompatActivity {
         // create database
         MyOpenHelper opener = new MyOpenHelper(this);
         db = opener.getWritableDatabase();
-        Cursor results = db.rawQuery("Select * from " + MyOpenHelper.TABLE_NAME + ";", null);
+        Cursor results = db.rawQuery("Select * from " + MyOpenHelper.Bus_TABLE_NAME + ";", null);
 
         //meta data
         int _idCol = results.getColumnIndex("_id");
@@ -97,7 +97,7 @@ public class SearchBus extends AppCompatActivity {
             newRow.put(MyOpenHelper.col_message, thisMessage.getMessage());
             newRow.put(MyOpenHelper.search_button_info, thisMessage.getBusMesg());
             newRow.put(MyOpenHelper.col_time_sent, thisMessage.getTimeSearch());
-            long id = db.insert(MyOpenHelper.TABLE_NAME, MyOpenHelper.col_message, newRow);
+            long id = db.insert(MyOpenHelper.Bus_TABLE_NAME, MyOpenHelper.col_message, newRow);
             thisMessage.setId(id);
 
         });
@@ -128,7 +128,7 @@ public class SearchBus extends AppCompatActivity {
                             busAdt.notifyItemRemoved(position);
 
                             //set to delete data in database
-                            db.delete(MyOpenHelper.TABLE_NAME, "_id=?", new String[]
+                            db.delete(MyOpenHelper.Bus_TABLE_NAME, "_id=?", new String[]
                                     { Long.toString(removeMessage.getId())});
 
                             Snackbar.make(busInfo,"You deleted message #" + position, Snackbar.LENGTH_LONG)
@@ -136,7 +136,7 @@ public class SearchBus extends AppCompatActivity {
                                         searchMessage.add(position,removeMessage);
                                         busAdt.notifyItemInserted(position);
                                         // delete action for data
-                                        db.execSQL("Insert into " + MyOpenHelper.TABLE_NAME + " values('" +
+                                        db.execSQL("Insert into " + MyOpenHelper.Bus_TABLE_NAME + " values('" +
                                                 removeMessage.getId() + "','" + removeMessage.getMessage() + "','"
                                         +removeMessage.getBusMesg() + "','" + removeMessage.getTimeSearch() +"');");
                                     })
@@ -160,7 +160,7 @@ public class SearchBus extends AppCompatActivity {
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = getLayoutInflater().inflate(R.layout.search_view, parent,false);//row in a recyclerview, bus
+        View v = getLayoutInflater().inflate(R.layout.search_view_bus, parent,false);//row in a recyclerview, bus
         return new RowViews(v);
     }
 

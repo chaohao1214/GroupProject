@@ -2,7 +2,7 @@ package com.example.groupproject;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.Intent;
+
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -15,8 +15,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -32,8 +30,8 @@ import java.util.Locale;
 public class BusListFragment extends Fragment {
 
     private SharedPreferences busPref;
+    Button searchBusButton;
 
-    RecyclerView searchView;
     MyBusAdapter busAdt = new MyBusAdapter();
     SimpleDateFormat sdf = new SimpleDateFormat("EEEE, dd-MMM-yyyy hh-mm-ss a", Locale.getDefault());
     ArrayList<BusMessage> searchMessage = new ArrayList<>();
@@ -67,26 +65,28 @@ public class BusListFragment extends Fragment {
 
         busPref = getContext().getSharedPreferences("BusData", Context.MODE_PRIVATE);
 
+        RecyclerView searchListView;
+        searchBusButton = BusLayout.findViewById(R.id.searchBusButton);
+        searchListView = BusLayout.findViewById(R.id.searchView);
+        searchListView.setAdapter(busAdt);
 
-        Button searchBusBtn = BusLayout.findViewById(R.id.searchBusButton);
-        searchView = BusLayout.findViewById(R.id.searchView);
-        LinearLayoutManager mgr = new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false);
-        mgr.setStackFromEnd(true);
-        mgr.setReverseLayout(true);
+        searchListView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL,false));
+//        LinearLayoutManager mgr = new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false);
+//        mgr.setStackFromEnd(true);
+//        mgr.setReverseLayout(true);
 
-        searchView.setLayoutManager(mgr);
 
-        searchView.setAdapter(busAdt);
 
-        searchBusBtn.setOnClickListener(clk ->{
+
+        searchBusButton.setOnClickListener(clk ->{
             BusMessage thisMessage = new BusMessage(busMsg.getText().toString(),1, sdf.format(new Date()));
             searchMessage.add(thisMessage);
             busAdt.notifyItemInserted(searchMessage.size()-1);
             SharedPreferences.Editor editor = busPref.edit();
-            EditText busMsgText = BusLayout.findViewById(R.id.searchBox);
-            editor.putString("BusNumber", busMsgText.getText().toString());
+//            EditText busMsgText = BusLayout.findViewById(R.id.searchBox);
+//            editor.putString("BusNumber", busMsgText.getText().toString());
             busMsg.setText("");
-            editor.apply();
+//            editor.apply();
 
 
 
@@ -100,10 +100,41 @@ public class BusListFragment extends Fragment {
 
         });
 
-        searchBusBtn.setOnClickListener(clk ->{
+        searchBusButton.setOnClickListener(clk ->{
             Toast.makeText(getContext().getApplicationContext(),  "Bus route is loading...", Toast.LENGTH_SHORT).show();
         });
         return BusLayout;
+    }
+
+    // delete the message in detail frgament
+    public void notifyMessageDeleted(BusMessage busMessage, int busChosenPosition) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setMessage("Do you want to delete this message: " + busMessage.getMessage())
+                .setTitle("Questions:")
+                .setPositiveButton("Yes",(dialog, cl)->{
+                    BusListFragment.BusMessage removeMessage = searchMessage.get(busChosenPosition);
+                    searchMessage.remove(busChosenPosition);
+                    busAdt.notifyItemRemoved(busChosenPosition);
+
+                    //set to delete data in database
+                    db.delete(BusOpenHelper.Bus_TABLE_NAME, "_id=?", new String[]
+                            { Long.toString(removeMessage.getId())});
+
+                    Snackbar.make(searchBusButton,"You deleted message #" + busChosenPosition, Snackbar.LENGTH_LONG)
+                            .setAction("Undo", clk ->{
+                                searchMessage.add(busChosenPosition,removeMessage);
+                                busAdt.notifyItemInserted(busChosenPosition);
+                                // delete action for data
+                                db.execSQL("Insert into " + BusOpenHelper.Bus_TABLE_NAME + " values('" +
+                                        removeMessage.getId() + "','" + removeMessage.getMessage() + "','"
+                                        +removeMessage.getBusMesg() + "','" + removeMessage.getTimeSearch() +"');");
+                            })
+                            .show();
+                })
+                .setNegativeButton("No",(dialog, cl) ->{
+
+                })
+                .create().show();
     }
 
     private class RowViews extends RecyclerView.ViewHolder {
@@ -119,35 +150,9 @@ public class BusListFragment extends Fragment {
             timeInfo = itemView.findViewById(R.id.timeView);
 
             itemView.setOnClickListener(click ->{
-                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                builder.setMessage("Do you want to delete this message: " + busInfo.getText())
-                        .setTitle("Queestions:")
-                        .setPositiveButton("Yes",(dialog, cl)->{
-                            //position = getAbsoluteAdapterPosition(); always turn red ???
-                            position = getAdapterPosition();
-                            BusMessage removeMessage = searchMessage.get(position);
-                            searchMessage.remove(position);
-                            busAdt.notifyItemRemoved(position);
-
-                            //set to delete data in database
-                            db.delete(BusOpenHelper.Bus_TABLE_NAME, "_id=?", new String[]
-                                    { Long.toString(removeMessage.getId())});
-
-                            Snackbar.make(busInfo,"You deleted message #" + position, Snackbar.LENGTH_LONG)
-                                    .setAction("Undo", clk ->{
-                                        searchMessage.add(position,removeMessage);
-                                        busAdt.notifyItemInserted(position);
-                                        // delete action for data
-                                        db.execSQL("Insert into " + BusOpenHelper.Bus_TABLE_NAME + " values('" +
-                                                removeMessage.getId() + "','" + removeMessage.getMessage() + "','"
-                                                +removeMessage.getBusMesg() + "','" + removeMessage.getTimeSearch() +"');");
-                                    })
-                                    .show();
-                        })
-                        .setNegativeButton("No",(dialog, cl) ->{
-
-                        })
-                        .create().show();
+                        SearchBus parentAcitivty = (SearchBus)getContext();
+                        int position = getAdapterPosition();
+                        parentAcitivty.busUserClickedMsg(searchMessage.get(position), position);
             });
         }
 
@@ -155,7 +160,6 @@ public class BusListFragment extends Fragment {
             this.position = position;
         }
     }
-
 
 
     private class MyBusAdapter extends RecyclerView.Adapter{
@@ -181,7 +185,7 @@ public class BusListFragment extends Fragment {
     }
 
 
-    private class BusMessage{
+     class BusMessage{
         String message;
         int busMesg;
         String timeSearch;

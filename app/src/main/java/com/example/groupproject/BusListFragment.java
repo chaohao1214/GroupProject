@@ -61,7 +61,7 @@ public class BusListFragment extends Fragment {
             searchMessage.add(new BusMessage(message,searchButtonInfo,time,id));
 
         }
-
+        EditText busMsgText = BusLayout.findViewById(R.id.searchBox);
 
         busPref = getContext().getSharedPreferences("BusData", Context.MODE_PRIVATE);
 
@@ -69,6 +69,9 @@ public class BusListFragment extends Fragment {
         searchBusButton = BusLayout.findViewById(R.id.searchBusButton);
         searchListView = BusLayout.findViewById(R.id.searchView);
         searchListView.setAdapter(busAdt);
+
+        busMsgText.setText(busPref.getString("BusNumber", ""));
+
 
         searchListView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL,false));
 //        LinearLayoutManager mgr = new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false);
@@ -79,14 +82,16 @@ public class BusListFragment extends Fragment {
 
 
         searchBusButton.setOnClickListener(clk ->{
+            Toast.makeText(getContext().getApplicationContext(),  "Bus route is loading...", Toast.LENGTH_SHORT).show();
             BusMessage thisMessage = new BusMessage(busMsg.getText().toString(),1, sdf.format(new Date()));
             searchMessage.add(thisMessage);
             busAdt.notifyItemInserted(searchMessage.size()-1);
             SharedPreferences.Editor editor = busPref.edit();
-//            EditText busMsgText = BusLayout.findViewById(R.id.searchBox);
-//            editor.putString("BusNumber", busMsgText.getText().toString());
+       //     editor.putString("BusNumber")
+
+            editor.putString("BusNumber", busMsgText.getText().toString());
             busMsg.setText("");
-//            editor.apply();
+            editor.apply();
 
 
 
@@ -100,9 +105,6 @@ public class BusListFragment extends Fragment {
 
         });
 
-        searchBusButton.setOnClickListener(clk ->{
-            Toast.makeText(getContext().getApplicationContext(),  "Bus route is loading...", Toast.LENGTH_SHORT).show();
-        });
         return BusLayout;
     }
 

@@ -22,21 +22,41 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.snackbar.Snackbar;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+import java.util.stream.Collectors;
 
 public class BusListFragment extends Fragment {
 
     private SharedPreferences busPref;
     Button searchBusButton;
-
     MyBusAdapter busAdt = new MyBusAdapter();
     SimpleDateFormat sdf = new SimpleDateFormat("EEEE, dd-MMM-yyyy hh-mm-ss a", Locale.getDefault());
     ArrayList<BusMessage> searchMessage = new ArrayList<>();
     SQLiteDatabase db;
 
+    // The strings represents the address of the server
+    private String busStringURL;
+    private String busDetailURL;
 
     public View onCreateView( LayoutInflater inflater,  ViewGroup container,  Bundle savedInstanceState) {
         View BusLayout = inflater.inflate(R.layout.bus_search, container, false);
@@ -74,12 +94,6 @@ public class BusListFragment extends Fragment {
 
 
         searchListView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL,false));
-//        LinearLayoutManager mgr = new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false);
-//        mgr.setStackFromEnd(true);
-//        mgr.setReverseLayout(true);
-
-
-
 
         searchBusButton.setOnClickListener(clk ->{
             Toast.makeText(getContext().getApplicationContext(),  "Bus route is loading...", Toast.LENGTH_SHORT).show();
@@ -87,12 +101,10 @@ public class BusListFragment extends Fragment {
             searchMessage.add(thisMessage);
             busAdt.notifyItemInserted(searchMessage.size()-1);
             SharedPreferences.Editor editor = busPref.edit();
-       //     editor.putString("BusNumber")
 
             editor.putString("BusNumber", busMsgText.getText().toString());
             busMsg.setText("");
             editor.apply();
-
 
 
             // get and insert data
@@ -103,6 +115,47 @@ public class BusListFragment extends Fragment {
             long id = db.insert(BusOpenHelper.Bus_TABLE_NAME, BusOpenHelper.col_message, newRow);
             thisMessage.setId(id);
 
+            // new thread to connect to server
+            Executor busThread = Executors.newSingleThreadExecutor();
+            busThread.execute(() ->{
+                // this is runs on another thread
+                try {
+                    String busNumber = busMsgText.getText().toString();
+                    busStringURL = "https://api.octranspo1.com/v2.0/GetRouteSummaryForStop?appID=223eb5c3&&apiKey=ab27db5b435b8c8819ffb8095328e775&stopNo="
+                            + URLEncoder.encode(busNumber, "UTF-8") + "&format=json";
+                    //create URL object
+                    URL url = new URL(busStringURL);
+                    HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                    InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+
+                    String text = (new BufferedReader(
+                            new InputStreamReader(in, StandardCharsets.UTF_8)))
+                            .lines()
+                            .collect(Collectors.joining("\n"));
+
+                    JSONObject theDocument = new JSONObject(text);
+                    JSONObject busRouteSummary = theDocument.getJSONObject("RouteSummaryForStop");
+                    JSONObject busRoutes = busRouteSummary.getJSONObject("Routes");
+                    String stopNo = busRouteSummary.getString("StopNo");
+                    String stopDescription = busRouteSummary.getString("StopDescription");
+
+                    JSONArray routeArray = busRoutes.getJSONArray("Route");
+                    //use loop to get all the routes info from the bus stop and save it in the list.
+                    for (int i =0; i<routeArray.length(); i++){
+                        // save the routes info in the list
+                        JSONObject routeObject = routeArray.getJSONObject(i);
+                        // stop here!!!!!!!!!!!!!!
+                        BusRoute routMsg = new BusRoute();
+                    }
+
+                } catch (UnsupportedEncodingException | MalformedURLException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            });
         });
 
         return BusLayout;

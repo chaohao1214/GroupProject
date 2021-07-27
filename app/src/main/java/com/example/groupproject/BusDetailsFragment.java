@@ -25,8 +25,8 @@ public class BusDetailsFragment extends Fragment {
 
         TextView busNumView = busDetailsView.findViewById(R.id.busNumView);
         TextView timeView = busDetailsView.findViewById(R.id.timeView);
-        TextView idView = busDetailsView.findViewById(R.id.databaseIdView);
-        TextView busSearchView = busDetailsView.findViewById(R.id.busSearchView);
+        TextView idView = busDetailsView.findViewById(R.id.busTripView);
+        TextView busSearchView = busDetailsView.findViewById(R.id.busGPSView);
 
         busNumView.setText("Bus number is: " + busMessage.getMessage());
         timeView.setText("Time send: " + busMessage.getTimeSearch());

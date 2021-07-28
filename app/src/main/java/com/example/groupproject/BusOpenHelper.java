@@ -24,7 +24,7 @@ public class BusOpenHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE " + Bus_TABLE_NAME + "(_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                col_routes + " TEXT, " + col_heading + " INTEGER, "+ col_direction + " Text," +
+                col_routes + " TEXT, " + col_heading + " Text, "+ col_direction + " Text," +
                 col_directionID + " TEXT );");
     }
 

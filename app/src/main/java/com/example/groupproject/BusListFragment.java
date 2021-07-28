@@ -54,7 +54,7 @@ public class BusListFragment extends Fragment {
     SimpleDateFormat sdf = new SimpleDateFormat("EEEE, dd-MMM-yyyy hh-mm-ss a", Locale.getDefault());
     ArrayList<BusMessage> searchMessage = new ArrayList<>();
     SQLiteDatabase db;
-
+    EditText searchBar;
     ArrayList<BusRoute> busList = new ArrayList<>();
     // The strings represents the address of the server
     private String busStringURL;
@@ -62,7 +62,7 @@ public class BusListFragment extends Fragment {
 
     public View onCreateView( LayoutInflater inflater,  ViewGroup container,  Bundle savedInstanceState) {
         View BusLayout = inflater.inflate(R.layout.bus_search, container, false);
-        EditText busMsg = BusLayout.findViewById(R.id.searchBox);
+        searchBar = BusLayout.findViewById(R.id.searchBox);
 // create database
         BusOpenHelper opener = new BusOpenHelper(getContext());
         db = opener.getWritableDatabase();
@@ -83,7 +83,7 @@ public class BusListFragment extends Fragment {
             searchMessage.add(new BusMessage(message,searchButtonInfo,time,id));
 
         }
-        EditText busMsgText = BusLayout.findViewById(R.id.searchBox);
+
 
         busPref = getContext().getSharedPreferences("BusData", Context.MODE_PRIVATE);
 
@@ -93,26 +93,26 @@ public class BusListFragment extends Fragment {
         searchListView.setAdapter(busAdt);
         TextView info = BusLayout.findViewById(R.id.info);
 
-        busMsgText.setText(busPref.getString("BusNumber", ""));
+        searchBar.setText(busPref.getString("BusNumber", ""));
 
 
         searchListView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL,false));
 
         searchBusButton.setOnClickListener(clk ->{
             Toast.makeText(getContext().getApplicationContext(),  "Bus route is loading...", Toast.LENGTH_SHORT).show();
-            BusMessage thisMessage = new BusMessage(busMsg.getText().toString(),1, sdf.format(new Date()));
+            BusMessage thisMessage = new BusMessage(searchBar.getText().toString(),1, sdf.format(new Date()));
             searchMessage.add(thisMessage);
             busAdt.notifyItemInserted(searchMessage.size()-1);
             SharedPreferences.Editor editor = busPref.edit();
 
-            editor.putString("BusNumber", busMsgText.getText().toString());
-            busMsg.setText("");
+            editor.putString("BusNumber", searchBar.getText().toString());
+            searchBar.setText("");
             editor.apply();
 
 
             android.app.AlertDialog dialog = new android.app.AlertDialog.Builder(getContext())
                     .setTitle("Getting bus stop information")
-                    .setMessage("We'are getting information for the bus stop " + busMsgText + "to check the route information for this stop")
+                    .setMessage("We'are getting information for the bus stop " + searchBar + "to check the route information for this stop")
                     .setView(new ProgressBar(getContext()))
                     .show();
 
@@ -122,7 +122,7 @@ public class BusListFragment extends Fragment {
             busThread.execute(() ->{
                 // this is runs on another thread
                 try {
-                    String busNumber = busMsgText.getText().toString();
+                    String busNumber = searchBar.getText().toString();
                     busStringURL = "https://api.octranspo1.com/v2.0/GetRouteSummaryForStop?appID=223eb5c3&&apiKey=ab27db5b435b8c8819ffb8095328e775&stopNo="
                             + URLEncoder.encode(busNumber, "UTF-8") + "&format=json";
                     //create URL object
@@ -167,7 +167,7 @@ public class BusListFragment extends Fragment {
                         //call the following functions on the main GUI thread
                     getActivity().runOnUiThread(()->{
                         info.setText("Bus Stop " + stopNo + " " +stopDescription + " has the following routes. " +
-                                "Please click to chedk the detailed information");
+                                "Please click to check the detailed information");
                         busAdt.notifyItemInserted(busList.size()-1);
                         dialog.hide();
                     });
@@ -228,9 +228,59 @@ public class BusListFragment extends Fragment {
             busDestination = itemView.findViewById(R.id.destinationView);
 
             itemView.setOnClickListener(click ->{
-                        SearchBus parentAcitivty = (SearchBus)getContext();
+                //start a new thread to search form the server
+                Executor newThread2 = Executors.newSingleThreadExecutor();
+                newThread2.execute(()->{
+                    // this is the 2nd thread
+                    try {
+                        String stopNumber = searchBar.getText().toString();
+                        String routNo = busInfo.toString();
+                        busStringURL = "https://api.octranspo1.com/v2.0/GetNextTripsForStop?appID=223eb5c3&&apiKey=ab27db5b435b8c8819ffb8095328e775&stopNo=3017&routeNo"
+                                + URLEncoder.encode(stopNumber,"UTF-8") + "&routeNo="
+                                + URLEncoder.encode(routNo,"UTF-8") + "&format=json";
+
+                        // create a URL object
+                        URL url = new URL(busDetailURL);
+                        HttpURLConnection urlConnection =(HttpURLConnection) url.openConnection();
+                        InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+
+                        String textDetails = (new BufferedReader(
+                                new InputStreamReader(in, StandardCharsets.UTF_8)))
+                                .lines()
+                                .collect(Collectors.joining("\n"));
+                        //JSON object
+                        JSONObject documentDetails = new JSONObject(textDetails);
+                        JSONObject nextTripResults = documentDetails.getJSONObject("NextTripsForStopInfo");
+                        JSONObject routeInfo = nextTripResults.getJSONObject("Route");
+                        JSONArray routeDirection = routeInfo.getJSONArray("RouteDirection");
+                        for (int i=0; i < routeDirection.length(); i++){
+                            JSONObject arrayObject = routeDirection.getJSONObject(i);
+                            BusRoute routeDetails = new BusRoute();
+                            routeDetails.setBusNumber(arrayObject.getString("RouteNo"));
+                            routeDetails.setDestination(arrayObject.getString("RouteLabel"));
+                            JSONObject trips = arrayObject.getJSONObject("Trips");
+                            JSONArray trip = trips.getJSONArray("Trip");
+                            JSONObject firstElement = trip.getJSONObject(0);
+                            routeDetails.setLongitude(firstElement.getString("Longitude"));
+                            routeDetails.setLatitude(firstElement.getString("Latitude"));
+                            routeDetails.setGpsSpeed(firstElement.getString("GPSSpeed"));
+                            routeDetails.setStartTime(firstElement.getString("TripStartTime"));
+                            routeDetails.setAdjustedTime(firstElement.getString("AdjustedScheduleTime"));
+                            busList.add(routeDetails);
+                        }
+
+                        getActivity().runOnUiThread(() ->{
+                            busAdt.notifyItemInserted(busList.size()-1);
+                        });
+                    } catch (UnsupportedEncodingException | MalformedURLException e) {
+                        e.printStackTrace();
+                    } catch (IOException | JSONException e) {
+                        e.printStackTrace();
+                    }
+                });
+                        BusSearch parentAcitivty = (BusSearch)getContext();
                         int position = getAdapterPosition();
-                        parentAcitivty.busUserClickedMsg(searchMessage.get(position), position);
+                        parentAcitivty.busUserClickedMsg(busList.get(position), position);
             });
         }
 

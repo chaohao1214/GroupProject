@@ -2,11 +2,10 @@ package com.example.groupproject;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.ImageView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -15,11 +14,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Button OCTranspo = findViewById(R.id.OCTranspo);
+        ImageView OCTranspo = findViewById(R.id.busImage);
 
         OCTranspo.setOnClickListener(clk ->{
             //button to next page
-            Intent nextPageOC = new Intent(MainActivity.this,SearchBus.class);
+            Intent nextPageOC = new Intent(MainActivity.this, BusSearch.class);
             startActivity(nextPageOC);
         });
     }

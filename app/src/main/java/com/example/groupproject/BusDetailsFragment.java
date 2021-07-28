@@ -11,11 +11,11 @@ import android.widget.TextView;
 import androidx.fragment.app.Fragment;
 
 public class BusDetailsFragment extends Fragment {
-    BusListFragment.BusMessage busMessage;
+    BusRoute chosenRoute;
     int busChosenPosition;
 
-    public BusDetailsFragment(BusListFragment.BusMessage busMessage, int position) {
-        this.busMessage = busMessage;
+    public BusDetailsFragment(BusRoute route, int position) {
+        chosenRoute = route;
         busChosenPosition = position;
     }
 
@@ -24,14 +24,23 @@ public class BusDetailsFragment extends Fragment {
         View busDetailsView = inflater.inflate(R.layout.bus_detail_layout, container, false);
 
         TextView busNumView = busDetailsView.findViewById(R.id.busNumView);
-        TextView timeView = busDetailsView.findViewById(R.id.destinationView);
-        TextView idView = busDetailsView.findViewById(R.id.busTripView);
-        TextView busSearchView = busDetailsView.findViewById(R.id.busGPSView);
+        TextView destinationView = busDetailsView.findViewById(R.id.busDesView);
+        TextView latitudeView = busDetailsView.findViewById(R.id.busLatitudeView);
+        TextView longitudeView = busDetailsView.findViewById(R.id.busLongitudeView);
+        TextView gpsView = busDetailsView.findViewById(R.id.busGPSView);
+        TextView startTimeView = busDetailsView.findViewById(R.id.busStartTimeView);
+        TextView adjustedView = busDetailsView.findViewById(R.id.busAdjustedView);
 
-        busNumView.setText("Bus number is: " + busMessage.getMessage());
-        timeView.setText("Time send: " + busMessage.getTimeSearch());
-        idView.setText("Database id is: " + busMessage.getId());
-        busSearchView.setText("Bus search: " + busMessage.getBusMesg() );
+        busNumView.setText("Bus route is: " + chosenRoute.getBusNumber());
+        destinationView.setText("Destination: " + chosenRoute.getDestination());
+        latitudeView.setText("Latitude: " + chosenRoute.getLatitude());
+        longitudeView.setText("Longitude: " + chosenRoute.getLongitude());
+        gpsView.setText("GPS: " + chosenRoute.getGpsSpeed());
+        startTimeView.setText("Start time: " + chosenRoute.getStartTime());
+        adjustedView.setText("Adjusted time: " + chosenRoute.getAdjustedTime());
+
+
+
 
         Button closeButton = busDetailsView.findViewById(R.id.closeButton);
         closeButton.setOnClickListener(closeClicked -> {
@@ -40,8 +49,6 @@ public class BusDetailsFragment extends Fragment {
 
         Button deleteButton = busDetailsView.findViewById(R.id.deleteButton);
         deleteButton.setOnClickListener(deleteClicked -> {
-            SearchBus parentActivity = (SearchBus) getContext();
-            parentActivity.notifyMessageDeleted(busMessage,busChosenPosition);
             getParentFragmentManager().beginTransaction().remove(this).commit();
         });
 

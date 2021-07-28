@@ -1,43 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:orientation="vertical">
 
-    <Button
-        android:id="@+id/OCTranspo"
-        android:layout_width="411dp"
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="OCTranspo Bus"
-        app:layout_constraintBottom_toTopOf="@+id/CarCharge"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme" />
 
-    <Button
-        android:id="@+id/CarCharge"
-        android:layout_width="411dp"
-        android:layout_height="wrap_content"
-        android:text="Electric Car Charging"
-        app:layout_constraintBottom_toTopOf="@+id/MovieInfo"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="16dp" />
+    <androidx.drawerlayout.widget.DrawerLayout
 
-    <Button
-        android:id="@+id/Soccer"
-        android:layout_width="406dp"
-        android:layout_height="48dp"
-        android:text="Soccer Game"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/MovieInfo"
-        tools:layout_editor_absoluteX="5dp" />
+        android:id="@+id/drawer_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/MovieInfo"
-        android:layout_width="411dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="212dp"
-        android:text="Movie Information"
-        app:layout_constraintTop_toBottomOf="@+id/CarCharge"
-        tools:layout_editor_absoluteX="16dp" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context=".MainActivity"
+            android:orientation="vertical">
+
+
+            <ImageView
+                android:id="@+id/busImage"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/bus"
+
+                android:paddingTop="20dp"
+                android:clickable="true"
+                android:focusable="true"/>
+
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/gas_pump"
+                android:paddingTop="20dp"
+                android:clickable="true"
+                android:focusable="true"/>
+
+            <ImageView
+                android:id="@+id/imageView3"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/movie"
+                android:paddingTop="20dp"
+                android:clickable="true"
+                android:focusable="true"/>
+
+            <ImageView
+                android:id="@+id/imageView4"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/football"
+                android:paddingTop="20dp"
+                android:clickable="true"
+                android:focusable="true"/>
+        </LinearLayout>
+
+        <com.google.android.material.navigation.NavigationView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/popout_menu"
+            android:layout_gravity="start"
+            android:fitsSystemWindows="true"
+            app:headerLayout="@layout/activity_main_author_app_info"
+            app:menu="@menu/main_activity_actions"
+            app:itemIconTint="@color/black">
+        </com.google.android.material.navigation.NavigationView>
+
+    </androidx.drawerlayout.widget.DrawerLayout>
+
+</LinearLayout>

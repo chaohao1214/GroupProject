@@ -8,11 +8,13 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class BusOpenHelper extends SQLiteOpenHelper {
     public static final String name ="BusDatabase";
-    public static final int version =3;
+    public static final int version =5;
     public static final String Bus_TABLE_NAME = "Messages";
-    public static final String col_message = "Message";
-    public static final String search_button_info = "SearchButton";
-    public static final String col_time_sent = "TimeSent";
+    public static final String col_routes = "RouteNumber";
+    public static final String col_heading = "RouteHeading";
+    public static final String col_direction = "Direction";
+    public static final String col_directionID = "DirectionID";
+
 
     public BusOpenHelper(Context context) {
         super(context, name, null, version);
@@ -22,7 +24,8 @@ public class BusOpenHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE " + Bus_TABLE_NAME + "(_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                col_message + " TEXT, " + search_button_info + " INTEGER, "+ col_time_sent + " Text);");
+                col_routes + " TEXT, " + col_heading + " INTEGER, "+ col_direction + " Text," +
+                col_directionID + " TEXT );");
     }
 
     @Override

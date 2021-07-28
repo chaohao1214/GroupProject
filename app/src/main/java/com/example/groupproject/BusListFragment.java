@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -54,6 +55,7 @@ public class BusListFragment extends Fragment {
     ArrayList<BusMessage> searchMessage = new ArrayList<>();
     SQLiteDatabase db;
 
+    ArrayList<BusRoute> busList = new ArrayList<>();
     // The strings represents the address of the server
     private String busStringURL;
     private String busDetailURL;
@@ -68,16 +70,16 @@ public class BusListFragment extends Fragment {
 
         //meta data
         int _idCol = results.getColumnIndex("_id");
-        int messageCol = results.getColumnIndex(BusOpenHelper.col_message);
-        int searchButtonInfoCol = results.getColumnIndex(BusOpenHelper.search_button_info);
-        int timeCol = results.getColumnIndex(BusOpenHelper.col_time_sent);
+        int routeCol = results.getColumnIndex(BusOpenHelper.col_routes);
+        int busInfoCol = results.getColumnIndex(BusOpenHelper.col_heading);
+        int dirCol = results.getColumnIndex(BusOpenHelper.col_direction);
 
         // set data attributes
         while(results.moveToNext()){
             long id = results.getInt(_idCol);
-            String message = results.getString(messageCol);
-            String time = results.getString(timeCol);
-            int searchButtonInfo = results.getInt(searchButtonInfoCol);
+            String message = results.getString(routeCol);
+            String time = results.getString(dirCol);
+            int searchButtonInfo = results.getInt(busInfoCol);
             searchMessage.add(new BusMessage(message,searchButtonInfo,time,id));
 
         }
@@ -89,6 +91,7 @@ public class BusListFragment extends Fragment {
         searchBusButton = BusLayout.findViewById(R.id.searchBusButton);
         searchListView = BusLayout.findViewById(R.id.searchView);
         searchListView.setAdapter(busAdt);
+        TextView info = BusLayout.findViewById(R.id.info);
 
         busMsgText.setText(busPref.getString("BusNumber", ""));
 
@@ -107,13 +110,12 @@ public class BusListFragment extends Fragment {
             editor.apply();
 
 
-            // get and insert data
-            ContentValues newRow = new ContentValues();
-            newRow.put(BusOpenHelper.col_message, thisMessage.getMessage());
-            newRow.put(BusOpenHelper.search_button_info, thisMessage.getBusMesg());
-            newRow.put(BusOpenHelper.col_time_sent, thisMessage.getTimeSearch());
-            long id = db.insert(BusOpenHelper.Bus_TABLE_NAME, BusOpenHelper.col_message, newRow);
-            thisMessage.setId(id);
+            android.app.AlertDialog dialog = new android.app.AlertDialog.Builder(getContext())
+                    .setTitle("Getting bus stop information")
+                    .setMessage("We'are getting information for the bus stop " + busMsgText + "to check the route information for this stop")
+                    .setView(new ProgressBar(getContext()))
+                    .show();
+
 
             // new thread to connect to server
             Executor busThread = Executors.newSingleThreadExecutor();
@@ -144,10 +146,31 @@ public class BusListFragment extends Fragment {
                     for (int i =0; i<routeArray.length(); i++){
                         // save the routes info in the list
                         JSONObject routeObject = routeArray.getJSONObject(i);
-                        // stop here!!!!!!!!!!!!!!
+
                         BusRoute routMsg = new BusRoute();
+                        routMsg.setBusNumber("Route:" + routeObject.getString("RouteNumber"));
+                        routMsg.setDestination("Destination" + routeObject.getString("RouteDestination"));
+                        routMsg.setDirection(routeObject.getString("Direction"));
+                        routMsg.setDirectionID(routeObject.getString("DirectionID"));
+                        busList.add(routMsg);
+                        // put the bus number info into database
+                        // get and insert data
+                        ContentValues newRow = new ContentValues();
+                        newRow.put(BusOpenHelper.col_routes, routeObject.getString("RouteNumber"));
+                        newRow.put(BusOpenHelper.col_heading, routeObject.getString("RouteHeading"));
+                        newRow.put(BusOpenHelper.col_direction, routeObject.getString("Direction"));
+                        newRow.put(BusOpenHelper.col_directionID, routeObject.getString("DirectionID"));
+                        long id = db.insert(BusOpenHelper.Bus_TABLE_NAME, BusOpenHelper.col_routes, newRow);
+                        routMsg.setId(id);
                     }
 
+                        //call the following functions on the main GUI thread
+                    getActivity().runOnUiThread(()->{
+                        info.setText("Bus Stop " + stopNo + " " +stopDescription + " has the following routes. " +
+                                "Please click to chedk the detailed information");
+                        busAdt.notifyItemInserted(busList.size()-1);
+                        dialog.hide();
+                    });
                 } catch (UnsupportedEncodingException | MalformedURLException e) {
                     e.printStackTrace();
                 } catch (IOException e) {
@@ -195,14 +218,14 @@ public class BusListFragment extends Fragment {
     private class RowViews extends RecyclerView.ViewHolder {
 
         TextView busInfo;
-        TextView timeInfo;
+        TextView busDestination;
         int position = -1;
 
         public RowViews(View itemView) {
             super(itemView);
 
             busInfo = itemView.findViewById(R.id.busInfo);
-            timeInfo = itemView.findViewById(R.id.timeView);
+            busDestination = itemView.findViewById(R.id.destinationView);
 
             itemView.setOnClickListener(click ->{
                         SearchBus parentAcitivty = (SearchBus)getContext();
@@ -228,14 +251,14 @@ public class BusListFragment extends Fragment {
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
             RowViews busRowLayout = (RowViews) holder;
-            busRowLayout.busInfo.setText(searchMessage.get(position).getMessage());
-            busRowLayout.timeInfo.setText(searchMessage.get(position).getTimeSearch());
+            busRowLayout.busInfo.setText(busList.get(position).getBusNumber());
+            busRowLayout.busDestination.setText(busList.get(position).getDirection());
             busRowLayout.setPosition(position);
         }
 
         @Override
         public int getItemCount() {
-            return searchMessage.size();
+            return busList.size();
         }
     }
 

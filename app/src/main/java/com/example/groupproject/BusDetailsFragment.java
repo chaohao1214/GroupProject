@@ -24,7 +24,7 @@ public class BusDetailsFragment extends Fragment {
         View busDetailsView = inflater.inflate(R.layout.bus_detail_layout, container, false);
 
         TextView busNumView = busDetailsView.findViewById(R.id.busNumView);
-        TextView timeView = busDetailsView.findViewById(R.id.timeView);
+        TextView timeView = busDetailsView.findViewById(R.id.destinationView);
         TextView idView = busDetailsView.findViewById(R.id.busTripView);
         TextView busSearchView = busDetailsView.findViewById(R.id.busGPSView);
 

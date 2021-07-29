@@ -13,14 +13,11 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,12 +27,27 @@ import com.google.android.material.navigation.NavigationView;
 public class SoccerActivitySecond extends AppCompatActivity {
     RatingBar ratingBar ;
     AlertDialog.Builder popDialog;
-
+   // AlertDialog.Builder buildera = new AlertDialog.Builder(SoccerActivitySecond.this);
 
     @Override
     public boolean onOptionsItemSelected( MenuItem item) {
 
+        switch (item.getItemId()) {
+            case R.id.clickHelp:
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(SoccerActivitySecond.this);
+
+                    builder.setMessage(R.string.instruction)
+                            .setTitle("HELP MENU")
+                            .setIcon(R.drawable.yardim)
+                            .setPositiveButton("OK", (dialog, cl) -> {
+
+
+                            }).create().show();
+        }
+
         return super.onOptionsItemSelected(item);
+
     }
 
 
@@ -56,8 +68,9 @@ public class SoccerActivitySecond extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.soccer_activity_second);
 
+
         Toolbar myToolbar = findViewById(R.id.toolbar);
-//        setSupportActionBar(myToolbar);
+        setSupportActionBar(myToolbar);
 //
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
 
@@ -73,6 +86,13 @@ public class SoccerActivitySecond extends AppCompatActivity {
 
             return false;
         });
+
+
+
+
+
+
+
 
 
 

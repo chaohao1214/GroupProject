@@ -3,4 +3,19 @@
     <string name="greeting">WELCOME</string>
     <string name="open">open</string>
     <string name="close">close</string>
+    <string name="nameHint">Your Name Please</string>
+    <string name="editYourNameButton">EDIT YOUR NAME</string>
+    <string name="NextPage">Next Page</string>
+    <string name="helpMenu">HELP MENU</string>
+    <string name="needHelp">NEED HELP ?</string>
+    <string name="instruction">"INSTRUCTIONS HOW TO USE \n" "\n"
+                                        "-> Type your name \n"
+                                        "-> Click on the help menu  \n"
+                                        "-> Click on the toolbar menu \n"
+                                        "-> Click to the next page \n"
+                                        "-> Click for each article news \n"
+                                        "-> Follow feedbacks by toast messages \n"
+                                        "-> Save button saves the news in the database \n"
+                                        "-> Choose the language  \n"
+                                        "-> Don't forget to give me feedback \n"</string>
 </resources>

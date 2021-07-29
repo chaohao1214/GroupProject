@@ -2,20 +2,16 @@
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
+<!--    <item-->
+<!--        android:id="@+id/hide_views"-->
+<!--        android:icon="@drawable/yardim"-->
+<!--        android:title="Need Help ?"-->
+<!--        app:showAsAction="always" />-->
     <item
-        android:id="@+id/hide_views"
-        android:icon="@drawable/help"
-        android:title="Clear weather"
+        android:id="@+id/clickHelp"
+        android:icon="@drawable/yardim"
+        android:title="@string/needHelp"
         app:showAsAction="always" />
-    <item
-        android:id="@+id/id_increase"
-        android:icon="@drawable/help"
-        android:title="Increase Font Size"
-        app:showAsAction="always" />
-    <item
-        android:id="@+id/id_decrease"
-        android:icon="@drawable/help"
-        android:title="Decrease Font Size"
-        app:showAsAction="always" />
+
 
 </menu>

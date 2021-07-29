@@ -59,7 +59,7 @@ public class MovieInfo extends AppCompatActivity {
 
     Button searchBtn;
     EditText movieSearchText;
-    ImageView favorite;
+    ImageView saved;
     ImageView homePage;
     ImageView help;
     private SharedPreferences prefs;
@@ -76,12 +76,7 @@ public class MovieInfo extends AppCompatActivity {
 //    MovieAdapter mvAdapter = new MovieAdapter();
 //    ArrayList<MovieMessage> movieArray = new ArrayList<>();
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_wpg, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
+
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
@@ -132,7 +127,7 @@ public class MovieInfo extends AppCompatActivity {
 
       //  searchBtn = (Button) findViewById(R.id.searchButton);
        // movieSearchText  = (EditText) findViewById(R.id.movieTextField);
-        favorite = (ImageView) findViewById(R.id.saved);
+        saved = (ImageView) findViewById(R.id.saved);
         homePage = (ImageView)findViewById(R.id.homePage);
         help = (ImageView) findViewById(R.id.help);
 
@@ -149,7 +144,7 @@ public class MovieInfo extends AppCompatActivity {
                     .show();
         });
 
-        favorite.setOnClickListener(favoriteClicked -> {
+        saved.setOnClickListener(favoriteClicked -> {
             favoriteFragment = new FavoriteFragment_WPG();
             FragmentManager fMnger = getSupportFragmentManager();
             FragmentTransaction tx = fMnger.beginTransaction();
@@ -202,14 +197,14 @@ public class MovieInfo extends AppCompatActivity {
                    XmlPullParser xpp = factory.newPullParser();
                    xpp.setInput( response  , "UTF-8");
 
-                   String title = null;
-                   String year = null;
-                   String runtime = null;
-                   String actors = null;
-                   String plot = null;
-                   String poster = null;
-                   String rating_imd = null;
-                   String rating_meta = null;
+                   String title;
+                   String year;
+                   String runtime;
+                   String actors;
+                   String plot ;
+                   String poster;
+                   String rating_imd;
+                  // String rating_meta = null;
 
                    while(xpp.next() != XmlPullParser.END_DOCUMENT){
                        switch(xpp.getEventType())
@@ -222,7 +217,7 @@ public class MovieInfo extends AppCompatActivity {
                                    actors = xpp.getAttributeValue(null, "actors");
                                    plot = xpp.getAttributeValue(null, "plot");
                                    poster = xpp.getAttributeValue(null, "poster");
-                                   rating_meta = xpp.getAttributeValue(null, "metascore");
+                                  // rating_meta = xpp.getAttributeValue(null, "metascore");
                                    rating_imd = xpp.getAttributeValue(null, "imdbRating");
 
                                    searchResult = new MovieData(title, year, rating_imd, runtime, actors, plot, poster);
@@ -286,12 +281,19 @@ public class MovieInfo extends AppCompatActivity {
            } );
        });
     }
-    public void userClickedMessage(MovieData searchResult, Bitmap image, int detailType) {
+    public void clickedMessage(MovieData searchResult, Bitmap image, int detailType) {
         movieFragment = new MovieFragment_WPG(searchResult,image,detailType);
         fMnger = getSupportFragmentManager();
         tx = fMnger.beginTransaction();
         tx.replace(R.id.result_Movie, favoriteFragment);
         tx.commit();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_wpg, menu);
+        return super.onCreateOptionsMenu(menu);
     }
 }
 

@@ -121,7 +121,7 @@ public class FavoriteFragment_WPG extends Fragment {
                                 int type = 2;
                                 image = BitmapFactory.decodeFile(getContext().getFilesDir() + "/" + data.get(chosenPosition).getTitle() + ".png");
                                 MovieInfo parentActivity = (MovieInfo) getContext();
-                                parentActivity.userClickedMessage(searchResult,image, type);
+                                parentActivity.clickedMessage(searchResult,image, type);
                             })
                             .create().show();
                 });

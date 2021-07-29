@@ -1,7 +1,11 @@
 package com.example.groupproject;
 
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -10,16 +14,40 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.navigation.NavigationView;
+
 public class SoccerActivitySecond extends AppCompatActivity {
     RatingBar ratingBar ;
     AlertDialog.Builder popDialog;
+
+
+    @Override
+    public boolean onOptionsItemSelected( MenuItem item) {
+
+        return super.onOptionsItemSelected(item);
+    }
+
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu m) {
+
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_activity_actions, m);
+
+        return true;
+    }
 
 
 
@@ -27,6 +55,29 @@ public class SoccerActivitySecond extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.soccer_activity_second);
+
+        Toolbar myToolbar = findViewById(R.id.toolbar);
+//        setSupportActionBar(myToolbar);
+//
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, myToolbar, R.string.open, R.string.close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = findViewById(R.id.popout_menu);
+        navigationView.setNavigationItemSelectedListener( (item)-> {
+
+            onOptionsItemSelected(item);
+            drawer.closeDrawer(GravityCompat.START);
+
+            return false;
+        });
+
+
+
+
+
         SharedPreferences prefs = getSharedPreferences("MyData", Context.MODE_PRIVATE);
         // GRABBING
         EditText editName = findViewById(R.id.editName);

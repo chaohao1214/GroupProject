@@ -10,10 +10,18 @@ import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
+/**
+ * @author Chaohao
+ */
 public class BusDetailsFragment extends Fragment {
     BusRoute chosenRoute;
     int busChosenPosition;
 
+    /**
+     * constructor for the detail fragment
+     * @param route
+     * @param position
+     */
     public BusDetailsFragment(BusRoute route, int position) {
         chosenRoute = route;
         busChosenPosition = position;

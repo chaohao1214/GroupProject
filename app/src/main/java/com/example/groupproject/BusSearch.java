@@ -5,8 +5,12 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ProgressBar;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 
 
@@ -18,12 +22,18 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.navigation.NavigationView;
 
+/**
+ * @author Chaohao
+ *
+ */
 public class BusSearch extends AppCompatActivity {
 
     BusListFragment busChatFragment;
     boolean busTablet = false;
 
     @Override
+
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.bus_empty_layout);
@@ -50,8 +60,15 @@ public class BusSearch extends AppCompatActivity {
         FragmentTransaction busTX = busMgr.beginTransaction();
         busTX.add(R.id.fragmentRoomBus,busChatFragment);
         busTX.commit();
+
+
     }
 
+    /**
+     * this function uses to create menu bar on the top of the app page
+     * @param menu the menu bar can connect to menu xml
+     * @return initialize the content and allow us to put items to the menu bar
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -59,6 +76,12 @@ public class BusSearch extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
+    /**
+     * in the menu there are 4 icons: bus, station, movie, soccer. Those icons
+     * can connect to each app's function
+     * @param item item can be 4 class files
+     * @return when item is selected, it will jump to another function
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         Intent nextPage;
@@ -87,6 +110,13 @@ public class BusSearch extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+
+    /**
+     * this method allow us to use different layout for phone mode and tablet mode
+     * @param busRoute
+     * @param position
+     */
+
     public void busUserClickedMsg(BusRoute busRoute, int position){
         BusDetailsFragment busDetailsFragment = new BusDetailsFragment(busRoute,position);
 
@@ -100,6 +130,12 @@ public class BusSearch extends AppCompatActivity {
         }
     }
 
+    /**
+     * this method can detele the bus number message in the search box
+     * @param busMessage this the message we typed in the search box
+     * @param busChosenPosition since it is an array, we can type several messages in the serach box, postion helps us to locate
+     *                          which message we need to delete.
+     */
     public void notifyMessageDeleted(BusListFragment.BusMessage busMessage, int busChosenPosition) {
         busChatFragment.notifyMessageDeleted(busMessage, busChosenPosition);
     }

@@ -46,8 +46,12 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
+/**
+ * @author Chaohao
+ */
 public class BusListFragment extends Fragment {
 
+    Button helpBtn;
     private SharedPreferences busPref;
     Button searchBusButton;
     MyBusAdapter busAdt = new MyBusAdapter();
@@ -84,7 +88,16 @@ public class BusListFragment extends Fragment {
 
         }
 
+        helpBtn = BusLayout.findViewById(R.id.Bus_help);
+        helpBtn.setOnClickListener(click -> {
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getContext());
 
+            alertDialogBuilder.setTitle(R.string.help_title_bus)
+                    .setMessage(R.string.help_content_bus)
+                    .setPositiveButton("close", (c, arg) -> {
+                    })
+                    .create().show();
+        });
         busPref = getContext().getSharedPreferences("BusData", Context.MODE_PRIVATE);
 
         RecyclerView searchListView;
@@ -109,7 +122,7 @@ public class BusListFragment extends Fragment {
             searchBar.setText("");
             editor.apply();
 
-
+            // when the app is getting data from API, show this message
             android.app.AlertDialog dialog = new android.app.AlertDialog.Builder(getContext())
                     .setTitle("Getting bus stop information")
                     .setMessage("We'are getting information for the bus stop " + searchBar + "to check the route information for this stop")
@@ -235,7 +248,7 @@ public class BusListFragment extends Fragment {
                     try {
                         String stopNumber = searchBar.getText().toString();
                         String routNo = busInfo.toString();
-                        busStringURL = "https://api.octranspo1.com/v2.0/GetNextTripsForStop?appID=223eb5c3&&apiKey=ab27db5b435b8c8819ffb8095328e775&stopNo=3017&routeNo"
+                        busDetailURL = "https://api.octranspo1.com/v2.0/GetNextTripsForStop?appID=223eb5c3&&apiKey=ab27db5b435b8c8819ffb8095328e775&stopNo=3017&routeNo"
                                 + URLEncoder.encode(stopNumber,"UTF-8") + "&routeNo="
                                 + URLEncoder.encode(routNo,"UTF-8") + "&format=json";
 

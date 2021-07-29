@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/movieApp_movie"
+        android:checkable="true"
+        android:enabled="true"
+        android:icon="@drawable/movie_icon1"
+        android:title="movieApp"
+        android:visible="true"
+        app:showAsAction="always" />
+    <group android:checkableBehavior="single">
+
+    </group>
+    <item
+        android:id="@+id/busApp_movie"
+        android:checkable="true"
+        android:enabled="true"
+        android:icon="@drawable/bus_movie"
+        android:title="busApp"
+        android:visible="true"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/chargerApp_movie"
+        android:checkable="true"
+        android:enabled="true"
+        android:icon="@drawable/charger_movie"
+        android:title="chargerApp"
+        android:visible="true"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/soccerApp_movie"
+        android:checkable="true"
+        android:enabled="true"
+        android:icon="@drawable/soccer_movie"
+        android:title="soccerApp"
+        android:visible="true"
+        app:showAsAction="always" />
+</menu>

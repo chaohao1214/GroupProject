@@ -1,9 +1,14 @@
 package com.example.groupproject;
 
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 
-
+import android.os.Build;
 import android.view.View;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,6 +17,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import android.widget.Button;
+import android.widget.ImageView;
+
+import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -52,8 +60,8 @@ public class MainActivity extends AppCompatActivity {
         ImageButton movie = findViewById(R.id.movie_info);
 
         movie.setOnClickListener(clk -> {
-            Intent movieFinder = new Intent(MainActivity.this, MovieInfo.class);
-            startActivity(movieFinder);
+            Intent nextPage = new Intent(MainActivity.this, MovieInfo.class);
+            startActivity(nextPage);
         });
 
 
@@ -66,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
 
         });
 
-
     }
 }
+
+

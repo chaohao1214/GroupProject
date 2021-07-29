@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:icon="@drawable/bus"
+        android:title="OCTranspo"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/car_charge_activity_opener"
+        android:icon="@drawable/carcharge"
+        android:title="CarChargingStation"
+        app:showAsAction="always" />
+    <item
+        android:icon="@drawable/movie_icon"
+        android:title="MovieInfo"
+        app:showAsAction="always" />
+    <item
+        android:icon="@drawable/soccer"
+        android:title="SoccerNews"
+        app:showAsAction="always" />
+    <item
+        android:title="help"
+        app:showAsAction="never" />
+</menu>

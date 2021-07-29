@@ -12,8 +12,11 @@
 
     <ImageView
         android:id="@+id/poster"
-        android:layout_width="138dp"
-        android:layout_height="93dp"
+        android:layout_width="134dp"
+        android:layout_height="154dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="16dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/save_movie" />
@@ -22,55 +25,55 @@
         android:id="@+id/movieTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginRight="10dp"
         android:text="Movie Title go here"
-        app:layout_constraintTop_toBottomOf="@+id/add"
-        tools:layout_editor_absoluteX="16dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/poster" />
 
     <TextView
         android:id="@+id/year"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="40dp"
         android:text="Movie Year go here"
         app:layout_constraintStart_toStartOf="@+id/movieTitle"
         app:layout_constraintTop_toBottomOf="@+id/movieTitle" />
 
     <TextView
         android:id="@+id/rating"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_width="135dp"
+        android:layout_height="32dp"
+        android:layout_marginTop="38dp"
         android:text="Movie Rating go here"
-        app:layout_constraintBottom_toBottomOf="@+id/runtime"
-        app:layout_constraintStart_toStartOf="@+id/year"
-        app:layout_constraintTop_toTopOf="@+id/runtime" />
+        app:layout_constraintStart_toStartOf="@+id/runtime"
+        app:layout_constraintTop_toBottomOf="@+id/runtime" />
 
     <TextView
         android:id="@+id/runtime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="50dp"
-        android:layout_marginLeft="50dp"
+        android:layout_marginTop="42dp"
         android:text="Runtime goes here"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/rating"
-        tools:layout_editor_absoluteY="279dp" />
+        app:layout_constraintStart_toStartOf="@+id/year"
+        app:layout_constraintTop_toBottomOf="@+id/year" />
 
     <TextView
         android:id="@+id/actors"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_width="347dp"
+        android:layout_height="32dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginTop="6dp"
         android:text="Actors goes  here"
-        app:layout_constraintStart_toStartOf="@+id/rating"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/rating" />
 
     <TextView
         android:id="@+id/plot"
-        android:layout_width="165dp"
-        android:layout_height="37dp"
-        android:layout_marginTop="32dp"
+        android:layout_width="346dp"
+        android:layout_height="129dp"
+        android:layout_marginTop="6dp"
         android:text="Movie Plot go here"
         app:layout_constraintStart_toStartOf="@+id/actors"
         app:layout_constraintTop_toBottomOf="@+id/actors" />
@@ -79,22 +82,24 @@
         android:id="@+id/add"
         android:layout_width="40dp"
         android:layout_height="49dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginBottom="564dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginBottom="100dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/plot"
         app:srcCompat="@drawable/add_movie" />
 
     <ImageView
-        android:id="@+id/clear"
+        android:id="@+id/homePage"
         android:layout_width="43dp"
         android:layout_height="45dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginBottom="568dp"
+        android:layout_marginEnd="25dp"
+        android:layout_marginRight="25dp"
+        android:layout_marginBottom="104dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/plot"
         app:srcCompat="@drawable/clear_movie" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

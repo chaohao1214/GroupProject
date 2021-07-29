@@ -48,7 +48,7 @@ public class FavoriteFragment_WPG extends Fragment {
             db = opener.getWritableDatabase();
 
             Cursor results = db.rawQuery("Select * from " + MyOpenHelper_movie.TABLE_NAME + ";", null);
-            int idCol = results.getColumnIndex("id_Col");
+            int idCol = results.getColumnIndex("_id");
             int titleCol = results.getColumnIndex(MyOpenHelper_movie.TITLE_COL);
             int yearCol = results.getColumnIndex(MyOpenHelper_movie.YEAR_COL);
             int ratingCol = results.getColumnIndex(MyOpenHelper_movie.RATING_COL);
@@ -78,10 +78,7 @@ public class FavoriteFragment_WPG extends Fragment {
             TextView timeInfo;
              int position = -1;
             ImageView imageURL;
-//            TextView titleText;
-//            TextView yearText;
-//            ImageView imageURLText;
-         //   int position = -1;
+
 
             public MyRowViews(View itemView) {
                 super(itemView);

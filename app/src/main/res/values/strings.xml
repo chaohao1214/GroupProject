@@ -11,24 +11,14 @@
     <string name="open">open</string>
     <string name="close">close</string>
     <string name="helpTitle_movie">Movie Finder App</string>
-    <string name="helpMsg_movie">
-        1> Enter a movie title\n
-        2> Click on SEARCH button to get results\n
-        3> Click on ADD icon to save the results\n
-        4> Click on CLEAR icon to clear all the results\n
-        5> Click on SAVED icon to see the saved list\n
-        6> Click on the saved item to view more details or delete\n
-        7> Click Details to view more details\n
-        8> Click Delete to remove from the saved list\n\n
-        Created by Weiping Guo</string>
 
-    <string name="app_desc_movie">
-        OCTranspo Bus App\n
-        Car Charging Station APP\n
-        Movie Finder App\n
-        Created by Weiping Guo
-        Version 1.0\n
-        Soccer games App\n</string>
+    <string name="app_desc_movie">"
+        * OCTranspo Bus App\n
+        * Car Charging Station APP\n
+        * Movie Finder App\n
+          Created by Weiping Guo\n
+          Version 1.0\n
+        * Soccer games App\n"</string>
     <string name="noresult_movie">Sorry, we cannot find this movie.</string>
     <string name="addto_msg_movie">Do you want to add it?</string>
     <string name="cancel_movie">Cancel</string>
@@ -39,5 +29,15 @@
     <string name="choice_movie">Want to keep it?</string>
     <string name="delete_movie">Delete</string>
     <string name="detail_movie">More details</string>
+    <string name="helpMsg_movie">"
+        1-Enter a movie title\n
+        2-Click on SEARCH button to get results\n
+        3-Click on ADD icon to save the results\n
+        4-Click on CLEAR icon to clear all the results\n
+        5-Click on SAVED icon to see the saved list\n
+        6-Click on the saved item to view more details or delete\n
+        7-Click More Details to view more details\n
+        8-Click Delete to remove from the saved list\n
+        Created by Weiping Guo"</string>
 
 </resources>

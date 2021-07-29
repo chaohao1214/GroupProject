@@ -153,7 +153,7 @@ public class MovieInfo extends AppCompatActivity {
             favoriteFragment = new FavoriteFragment_WPG();
             FragmentManager fMnger = getSupportFragmentManager();
             FragmentTransaction tx = fMnger.beginTransaction();
-            tx.replace(R.id.results_Movie, favoriteFragment);
+            tx.replace(R.id.result_Movie, favoriteFragment);
             tx.commit();
         });
 
@@ -224,7 +224,7 @@ public class MovieInfo extends AppCompatActivity {
                                    poster = xpp.getAttributeValue(null, "poster");
                                    rating_meta = xpp.getAttributeValue(null, "metascore");
                                    rating_imd = xpp.getAttributeValue(null, "imdbRating");
-                                   //*****************************change order************************
+
                                    searchResult = new MovieData(title, year, rating_imd, runtime, actors, plot, poster);
 
                                    File file = new File(getFilesDir(), title+".png");
@@ -254,11 +254,11 @@ public class MovieInfo extends AppCompatActivity {
                                    MovieData finalSearchResult = searchResult;
                                    Bitmap finalImage = image;
                                    runOnUiThread(()->{
-                                       //*******************************************change arguments**************
+
                                        movieFragment = new MovieFragment_WPG(finalSearchResult, finalImage, detailType);
-                                 //      FragmentManager fMgr = getSupportFragmentManager();
-                                  //     FragmentTransaction tx = fMnger.beginTransaction();
-                                       tx.replace(R.id.results_Movie, favoriteFragment);
+                                       fMnger = getSupportFragmentManager();
+                                       tx = fMnger.beginTransaction();
+                                       tx.replace(R.id.result_Movie,movieFragment);
                                        tx.commit();
 
                                        alertDialog.hide();
@@ -290,7 +290,7 @@ public class MovieInfo extends AppCompatActivity {
         movieFragment = new MovieFragment_WPG(searchResult,image,detailType);
         fMnger = getSupportFragmentManager();
         tx = fMnger.beginTransaction();
-        tx.replace(R.id.results_Movie, favoriteFragment);
+        tx.replace(R.id.result_Movie, favoriteFragment);
         tx.commit();
     }
 }

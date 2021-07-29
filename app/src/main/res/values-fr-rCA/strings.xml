@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">GroupProject</string>
+    <string name="greeting">Bienvenu</string>
+    <string name="movieWelcome">Bienvenu au Chercheur de films</string>
+    <string name="askTitle">Titre du film</string>
+    <string name="movieSearched">Films recherches ici</string>
+    <string name="search">Rechercher</string>
+    <string name="open">Ouvrir</string>
+    <string name="close">Fermer</string>
+    <string name="helpTitle_movie">Application du chercheur de films</string>
+    <string name="hiddenText">e.g The Matrix</string>
+    <string name="noresult_movie">Desole, nous ne pouvons pas trouver ce film.</string>
+    <string name="addto_msg_movie">Voulez-vous l\'ajouter?</string>
+    <string name="cancel_movie">Annuler</string>
+    <string name="add_movie">Ajouter</string>
+    <string name="alreadyAdded_movie">Vous avez déja l\'ajouté.</string>
+    <string name="undo_movie">Annuler</string>
+    <string name="view_detail_movie">Afficher plus d\'info ou le supprimer?</string>
+    <string name="choice_movie">Voulez-vous le garder?</string>
+    <string name="delete_movie">Supprimer</string>
+    <string name="detail_movie">Plus d\'info</string>
+    <string name="helpMsg_movie">"
+        1-Entrez un titre de film\n
+        2-Cliquez sur RECHERCHER pour obtenir les résultats\n
+        3-Cliquez sur AJOUTER pour enregistrer les résultats\n
+        4-Cliquez sur EFFACER pour effacer tous les résultats\n
+        5-Cliquez sur ENREGISTRE pour voir la liste enregistrée\n
+        6-Cliquez sur l'élément enregistré pour afficher plus d'info ou supprimer\n
+        7-Cliquez sur DETAILS pour afficher plus d'info\n
+        8-Cliquez sur SUPPRIMER pour supprimer la list\n
+        Créée par Weiping Guo"</string>
+
+    <string name="app_desc_movie">"
+        * Autobus\n
+        * Station de recharge de voiture\n
+        * Application du chercheur de films\n
+          Créée par Weiping Guo\n
+          Version 1.0\n
+        * Football\n"</string>
+</resources>

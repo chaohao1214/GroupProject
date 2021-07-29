@@ -60,18 +60,18 @@ public class MovieFragment_WPG extends Fragment {
         ImageView returnBtn = movieView.findViewById(R.id.homePage);
 
         if(type == 2){
-            returnBtn.setOnClickListener(goBackClicked -> {
+            returnBtn.setOnClickListener(clicked -> {
                 getParentFragmentManager().beginTransaction().remove(this).commit();
                 MovieInfo parentActivity = (MovieInfo) getContext();
                 FavoriteFragment_WPG favoriteFragment = new FavoriteFragment_WPG();
                 FragmentManager fMnger = parentActivity.getSupportFragmentManager();
                 FragmentTransaction tx = fMnger.beginTransaction();
-                tx.replace(R.id.results_Movie, favoriteFragment);
+                tx.replace(R.id.result_Movie, favoriteFragment);
                 tx.commit();
 
             });
         }
-        returnBtn.setOnClickListener(goBackClicked -> {
+        returnBtn.setOnClickListener(clicked -> {
             getParentFragmentManager().beginTransaction().remove(this).commit();
         });
 

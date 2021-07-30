@@ -18,4 +18,6 @@
                                         "-> Save button saves the news in the database \n"
                                         "-> Choose the language  \n"
                                         "-> Don't forget to give me feedback \n"</string>
+    <string name="openMain">openMain</string>
+    <string name="closeMain">closeMain</string>
 </resources>

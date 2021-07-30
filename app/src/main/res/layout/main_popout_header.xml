@@ -6,17 +6,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="@string/helpMenu" />
 
     <ImageButton
-        android:id="@+id/clickHelp"
-        android:layout_width="144dp"
-        android:layout_height="127dp"
+        android:id="@+id/clickSoccer"
+        android:layout_width="109dp"
+        android:layout_height="wrap_content"
         android:clickable="true"
-        android:src="@drawable/yardim" />
+        android:src="@drawable/soccerButton" />
 
 </LinearLayout>

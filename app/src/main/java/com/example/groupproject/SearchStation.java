@@ -122,7 +122,7 @@ public class SearchStation extends AppCompatActivity {
 
                             // convert string to JSON object:
 
-                            JSONObject theDocument = new JSONObject( text);
+                          //  JSONObject theDocument = new JSONObject( text);
                             JSONArray jsonArray = new JSONArray(text);
                             for(int i = 0; i < jsonArray.length(); i++){
                                 JSONObject stationJSON = jsonArray.getJSONObject(i);
@@ -136,7 +136,7 @@ public class SearchStation extends AppCompatActivity {
                                 carStationList.add(new StationObject(title, latitude,longitude,contacNo));
                             }
                             carStationAdapter = new StationAdapter(SearchStation.this, carStationList);
-                            carRecyclerView.setAdapter(carStationAdapter);
+                           runOnUiThread(()->{ carRecyclerView.setAdapter(carStationAdapter);});
                         }
                         catch (IOException | JSONException e) {
                             e.printStackTrace();

@@ -33,7 +33,7 @@ public class SoccerActivitySecond extends AppCompatActivity {
     public boolean onOptionsItemSelected( MenuItem item) {
 
         switch (item.getItemId()) {
-            case R.id.clickHelp:
+            case R.id.clickHelpbtn:
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(SoccerActivitySecond.this);
 
@@ -68,21 +68,21 @@ public class SoccerActivitySecond extends AppCompatActivity {
 
         Toolbar myToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
+
+//        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+
+//        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, myToolbar, R.string.open, R.string.close);
+//        drawer.addDrawerListener(toggle);
+//        toggle.syncState();
 //
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, myToolbar, R.string.open, R.string.close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
-
-        NavigationView navigationView = findViewById(R.id.popout_menu);
-        navigationView.setNavigationItemSelectedListener( (item)-> {
-
-            onOptionsItemSelected(item);
-            drawer.closeDrawer(GravityCompat.START);
-
-            return false;
-        });
+//        NavigationView navigationView = findViewById(R.id.popout_menu);
+//        navigationView.setNavigationItemSelectedListener( (item)-> {
+//
+//            onOptionsItemSelected(item);
+//            drawer.closeDrawer(GravityCompat.START);
+//
+//            return false;
+//        });
 
 
 

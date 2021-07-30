@@ -7,11 +7,12 @@
 <!--        android:icon="@drawable/yardim"-->
 <!--        android:title="Need Help ?"-->
 <!--        app:showAsAction="always" />-->
-<!--    <item-->
-<!--        android:id="@+id/clickHelp"-->
-<!--        android:icon="@drawable/yardim"-->
-<!--        android:title="@string/needHelp"-->
-<!--        app:showAsAction="always" />-->
+    <item
+        android:id="@+id/clickHelpbtn"
+        android:icon="@drawable/yardim"
+        android:title="@string/needHelp"
+        app:showAsAction="always" />
+    <item android:title="Click Help Icon" />
 
 
 </menu>

@@ -66,9 +66,4 @@ public class MovieData {
         this.imageURL = imageURL;
     }
 
-    public MovieData(String imageURL,String title, String year) {
-        this.title = title;
-        this.year = year;
-        this.imageURL = imageURL;
-    }
 }

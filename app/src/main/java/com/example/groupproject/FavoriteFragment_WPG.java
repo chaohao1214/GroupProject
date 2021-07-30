@@ -38,7 +38,6 @@ public class FavoriteFragment_WPG extends Fragment {
 
             RecyclerView movieList = movieLayout.findViewById(R.id.recycler_movie);
 
-            //adapter
             LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
             movieList.setLayoutManager(layoutManager);
             adapter = new MyMovieAdapter();
@@ -72,6 +71,33 @@ public class FavoriteFragment_WPG extends Fragment {
 
             return movieLayout;
         }
+    private class MyMovieAdapter extends RecyclerView.Adapter<MyRowViews>{
+        @Override
+        public MyRowViews onCreateViewHolder(ViewGroup parent, int viewType) {
+            LayoutInflater inflater = getLayoutInflater();
+            int layoutID;
+            layoutID=  R.layout.item_view_movie;
+
+            View loadedRow = inflater.inflate(layoutID, parent, false);
+            MyRowViews initRow = new MyRowViews(loadedRow);
+            return initRow;
+        }
+
+        @Override
+        public void onBindViewHolder(MyRowViews holder, int position) {
+            holder.titleInfo.setText(data.get(position).getTitle());
+            holder.timeInfo.setText(data.get(position).getYear());
+
+            image = BitmapFactory.decodeFile(getContext().getFilesDir() + "/" + data.get(position).getTitle() + ".png");
+            holder.imageURL.setImageBitmap(image);
+            holder.setPosition(position);
+        }
+
+        @Override
+        public int getItemCount() {
+            return data.size();
+        }
+    }
 
         private class MyRowViews extends RecyclerView.ViewHolder{
             TextView titleInfo;
@@ -131,33 +157,6 @@ public class FavoriteFragment_WPG extends Fragment {
             }
         }
 
-        private class MyMovieAdapter extends RecyclerView.Adapter<MyRowViews>{
-            @Override
-            public MyRowViews onCreateViewHolder(ViewGroup parent, int viewType) {
-                LayoutInflater inflater = getLayoutInflater();
-                int layoutID;
-                layoutID=  R.layout.item_view_movie;
-
-                View loadedRow = inflater.inflate(layoutID, parent, false);
-                MyRowViews initRow = new MyRowViews(loadedRow);
-                return initRow;
-            }
-
-            @Override
-            public void onBindViewHolder(MyRowViews holder, int position) {
-                holder.titleInfo.setText(data.get(position).getTitle());
-                holder.timeInfo.setText(data.get(position).getYear());
-
-                image = BitmapFactory.decodeFile(getContext().getFilesDir() + "/" + data.get(position).getTitle() + ".png");
-                holder.imageURL.setImageBitmap(image);
-                holder.setPosition(position);
-            }
-
-            @Override
-            public int getItemCount() {
-                return data.size();
-            }
-        }
     }
 
 

@@ -87,18 +87,18 @@ public class MovieInfo extends AppCompatActivity {
                 nextPage = new Intent(this,SearchBus.class);
                 startActivity(nextPage);
                 break;
-//            case R.id.chargerApp_movie:
-//                nextPage = new Intent(this, CarStationSearch.class);
-//                startActivity(nextPage);
-//                break;
+            case R.id.chargerApp_movie:
+                nextPage = new Intent(this, SearchStation.class);
+                startActivity(nextPage);
+                break;
             case R.id.movieApp_movie:
                 nextPage = new Intent( this, MovieInfo.class);
                 startActivity(nextPage );
                 break;
-//            case R.id.soccerApp_movie:
-//                nextPage = new Intent(this, SoccerNewsFeedActivity.class);
-//                startActivity(nextPage);
-//                break;
+            case R.id.soccerApp_movie:
+                nextPage = new Intent(this, SoccerActivitySecond.class);
+                startActivity(nextPage);
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -125,17 +125,15 @@ public class MovieInfo extends AppCompatActivity {
             return false;
         });
 
-      //  searchBtn = (Button) findViewById(R.id.searchButton);
-       // movieSearchText  = (EditText) findViewById(R.id.movieTextField);
-        saved = (ImageView) findViewById(R.id.saved);
-        homePage = (ImageView)findViewById(R.id.homePage);
-        help = (ImageView) findViewById(R.id.help);
+        saved =  findViewById(R.id.saved);
+        homePage = findViewById(R.id.homePage);
+        help =  findViewById(R.id.help);
 
-        homePage.setOnClickListener(goBackClicked -> {
+        homePage.setOnClickListener(clicked -> {
             finish();
         });
 
-        help.setOnClickListener(goBackClicked -> {
+        help.setOnClickListener(clicked -> {
             AlertDialog dialog = new AlertDialog.Builder(MovieInfo.this)
                     .setTitle(R.string.helpTitle_movie)
                     .setMessage(R.string.helpMsg_movie)
@@ -144,7 +142,7 @@ public class MovieInfo extends AppCompatActivity {
                     .show();
         });
 
-        saved.setOnClickListener(favoriteClicked -> {
+        saved.setOnClickListener(clicked -> {
             favoriteFragment = new FavoriteFragment_WPG();
             FragmentManager fMnger = getSupportFragmentManager();
             FragmentTransaction tx = fMnger.beginTransaction();
@@ -154,10 +152,11 @@ public class MovieInfo extends AppCompatActivity {
 
        prefs = getSharedPreferences("MyData", Context.MODE_PRIVATE);
        String titleSearch = prefs.getString("MovieTitle", "");
-       movieSearchText = (EditText)findViewById(R.id.searchTitle);
+       //
+       movieSearchText = findViewById(R.id.searchTitle);
        movieSearchText.setText(titleSearch);
 
-       searchBtn = (Button)findViewById(R.id.searchButton);
+       searchBtn = findViewById(R.id.searchButton);
 //       movieList = findViewById(R.id.movieList);
 //       LinearLayoutManager llm = new LinearLayoutManager(this);
 //       llm.setStackFromEnd(true);
@@ -204,7 +203,7 @@ public class MovieInfo extends AppCompatActivity {
                    String plot ;
                    String poster;
                    String rating_imd;
-                  // String rating_meta = null;
+
 
                    while(xpp.next() != XmlPullParser.END_DOCUMENT){
                        switch(xpp.getEventType())
@@ -217,7 +216,6 @@ public class MovieInfo extends AppCompatActivity {
                                    actors = xpp.getAttributeValue(null, "actors");
                                    plot = xpp.getAttributeValue(null, "plot");
                                    poster = xpp.getAttributeValue(null, "poster");
-                                  // rating_meta = xpp.getAttributeValue(null, "metascore");
                                    rating_imd = xpp.getAttributeValue(null, "imdbRating");
 
                                    searchResult = new MovieData(title, year, rating_imd, runtime, actors, plot, poster);
@@ -275,8 +273,8 @@ public class MovieInfo extends AppCompatActivity {
                        }
                    }
                }
-               catch(IOException | XmlPullParserException ioe){
-                   Log.e("Connection error: ", ioe.getMessage());
+               catch(IOException | XmlPullParserException ex){
+                   Log.e("Connection error: ", ex.getMessage());
                }
            } );
        });

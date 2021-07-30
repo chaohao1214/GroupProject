@@ -30,6 +30,7 @@ public class MovieFragment_WPG extends Fragment {
     SQLiteDatabase db;
 
     ImageView saveBtn;
+    ImageView returnBtn;
 
     public MovieFragment_WPG(MovieData searchResult, Bitmap image, int type){
         this.searchResult = searchResult;
@@ -57,7 +58,7 @@ public class MovieFragment_WPG extends Fragment {
         actors.setText("Main actors: " + searchResult.getActor());
         plot.setText("Plot: " + searchResult.getPlot());
 
-        ImageView returnBtn = movieView.findViewById(R.id.homePage);
+        returnBtn = movieView.findViewById(R.id.homePage);
 
         if(type == 2){
             returnBtn.setOnClickListener(clicked -> {

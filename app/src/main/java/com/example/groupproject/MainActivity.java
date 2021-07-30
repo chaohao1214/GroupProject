@@ -35,33 +35,21 @@ public class MainActivity extends AppCompatActivity {
             startActivity(nextPageOC);
         });
 
-        // Button Soccer = findViewById(R.id.Soccer);
-//        Soccer.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                openSoccerGamesApiApp();
-//            }
-//        });
-//
-//
-//        public void openSoccerGamesApiApp() {
-//            Intent intent = new Intent(this, SoccerActivitySecond.class);
-//            startActivity(intent);
-//        }
+        ImageView Soccer = findViewById(R.id.Soccer);
 
-//        Soccer.setOnClickListener(clk -> {
-//            Intent intent = new Intent(this, SoccerActivitySecond.class);
-//            startActivity(intent);
-//        });
-//
-//
-//        Button carCharge = findViewById(R.id.CarCharge);
-//
-//        carCharge.setOnClickListener(clk -> {
-//            // go to next page
-//            Intent nextPageCar = new Intent(MainActivity.this, SearchStation.class);
-//            startActivity(nextPageCar);
-//        });
+        Soccer.setOnClickListener(clk -> {
+            Intent intent = new Intent(this, SoccerActivitySecond.class);
+            startActivity(intent);
+        });
+
+
+        ImageView carCharge = findViewById(R.id.CarCharge);
+
+        carCharge.setOnClickListener(clk -> {
+            // go to next page
+            Intent nextPageCar = new Intent(MainActivity.this, SearchStation.class);
+            startActivity(nextPageCar);
+        });
 
 
         ImageView movie = findViewById(R.id.movie_info);

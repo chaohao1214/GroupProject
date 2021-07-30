@@ -119,7 +119,6 @@ public class BusListFragment extends Fragment {
             SharedPreferences.Editor editor = busPref.edit();
 
             editor.putString("BusNumber", searchBar.getText().toString());
-           // searchBar.setText("");
             editor.apply();
 
             // when the app is getting data from API, show this message
@@ -180,8 +179,8 @@ public class BusListFragment extends Fragment {
 
                         //call the following functions on the main GUI thread
                     getActivity().runOnUiThread(()->{
-                        info.setText("Bus Stop " + stopNo + " " +stopDescription + " has the following routes. " +
-                                "Please click to check the detailed information");
+                        info.setText("Bus Stop " + stopNo + " " +stopDescription );
+
                         busAdt.notifyItemInserted(busList.size()-1);
                         dialog.hide();
                     });
@@ -248,8 +247,8 @@ public class BusListFragment extends Fragment {
                     // this is the 2nd thread
                     try {
                         String stopNumber = searchBar.getText().toString();
-                        String routNo = busInfo.toString();
-                        busDetailURL = "https://api.octranspo1.com/v2.0/GetNextTripsForStop?appID=223eb5c3&&apiKey=ab27db5b435b8c8819ffb8095328e775&stopNo=3017&routeNo"
+                        String  routNo= busInfo.getText().toString().substring(6);
+                        busDetailURL = "https://api.octranspo1.com/v2.0/GetNextTripsForStop?appID=223eb5c3&&apiKey=ab27db5b435b8c8819ffb8095328e775&stopNo="
                                 + URLEncoder.encode(stopNumber,"UTF-8") + "&routeNo="
                                 + URLEncoder.encode(routNo,"UTF-8") + "&format=json";
 
@@ -264,7 +263,7 @@ public class BusListFragment extends Fragment {
                                 .collect(Collectors.joining("\n"));
                         //JSON object
                         JSONObject documentDetails = new JSONObject(textDetails);
-                        JSONObject nextTripResults = documentDetails.getJSONObject("NextTripsForStopInfo");
+                        JSONObject nextTripResults = documentDetails.getJSONObject("GetNextTripsForStopResult");
                         JSONObject routeInfo = nextTripResults.getJSONObject("Route");
                         JSONArray routeDirection = routeInfo.getJSONArray("RouteDirection");
                         for (int i=0; i < routeDirection.length(); i++){
@@ -284,6 +283,9 @@ public class BusListFragment extends Fragment {
                         }
 
                         getActivity().runOnUiThread(() ->{
+                            BusSearch parentAcitivty = (BusSearch)getContext();
+                            int position = getAdapterPosition();
+                            parentAcitivty.busUserClickedMsg(busList.get(position), position);
                             busAdt.notifyItemInserted(busList.size()-1);
                         });
                     } catch (UnsupportedEncodingException | MalformedURLException e) {
@@ -292,9 +294,7 @@ public class BusListFragment extends Fragment {
                         e.printStackTrace();
                     }
                 });
-                        BusSearch parentAcitivty = (BusSearch)getContext();
-                        int position = getAdapterPosition();
-                        parentAcitivty.busUserClickedMsg(busList.get(position), position);
+
             });
         }
 

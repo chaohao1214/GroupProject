@@ -119,13 +119,13 @@ public class BusListFragment extends Fragment {
             SharedPreferences.Editor editor = busPref.edit();
 
             editor.putString("BusNumber", searchBar.getText().toString());
-            searchBar.setText("");
+           // searchBar.setText("");
             editor.apply();
 
             // when the app is getting data from API, show this message
             android.app.AlertDialog dialog = new android.app.AlertDialog.Builder(getContext())
                     .setTitle("Getting bus stop information")
-                    .setMessage("We'are getting information for the bus stop " + searchBar + "to check the route information for this stop")
+                    .setMessage("We'are getting information for the bus stop " + searchBar.getText().toString() + "to check the route information for this stop")
                     .setView(new ProgressBar(getContext()))
                     .show();
 
@@ -149,33 +149,34 @@ public class BusListFragment extends Fragment {
                             .collect(Collectors.joining("\n"));
 
                     JSONObject theDocument = new JSONObject(text);
-                    JSONObject busRouteSummary = theDocument.getJSONObject("RouteSummaryForStop");
-                    JSONObject busRoutes = busRouteSummary.getJSONObject("Routes");
-                    String stopNo = busRouteSummary.getString("StopNo");
-                    String stopDescription = busRouteSummary.getString("StopDescription");
+                    JSONObject busRouteSummary = theDocument.optJSONObject("GetRouteSummaryForStopResult");
 
-                    JSONArray routeArray = busRoutes.getJSONArray("Route");
-                    //use loop to get all the routes info from the bus stop and save it in the list.
-                    for (int i =0; i<routeArray.length(); i++){
-                        // save the routes info in the list
-                        JSONObject routeObject = routeArray.getJSONObject(i);
+                        JSONObject busRoutes = busRouteSummary.getJSONObject("Routes");
+                        String stopNo = busRouteSummary.getString("StopNo");
+                        String stopDescription = busRouteSummary.getString("StopDescription");
 
-                        BusRoute routMsg = new BusRoute();
-                        routMsg.setBusNumber("Route:" + routeObject.getString("RouteNumber"));
-                        routMsg.setDestination("Destination" + routeObject.getString("RouteDestination"));
-                        routMsg.setDirection(routeObject.getString("Direction"));
-                        routMsg.setDirectionID(routeObject.getString("DirectionID"));
-                        busList.add(routMsg);
-                        // put the bus number info into database
-                        // get and insert data
-                        ContentValues newRow = new ContentValues();
-                        newRow.put(BusOpenHelper.col_routes, routeObject.getString("RouteNumber"));
-                        newRow.put(BusOpenHelper.col_heading, routeObject.getString("RouteHeading"));
-                        newRow.put(BusOpenHelper.col_direction, routeObject.getString("Direction"));
-                        newRow.put(BusOpenHelper.col_directionID, routeObject.getString("DirectionID"));
-                        long id = db.insert(BusOpenHelper.Bus_TABLE_NAME, BusOpenHelper.col_routes, newRow);
-                        routMsg.setId(id);
-                    }
+                        JSONArray routeArray = busRoutes.getJSONArray("Route");
+                        //use loop to get all the routes info from the bus stop and save it in the list.
+                        for (int i = 0; i < routeArray.length(); i++) {
+                            // save the routes info in the list
+                            JSONObject routeObject = routeArray.getJSONObject(i);
+
+                            BusRoute routMsg = new BusRoute();
+                            routMsg.setBusNumber("Route:" + routeObject.getString("RouteNo"));
+                            routMsg.setDestination("Heading" + routeObject.getString("RouteHeading"));
+                            routMsg.setDirection(routeObject.getString("Direction"));
+                            routMsg.setDirectionID(routeObject.getString("DirectionID"));
+                            busList.add(routMsg);
+                            // put the bus number info into database
+                            // get and insert data
+                            ContentValues newRow = new ContentValues();
+                            newRow.put(BusOpenHelper.col_routes, routeObject.getString("RouteNo"));
+                            newRow.put(BusOpenHelper.col_heading, routeObject.getString("RouteHeading"));
+                            newRow.put(BusOpenHelper.col_direction, routeObject.getString("Direction"));
+                            newRow.put(BusOpenHelper.col_directionID, routeObject.getString("DirectionID"));
+                            long id = db.insert(BusOpenHelper.Bus_TABLE_NAME, BusOpenHelper.col_routes, newRow);
+                            routMsg.setId(id);
+                        }
 
                         //call the following functions on the main GUI thread
                     getActivity().runOnUiThread(()->{

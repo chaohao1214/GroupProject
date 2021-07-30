@@ -20,4 +20,8 @@
                                         "-> Don't forget to give me feedback \n"</string>
     <string name="openMain" translatable="false">openMain</string>
     <string name="closeMain" translatable="false">closeMain</string>
+    <string name="ok">OK</string>
+    <string name="likeApp">Did you like the app ?</string>
+    <string name="yes">Yes</string>
+    <string name="cancel">Cancel</string>
 </resources>

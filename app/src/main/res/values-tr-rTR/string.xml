@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Group Projesi</string>
+    <string name="app_name">Grup Projesi</string>
     <string name="greeting">HOS GELDIN</string>
     <string name="open">open</string>
     <string name="close">close</string>
@@ -9,6 +9,10 @@
     <string name="NextPage"> Sonraki Sayfa</string>
     <string name="helpMenu">Yardim Menusu</string>
     <string name="needHelp">YARDIM LAZIM MI ?</string>
+    <string name="ok">TAMAM</string>
+    <string name="likeApp">Nasil buldunuz?</string>
+    <string name="yes">Evet</string>
+    <string name="cancel">Iptal</string>
     <string name="instruction">"TALIMATLAR \n" "\n"
                                         "-> Ismini Yaz \n"
                                         "-> Yardim menusune tikla  \n"

@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -16,6 +17,9 @@ import android.widget.TextView;
 
 import com.google.android.material.snackbar.Snackbar;
 
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -112,6 +116,19 @@ public class SoccerActivityThird extends AppCompatActivity {
         }
 
     }
+
+//    class uploadNews extends AsyncTask<String,Integer, List<News>>{
+//
+//        @Override
+//        protected List<News> doInBackground(String... strings) {
+//            URL url = new URL(url) ;
+//
+//            HttpURLConnection connection = url.openConnection();
+//
+//            InputStream response = connection.getInputStream();
+//
+//        }
+//    }
 
 }
 

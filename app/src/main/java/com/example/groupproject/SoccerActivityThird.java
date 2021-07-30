@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,12 +18,21 @@ import android.widget.TextView;
 
 import com.google.android.material.snackbar.Snackbar;
 
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
+import org.xmlpull.v1.XmlPullParserFactory;
+
+import java.io.BufferedInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 public class SoccerActivityThird extends AppCompatActivity {
     RecyclerView recyclerView;
@@ -48,9 +58,64 @@ public class SoccerActivityThird extends AppCompatActivity {
 
         itemList.add("Football News, Live Scores, Results Transfers | Goal.com");
 
-        for (int i =1; i<50 ; i++){
-            itemList.add("Article"+(i));
-        }
+        Executor thread = Executors.newSingleThreadExecutor();
+        thread.execute(() -> {
+            String title = null;
+            String pubDate = null;
+            String link = null;
+            String description = null;
+            String stringUrl = "http://www.goal.com/en/feeds/news?fmt=rss";
+
+            try {
+
+                URL url = new URL(stringUrl);
+                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+
+                XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
+                factory.setNamespaceAware(false);
+                XmlPullParser xpp = factory.newPullParser();
+                xpp.setInput(in, "UTF-8");
+
+
+                while (xpp.next() != XmlPullParser.END_DOCUMENT) {
+                    switch (xpp.getEventType()) {
+                        case XmlPullParser.START_TAG:
+                            if (xpp.getName().equals("title")) {
+                                xpp.next();
+
+                                title = xpp.getText();
+
+                            } else if (xpp.getName().equals("pubDate")) {
+                                xpp.next();
+
+                                pubDate = xpp.getText();
+                            } else if (xpp.getName().equals("link")) {
+                                xpp.next();
+                                link = xpp.getText();
+                            } else if (xpp.getName().equals("description")) {
+                                xpp.next();
+                                description = xpp.getText();
+                            }
+                            break;
+                        case XmlPullParser.END_TAG:
+                            if (xpp.getName().equals("item")) {
+                                //add article:
+                                //articles.add(new Article(title, pubDate, link, description));
+                            }
+                            break;
+                        case XmlPullParser.TEXT:
+
+                            break;
+
+                    }
+                }
+            } catch (IOException | XmlPullParserException ioe) {
+                Log.e("Connection error:", ioe.getMessage());
+
+            }
+
+        });
 
     }
     class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
@@ -117,18 +182,9 @@ public class SoccerActivityThird extends AppCompatActivity {
 
     }
 
-//    class uploadNews extends AsyncTask<String,Integer, List<News>>{
-//
-//        @Override
-//        protected List<News> doInBackground(String... strings) {
-//            URL url = new URL(url) ;
-//
-//            HttpURLConnection connection = url.openConnection();
-//
-//            InputStream response = connection.getInputStream();
-//
-//        }
-//    }
+     private class article {
+
+    }
 
 }
 

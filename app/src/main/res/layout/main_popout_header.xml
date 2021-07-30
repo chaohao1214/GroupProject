@@ -12,6 +12,24 @@
         android:layout_width="109dp"
         android:layout_height="wrap_content"
         android:clickable="true"
-        android:src="@drawable/soccerButton" />
+        android:src="@drawable/soccerball" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="MAIN ATCIVITY" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@AUTHOR SALIH" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="VERSION NUMBER 1.0" />
 
 </LinearLayout>

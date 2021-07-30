@@ -41,11 +41,8 @@ public class SoccerActivitySecond extends AppCompatActivity {
                             .setTitle("HELP MENU")
                             .setIcon(R.drawable.yardim)
                             .setPositiveButton("OK", (dialog, cl) -> {
-
-
                             }).create().show();
         }
-
         return super.onOptionsItemSelected(item);
 
     }
@@ -53,10 +50,10 @@ public class SoccerActivitySecond extends AppCompatActivity {
 
 
     @Override
-    public boolean onCreateOptionsMenu(Menu m) {
+    public boolean onCreateOptionsMenu(Menu me) {
 
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.main_activity_actions, m);
+        inflater.inflate(R.menu.soccer_main_activity_actions, me);
 
         return true;
     }
@@ -86,13 +83,6 @@ public class SoccerActivitySecond extends AppCompatActivity {
 
             return false;
         });
-
-
-
-
-
-
-
 
 
 

@@ -4,8 +4,8 @@
 
 
     <item
+        android:icon="@drawable/soccerball"
         android:id="@+id/mainSoccerImageButton"
-        android:icon="@drawable/soccerBtn"
         android:title="Soccer Games API"
         app:showAsAction="always" />
 

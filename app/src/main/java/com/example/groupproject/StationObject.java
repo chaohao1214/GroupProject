@@ -29,21 +29,21 @@ public class StationObject {
              return mContactNo;
         }
 
-        public void setTitle(String setTitle) {
-            mTitle = setTitle;
-        }
-
-        public void setLatitude(double setLatitude) {
-            mLatitude = setLatitude;
-        }
-
-        public void setLongitude(double setLongitude) {
-            mLongitude = setLongitude;
-        }
-
-        public void setmContactNo(String setContactNo) {
-            mContactNo = setContactNo;
-    }
+//        public void setTitle(String setTitle) {
+//            mTitle = setTitle;
+//        }
+//
+//        public void setLatitude(double setLatitude) {
+//            mLatitude = setLatitude;
+//        }
+//
+//        public void setLongitude(double setLongitude) {
+//            mLongitude = setLongitude;
+//        }
+//
+//        public void setmContactNo(String setContactNo) {
+//            mContactNo = setContactNo;
+//        }
 
 
 

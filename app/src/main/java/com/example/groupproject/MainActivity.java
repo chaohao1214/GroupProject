@@ -1,6 +1,7 @@
 package com.example.groupproject;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -14,6 +15,7 @@ import android.widget.Button;
 public class MainActivity extends AppCompatActivity {
 
     Toolbar main_menu;
+    String description = "Final Project\nAuthors:\nShakib Ahmed\nWeiping Guo\nChaohao Zhu\nSalih Ensarioglu";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +50,13 @@ public class MainActivity extends AppCompatActivity {
         switch(item.getItemId()){
             case R.id.car_charge_activity_opener:
                 startCarChargingActivity();
+                break;
+
+            case R.id.show_help:
+                AlertDialog.Builder helpAlertBuilder = new AlertDialog.Builder(MainActivity.this);
+                helpAlertBuilder.setTitle("Help");
+                helpAlertBuilder.setMessage(description);
+                helpAlertBuilder.show();
                 break;
         }
         return super.onOptionsItemSelected(item);

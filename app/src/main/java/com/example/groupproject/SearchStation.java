@@ -91,8 +91,8 @@ public class SearchStation extends AppCompatActivity {
         // search button
         searchStationBtn = (Button)findViewById(R.id.searchStationButton);
 
-        final EditText latitude = findViewById(R.id.latitudeInput);
-        longitude = (EditText)findViewById(R.id.longitudeInput);
+        EditText latitude = findViewById(R.id.latitudeInput);
+        EditText longitude = findViewById(R.id.longitudeInput);
 
         searchStationBtn.setOnClickListener(new View.OnClickListener() {
 
@@ -107,7 +107,7 @@ public class SearchStation extends AppCompatActivity {
                     // still on GUI thread, cannot connect server here.
                     Executor newThread = Executors.newSingleThreadExecutor();
                     newThread.execute(( ) ->{
-                        // on ther CPU
+                        // on other CPU
                         URL url = null;
                         try {
                             url = new URL(serverURL);
@@ -122,25 +122,21 @@ public class SearchStation extends AppCompatActivity {
 
                             // convert string to JSON object:
 
-                                JSONArray jsonArray = new JSONArray(text);
-
-                                String title=null;
-                                double latitude=0;
-                                double longitude=0;
-                                String contactNo=null;
-
-                                for(int i = 0; i < jsonArray.length(); i++){
+                            JSONObject theDocument = new JSONObject( text);
+                            JSONArray jsonArray = new JSONArray(text);
+                            for(int i = 0; i < jsonArray.length(); i++){
                                 JSONObject stationJSON = jsonArray.getJSONObject(i);
                                 JSONObject addressJSON = stationJSON.getJSONObject("AddressInfo");
 
-                                StationObject obj = new StationObject(title,latitude,longitude,contactNo);
-                                obj.setTitle(addressJSON.getString("Title"));
-                                obj.setLatitude(addressJSON.getDouble("Latitude"));
-                                obj.setLongitude(addressJSON.getDouble("Longitude"));
-                                obj.setmContactNo(addressJSON.getString("ContactTelephone1"));
-                                carStationList.add(obj);
+                                String title = addressJSON.getString("Title");
+                                double latitude = addressJSON.getDouble("Latitude");
+                                double longitude = addressJSON.getDouble("Longitude");
+                                String contacNo = addressJSON.getString("ContactTelephone1");
 
+                                carStationList.add(new StationObject(title, latitude,longitude,contacNo));
                             }
+                            carStationAdapter = new StationAdapter(SearchStation.this, carStationList);
+                            carRecyclerView.setAdapter(carStationAdapter);
                         }
                         catch (IOException | JSONException e) {
                             e.printStackTrace();
@@ -158,7 +154,6 @@ public class SearchStation extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(),  "Station list is loading...", Toast.LENGTH_SHORT).show();
             }
         });
-
     }
 
     @Override
@@ -174,7 +169,7 @@ public class SearchStation extends AppCompatActivity {
             case R.id.show_help:
                 AlertDialog.Builder helpAlertBuilder = new AlertDialog.Builder(SearchStation.this);
                 helpAlertBuilder.setTitle("Help");
-                helpAlertBuilder.setMessage("Author: Shakib Ahmed\nVersion 1.0");
+                helpAlertBuilder.setMessage("Author: Shakib Ahmed\nVersion 1.0\nInstructions on how to use:\n1.Insert latitude and longitude and click search.\n2. List of near by stations will be displayed in a list.");
                 helpAlertBuilder.show();
                 break;
         }

@@ -4,6 +4,6 @@
     <string name="askTitle">Movie Title</string >
     <string name="hiddenText">e.g The Matrix</string >
     <string name="movieSearched">Searched Movies here</string >
-    <string name="search">Search</string >
+    <string name="findButtonText">Find Stations</string >
 
 </resources>

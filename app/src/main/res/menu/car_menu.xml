@@ -19,6 +19,7 @@
         android:title="SoccerNews"
         app:showAsAction="always" />
     <item
+        android:id="@+id/show_help"
         android:title="help"
         app:showAsAction="never" />
 </menu>

@@ -1,147 +1,226 @@
 package com.example.groupproject;
 
-import android.content.ContentValues;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.snackbar.Snackbar;
 
-import java.text.SimpleDateFormat;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Locale;
 
 public class SearchStation extends AppCompatActivity {
-    RecyclerView searchView;
-    MyStationAdapter stationAdt = new MyStationAdapter();
-    SimpleDateFormat sdf = new SimpleDateFormat("EEEE, dd-MMM-yyyy hh-mm-ss a", Locale.getDefault());
-    ArrayList<StationMessage> searchMessage = new ArrayList<>();
-    SQLiteDatabase db;
 
+    Toolbar main_menu;
+
+
+    private EditText longitude;
+    private SharedPreferences sharedPref;
+
+    private Button searchStationBtn;
+    ArrayList<StationInfo> searchResult = new ArrayList<>();
+    MyStationAdapter stationAdt = new MyStationAdapter();
+
+
+
+
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.station_search);
 
-        // create database
-        MyOpenHelperCar opener = new MyOpenHelperCar(this);
-        db = opener.getWritableDatabase();
-        Cursor results = db.rawQuery("Select * from " + MyOpenHelperCar.TABLE_NAME + ";", null);
+        // Toolbar
+        main_menu = findViewById(R.id.carMenu);
+        setSupportActionBar(main_menu);
 
-        //meta data
-        int _idCol = results.getColumnIndex("_id");
-        int messageCol = results.getColumnIndex(MyOpenHelperCar.col_message);
-        int searchButtonInfoCol = results.getColumnIndex(MyOpenHelperCar.search_button_info);
-        int timeCol = results.getColumnIndex(MyOpenHelperCar.col_time_sent);
-
-        // set data attributes
-        while(results.moveToNext()){
-            long id = results.getInt(_idCol);
-            String message = results.getString(messageCol);
-            String time = results.getString(timeCol);
-            int searchButtonInfo = results.getInt(searchButtonInfoCol);
-            searchMessage.add(new StationMessage(message,searchButtonInfo,time,id));
-
-        }
 
         //receive info from previous page
         Intent fromPreOC = getIntent();
-        // save the content that entered before
-        SharedPreferences prefs = getSharedPreferences("MyData", Context.MODE_PRIVATE);
-        String searchLongitudeInfo = prefs.getString("Longitude","");
-        String searchLatiitudeInfo = prefs.getString("Latitude","");
-        EditText stationLongitudeMsg = findViewById(R.id.searchBox);
-        //EditText stationLatitudeMsg = findViewById(R.id.searchBoxLatitude);
-        stationLongitudeMsg.setText(searchLongitudeInfo);
-       // stationLatitudeMsg.setText(searchLatiitudeInfo);
+
+        //progress bar
+        progressBar = findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.INVISIBLE);
 
 
-        Button searchStationBtn = findViewById(R.id.searchStationButton);
-        searchView = findViewById(R.id.searchView);
-        LinearLayoutManager mgr = new LinearLayoutManager(this);
-        mgr.setStackFromEnd(true);
-        mgr.setReverseLayout(true);
 
-        searchView.setLayoutManager(mgr);
+        //Shared preference
 
-        searchView.setAdapter(stationAdt);
-
-        searchStationBtn.setOnClickListener(clk ->{
-            StationMessage thisMessage = new StationMessage(stationLongitudeMsg.getText().toString(),1, sdf.format(new Date()));
-            searchMessage.add(thisMessage);
-            stationAdt.notifyItemInserted(searchMessage.size()-1);
+        sharedPref = getSharedPreferences("SharedPreferencesCarChargingStation", MODE_PRIVATE);
+        String searchLatiitudeInfo = sharedPref.getString("Latitude","");
+        String searchLongitudeInfo = sharedPref.getString("Longitude","");
+        EditText latitudeInput = findViewById(R.id.latitudeInput);
+        EditText longtudeInput = findViewById(R.id.longitudeInput);
+        latitudeInput.setText(searchLatiitudeInfo);
+        longtudeInput.setText(searchLongitudeInfo);
 
 
-            SharedPreferences.Editor editor = prefs.edit();
-            EditText stationMsgText = findViewById(R.id.searchBox);
-            editor.putString("Longitude", stationMsgText.getText().toString());
-            stationLongitudeMsg.setText("");
-            editor.apply();
-            Toast.makeText(getApplicationContext(),  "Station list is loading...", Toast.LENGTH_SHORT).show();
+        // search button
+        searchStationBtn = (Button)findViewById(R.id.searchStationButton);
 
-            // get and insert data
-            ContentValues newRow = new ContentValues();
-            newRow.put(MyOpenHelperCar.col_message, thisMessage.getMessage());
-            newRow.put(MyOpenHelperCar.search_button_info, thisMessage.getStationMesg());
-            newRow.put(MyOpenHelperCar.col_time_sent, thisMessage.getTimeSearch());
-            long id = db.insert(MyOpenHelperCar.TABLE_NAME, MyOpenHelperCar.col_message, newRow);
-            thisMessage.setId(id);
+        final EditText latitude = findViewById(R.id.latitudeInput);
+        longitude = (EditText)findViewById(R.id.longitudeInput);
 
+        searchStationBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String key = "39b2b98f-7541-45b5-98eb-ac20b05f3362";
+                String url = "https://api.openchargemap.io/v3/poi/?output=json&countrycode=CA&latitude="
+                        + latitude.getText().toString() + "&longitude=" + longitude.getText().toString() + "&maxresults=10" + "&key="+key;
+
+                DownloadFilesTask downloadFileTask = new DownloadFilesTask();
+                downloadFileTask.execute(url);
+
+                SharedPreferences.Editor editor = sharedPref.edit();
+                EditText stationLatitude = findViewById(R.id.latitudeInput);
+                EditText stationLongitude = findViewById(R.id.longitudeInput);
+                editor.putString("Latitude", stationLatitude.getText().toString());
+                editor.putString("Longitude", stationLongitude.getText().toString());
+                latitudeInput.setText("");
+                longtudeInput.setText("");
+                editor.apply();
+                Toast.makeText(getApplicationContext(),  "Station list is loading...", Toast.LENGTH_SHORT).show();
+            }
         });
 
     }
 
+    /**
+     * Class connects to the server, reads and process the data
+     */
+    private class DownloadFilesTask extends AsyncTask<String, Integer, String> {
+        /**
+         * dialog to show a progression of downloading to the user
+         */
+
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+            super.onProgressUpdate(values);
+            progressBar.setVisibility(View.VISIBLE);
+            progressBar.setProgress(values[0]);
+        }
+
+        /**
+         * Methods connects to the server, retrieves the data about car charging stations
+         *
+         * @param urls link to the server
+         * @return data about car charging stations
+         */
+        protected String doInBackground(String... urls) {
+            HttpURLConnection urlConnection = null;
+            String result = "";
+            try {
+                URL link = new URL(urls[0]);
+                urlConnection = (HttpURLConnection) link.openConnection();
+                publishProgress(25);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            try {
+                InputStream in = urlConnection.getInputStream();
+                BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                publishProgress(50);
+                String line = null;
+                while ((line = reader.readLine()) != null) {
+                    result += line;
+                }
+                publishProgress(70);
+                return result;
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                if (urlConnection != null) {
+                    urlConnection.disconnect();
+                }
+            }
+            return result;
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.car_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem menuItem) {
+        switch (menuItem.getItemId()) {
+
+            case R.id.show_help:
+                AlertDialog.Builder helpAlertBuilder = new AlertDialog.Builder(SearchStation.this);
+                helpAlertBuilder.setTitle("Help");
+                helpAlertBuilder.setMessage("Author: Shakib Ahmed\nVersion 1.0");
+                helpAlertBuilder.show();
+                break;
+        }
+        return true;
+    }
+
     private class RowViews extends RecyclerView.ViewHolder {
 
-        TextView stationInfo;
-        TextView timeInfo;
+        TextView stationTitle;
+        TextView stationLatitude;
+        TextView stationLongitude;
+        TextView stationContactNo;
         int position = -1;
 
         public RowViews(View itemView) {
             super(itemView);
 
-            stationInfo = itemView.findViewById(R.id.stationInfo);
-            timeInfo = itemView.findViewById(R.id.timeView);
+            stationTitle = itemView.findViewById(R.id.stationTitle);
+            stationLatitude = itemView.findViewById(R.id.stationLatitude);
+            stationLongitude = itemView.findViewById(R.id.stationLongitude);
+            stationContactNo = itemView.findViewById(R.id.stationContactNo);
+
 
             itemView.setOnClickListener(click ->{
                 AlertDialog.Builder builder = new AlertDialog.Builder(SearchStation.this);
-                builder.setMessage("Do you want to delete this message: " + stationInfo.getText())
-                        .setTitle("Queestions:")
+                builder.setMessage("Do you want to delete this message: " + stationTitle.getText())
+                        .setTitle("Questions:")
                         .setPositiveButton("Yes",(dialog, cl)->{
-                            //position = getAbsoluteAdapterPosition(); always turn red ???
+
                             position = getAdapterPosition();
-                            StationMessage removeMessage = searchMessage.get(position);
-                            searchMessage.remove(position);
+                            StationInfo removeMessage = searchResult.get(position);
+                            searchResult.remove(position);
                             stationAdt.notifyItemRemoved(position);
 
-                            //set to delete data in database
-                            db.delete(MyOpenHelperCar.TABLE_NAME, "_id=?", new String[]
-                                    { Long.toString(removeMessage.getId())});
+//                            //set to delete data in database
+//                            db.delete(MyOpenHelperCar.TABLE_NAME, "_id=?", new String[]
+//                                    { Long.toString(removeMessage.getId())});
 
-                            Snackbar.make(stationInfo,"You deleted message #" + position, Snackbar.LENGTH_LONG)
+                            Snackbar.make(stationTitle,"You deleted message #" + position, Snackbar.LENGTH_LONG)
                                     .setAction("Undo", clk ->{
-                                        searchMessage.add(position,removeMessage);
+                                        searchResult.add(position,removeMessage);
                                         stationAdt.notifyItemInserted(position);
                                         // delete action for data
-                                        db.execSQL("Insert into " + MyOpenHelperCar.TABLE_NAME + " values('" +
-                                                removeMessage.getId() + "','" + removeMessage.getMessage() + "','"
-                                                +removeMessage.getStationMesg() + "','" + removeMessage.getTimeSearch() +"');");
+//                                        db.execSQL("Insert into " + MyOpenHelperCar.TABLE_NAME + " values('" +
+//                                                removeMessage.getId() + "','" + removeMessage.getMessage() + "','"
+//                                                +removeMessage.getStationMesg() + "','" + removeMessage.getTimeSearch() +"');");
                                     })
                                     .show();
                         })
@@ -157,68 +236,56 @@ public class SearchStation extends AppCompatActivity {
         }
     }
 
-
-
     private class MyStationAdapter extends RecyclerView.Adapter{
 
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View v = getLayoutInflater().inflate(R.layout.search_view_car, parent,false);//row in a recyclerview, bus
+            View v = getLayoutInflater().inflate(R.layout.search_view_car, parent,false);
             return new RowViews(v);
         }
 
         @Override
-        public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-            RowViews busRowLayout = (RowViews) holder;
-            busRowLayout.stationInfo.setText(searchMessage.get(position).getMessage());
-            busRowLayout.timeInfo.setText(searchMessage.get(position).getTimeSearch());
-            busRowLayout.setPosition(position);
+        public void onBindViewHolder( RecyclerView.ViewHolder holder, int position) {
+            RowViews stationRowLayout = (RowViews) holder;
+            stationRowLayout.stationTitle.setText(searchResult.get(position).getLocationTitle());
+            stationRowLayout.stationLatitude.setText(searchResult.get(position).getLatitudeValue());
+            stationRowLayout.stationLongitude.setText(searchResult.get(position).getLongitudeValue());
+            stationRowLayout.stationContactNo.setText(searchResult.get(position).getContactNo());
         }
 
         @Override
         public int getItemCount() {
-            return searchMessage.size();
+            return 10;
         }
     }
 
 
-    private class StationMessage {
-        String message;
-        int stationMesg;
-        String timeSearch;
-        long id;
+    private class StationInfo {
+        String locationTitle;
+        String latitudeValue;
+        String longitudeValue;
+        String contactNo;
 
-        public void setId(long l){
-            id = l;
+        public StationInfo(String locationTitle, String latitude, String longitude, String contactNo) {
+            this.locationTitle = locationTitle;
+            this.latitudeValue = latitude;
+            this.longitudeValue = longitude;
+            this.contactNo = contactNo;
         }
 
-        public long getId(){
-            return id;
+        public String getLocationTitle(){
+            return  locationTitle;
+        }
+        public String getLatitudeValue(){
+            return latitudeValue;
         }
 
-        public StationMessage(String message, int busMsg, String timeSearch){
-            this.message = message;
-            this.stationMesg = busMsg;
-            this.timeSearch = timeSearch;
+        public String getLongitudeValue(){
+            return longitudeValue;
         }
 
-        public StationMessage(String message, int searchButtonInfo, String time, long id) {
-            this.message = message;
-            this.stationMesg = searchButtonInfo;
-            this.timeSearch = time;
-            setId(id);
-
-        }
-
-        public String getMessage(){
-            return  message;
-        }
-        public int getStationMesg(){
-            return stationMesg;
-        }
-
-        public String getTimeSearch() {
-            return timeSearch;
+        public String getContactNo() {
+            return contactNo;
         }
     }
 }

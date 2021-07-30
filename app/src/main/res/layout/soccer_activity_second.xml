@@ -99,8 +99,8 @@
 
             android:layout_gravity="start"
             android:fitsSystemWindows="true"
-            app:headerLayout="@layout/popout_header"
-            app:menu="@menu/main_activity_actions" />
+            app:headerLayout="@layout/soccer_popout_header"
+            app:menu="@menu/soccer_main_activity_actions" />
 
     </androidx.drawerlayout.widget.DrawerLayout>
 

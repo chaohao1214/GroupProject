@@ -56,7 +56,7 @@ public class SoccerActivitySecond extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu m) {
 
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.main_activity_actions, m);
+        inflater.inflate(R.menu.soccer_main_activity_actions, m);
 
         return true;
     }

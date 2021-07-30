@@ -83,10 +83,10 @@ public class MovieInfo extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         Intent nextPage;
         switch(item.getItemId()){
-//            case R.id.busApp_movie:
-//                nextPage = new Intent(this,OCTranspo.class);
-//                startActivity(nextPage);
-//                break;
+            case R.id.busApp_movie:
+                nextPage = new Intent(this,SearchBus.class);
+                startActivity(nextPage);
+                break;
 //            case R.id.chargerApp_movie:
 //                nextPage = new Intent(this, CarStationSearch.class);
 //                startActivity(nextPage);

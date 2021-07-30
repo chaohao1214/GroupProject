@@ -4,58 +4,65 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#9EFFAB00"
     android:visibility="visible"
     tools:context=".MainActivity">
 
-    <Button
-        android:id="@+id/OCTranspo"
-        android:layout_width="411dp"
-        android:layout_height="wrap_content"
-        android:text="OCTranspo Bus"
+
+    <ImageView
+        android:id="@+id/busImage"
+        android:layout_width="168dp"
+        android:layout_height="115dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="20dp"
+        android:layout_weight="1"
+        android:clickable="true"
+        android:focusable="true"
+        android:paddingTop="20dp"
         app:layout_constraintBottom_toTopOf="@+id/CarCharge"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/bus" />
 
-
-    <Button
+    <ImageView
         android:id="@+id/CarCharge"
+        android:layout_width="156dp"
+        android:layout_height="127dp"
+        android:layout_marginBottom="20dp"
+        android:layout_weight="1"
+        android:clickable="true"
+        android:focusable="true"
+        android:paddingTop="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/movie_info"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/gas_pump" />
 
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/OCTranspo"
-        android:layout_alignStart="@+id/OCTranspo"
-        android:layout_alignLeft="@+id/OCTranspo"
-
-        android:layout_marginBottom="32dp"
-        android:text="Electric Car Charging"
-        app:layout_constraintBottom_toTopOf="@+id/Soccer"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <ImageButton
-        android:id="@+id/movie_info"
-        android:layout_width="282dp"
-        android:layout_height="110dp"
-        android:layout_marginBottom="56dp"
-        android:contentDescription="movieFinder"
-        android:scaleType="center"
+    <ImageView
+        android:id="@+id/Soccer"
+        android:layout_width="164dp"
+        android:layout_height="144dp"
+        android:layout_marginBottom="25dp"
+        android:layout_weight="1"
+        android:clickable="true"
+        android:focusable="true"
+        android:paddingTop="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/movie_icon1"
-        tools:ignore="MissingConstraints" />
+        app:srcCompat="@drawable/football" />
 
-    <Button
-        android:id="@+id/Soccer"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/movie_info"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:text="Soccer"
-        app:layout_constraintBottom_toTopOf="@+id/movie_info"
-
-
-        app:layout_constraintStart_toStartOf="parent" />
+    <ImageView
+        android:id="@+id/movie_info"
+        android:layout_width="163dp"
+        android:layout_height="124dp"
+        android:layout_marginBottom="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/Soccer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.493"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/movie1" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

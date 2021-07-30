@@ -27,8 +27,15 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ImageView OCTranspo = findViewById(R.id.busImage);
 
-        Button Soccer = findViewById(R.id.Soccer);
+        OCTranspo.setOnClickListener(clk -> {
+            //button to next page
+            Intent nextPageOC = new Intent(MainActivity.this, SearchBus.class);
+            startActivity(nextPageOC);
+        });
+
+        // Button Soccer = findViewById(R.id.Soccer);
 //        Soccer.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
@@ -42,22 +49,22 @@ public class MainActivity extends AppCompatActivity {
 //            startActivity(intent);
 //        }
 
-        Soccer.setOnClickListener(clk -> {
-            Intent intent = new Intent(this, SoccerActivitySecond.class);
-            startActivity(intent);
-        });
+//        Soccer.setOnClickListener(clk -> {
+//            Intent intent = new Intent(this, SoccerActivitySecond.class);
+//            startActivity(intent);
+//        });
+//
+//
+//        Button carCharge = findViewById(R.id.CarCharge);
+//
+//        carCharge.setOnClickListener(clk -> {
+//            // go to next page
+//            Intent nextPageCar = new Intent(MainActivity.this, SearchStation.class);
+//            startActivity(nextPageCar);
+//        });
 
 
-        Button carCharge = findViewById(R.id.CarCharge);
-
-        carCharge.setOnClickListener(clk -> {
-            // go to next page
-            Intent nextPageCar = new Intent(MainActivity.this, SearchStation.class);
-            startActivity(nextPageCar);
-        });
-
-
-        ImageButton movie = findViewById(R.id.movie_info);
+        ImageView movie = findViewById(R.id.movie_info);
 
         movie.setOnClickListener(clk -> {
             Intent nextPage = new Intent(MainActivity.this, MovieInfo.class);
@@ -65,16 +72,9 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        Button OCTranspo = findViewById(R.id.OCTranspo);
-
-        OCTranspo.setOnClickListener(clk -> {
-            //button to next page
-            Intent nextPageOC = new Intent(MainActivity.this, SearchBus.class);
-            startActivity(nextPageOC);
-
-        });
+    }
 
     }
-}
+
 
 

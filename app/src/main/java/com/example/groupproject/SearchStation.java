@@ -66,17 +66,12 @@ public class SearchStation extends AppCompatActivity {
 
         carStationList = new ArrayList<>();
 
-
         // Toolbar
         main_menu = findViewById(R.id.carMenu);
         setSupportActionBar(main_menu);
 
         //receive info from previous page
         Intent fromPreOC = getIntent();
-
-        //progress bar
-        progressBar = findViewById(R.id.progressBar);
-        progressBar.setVisibility(View.INVISIBLE);
 
         //Shared preference
         sharedPref = getSharedPreferences("SharedPreferencesCarChargingStation", MODE_PRIVATE);
@@ -94,11 +89,19 @@ public class SearchStation extends AppCompatActivity {
         EditText latitude = findViewById(R.id.latitudeInput);
         EditText longitude = findViewById(R.id.longitudeInput);
 
+
+
         searchStationBtn.setOnClickListener(new View.OnClickListener() {
 
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(View v) {
+                AlertDialog dialog = new AlertDialog.Builder(SearchStation.this)
+                        .setTitle("Getting Station List")
+                        .setMessage("Retrieving station list...")
+                        .setView(new ProgressBar(SearchStation.this))
+                        .show();
+
 
                     String key = "39b2b98f-7541-45b5-98eb-ac20b05f3362";
                     serverURL = "https://api.openchargemap.io/v3/poi/?output=json&countrycode=CA&latitude="
@@ -121,8 +124,6 @@ public class SearchStation extends AppCompatActivity {
                                     .collect(Collectors.joining("\n"));
 
                             // convert string to JSON object:
-
-                          //  JSONObject theDocument = new JSONObject( text);
                             JSONArray jsonArray = new JSONArray(text);
                             for(int i = 0; i < jsonArray.length(); i++){
                                 JSONObject stationJSON = jsonArray.getJSONObject(i);
@@ -133,15 +134,25 @@ public class SearchStation extends AppCompatActivity {
                                 double longitude = addressJSON.getDouble("Longitude");
                                 String contacNo = addressJSON.getString("ContactTelephone1");
 
-                                carStationList.add(new StationObject(title, latitude,longitude,contacNo));
+                                //carStationList.add(new StationObject(title, latitude,longitude,contacNo));
+                                int counter;
+                                counter = carStationList.size() + 1;
+                                carStationList.add(new StationObject(counter+". " + title));
+
                             }
                             carStationAdapter = new StationAdapter(SearchStation.this, carStationList);
-                           runOnUiThread(()->{ carRecyclerView.setAdapter(carStationAdapter);});
+
+
+                           runOnUiThread(()->{
+                               carRecyclerView.setAdapter(carStationAdapter);
+                               dialog.hide();
+                           });
                         }
                         catch (IOException | JSONException e) {
                             e.printStackTrace();
                         }
                     } );
+
 
                 SharedPreferences.Editor editor = sharedPref.edit();
                 EditText stationLatitude = findViewById(R.id.latitudeInput);
@@ -152,8 +163,10 @@ public class SearchStation extends AppCompatActivity {
                 longtudeInput.setText("");
                 editor.apply();
                 Toast.makeText(getApplicationContext(),  "Station list is loading...", Toast.LENGTH_SHORT).show();
+
             }
         });
+
     }
 
     @Override

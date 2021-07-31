@@ -14,6 +14,10 @@ public class StationObject {
             mContactNo = contactNo;
         }
 
+    public StationObject(String Title) {
+        mTitle = Title;
+    }
+
     public String getTitle(){
             return mTitle;
         }
@@ -28,24 +32,6 @@ public class StationObject {
         public String getContactNo() {
              return mContactNo;
         }
-
-//        public void setTitle(String setTitle) {
-//            mTitle = setTitle;
-//        }
-//
-//        public void setLatitude(double setLatitude) {
-//            mLatitude = setLatitude;
-//        }
-//
-//        public void setLongitude(double setLongitude) {
-//            mLongitude = setLongitude;
-//        }
-//
-//        public void setmContactNo(String setContactNo) {
-//            mContactNo = setContactNo;
-//        }
-
-
 
 
 }

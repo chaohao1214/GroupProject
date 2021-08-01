@@ -23,14 +23,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class FavoriteFragment_WPG extends Fragment {
-
-        ArrayList<MovieData> data = new ArrayList<>();
-        MyMovieAdapter adapter= new MyMovieAdapter();
-
         MyOpenHelper_movie opener;
         SQLiteDatabase db;
-
         Bitmap image;
+
+        ArrayList<MovieData> data = new ArrayList<>();
+        MyMovieAdapter adapter;
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -71,6 +69,7 @@ public class FavoriteFragment_WPG extends Fragment {
 
             return movieLayout;
         }
+
     private class MyMovieAdapter extends RecyclerView.Adapter<MyRowViews>{
         @Override
         public MyRowViews onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -82,7 +81,6 @@ public class FavoriteFragment_WPG extends Fragment {
             MyRowViews initRow = new MyRowViews(loadedRow);
             return initRow;
         }
-
         @Override
         public void onBindViewHolder(MyRowViews holder, int position) {
             holder.titleInfo.setText(data.get(position).getTitle());
@@ -92,7 +90,6 @@ public class FavoriteFragment_WPG extends Fragment {
             holder.imageURL.setImageBitmap(image);
             holder.setPosition(position);
         }
-
         @Override
         public int getItemCount() {
             return data.size();
@@ -105,8 +102,7 @@ public class FavoriteFragment_WPG extends Fragment {
              int position = -1;
             ImageView imageURL;
 
-
-            public MyRowViews(View itemView) {
+         public MyRowViews(View itemView) {
                 super(itemView);
                 titleInfo =  itemView.findViewById(R.id.movieName);
                 timeInfo = itemView.findViewById(R.id.time);
@@ -144,10 +140,10 @@ public class FavoriteFragment_WPG extends Fragment {
                             })
                             .setPositiveButton(R.string.detail_movie, (dialog, cl) ->{
                                 MovieData searchResult = data.get(chosenPosition);
-                                int type = 2;
+                                int detailType = 2;
                                 image = BitmapFactory.decodeFile(getContext().getFilesDir() + "/" + data.get(chosenPosition).getTitle() + ".png");
                                 MovieInfo parentActivity = (MovieInfo) getContext();
-                                parentActivity.clickedMessage(searchResult,image, type);
+                                parentActivity.clickedMessage(searchResult,image, detailType);
                             })
                             .create().show();
                 });
@@ -157,6 +153,4 @@ public class FavoriteFragment_WPG extends Fragment {
             }
         }
 
-    }
-
-
+}

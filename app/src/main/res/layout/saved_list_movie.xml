@@ -1,20 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"><![CDATA[
     android:id="@+id/movieList">
 
-<androidx.recyclerview.widget.RecyclerView
-    android:id="@+id/recycler_movie"
-    android:layout_width="0dp"
-    android:layout_height="match_parent"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintHorizontal_bias="0.0"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent"
-    app:layout_constraintVertical_bias="1.0" />
+
+
+
+
+
+
+    ]]>
+
+    <TextView
+        android:id="@+id/movie_image_text"
+        android:layout_width="74dp"
+        android:layout_height="34dp"
+
+        android:layout_marginStart="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginRight="5dp"
+        android:text="Image"
+        app:layout_constraintBottom_toBottomOf="@+id/movie_title_text"
+        app:layout_constraintEnd_toStartOf="@+id/movie_title_text"
+        app:layout_constraintHorizontal_bias="0.505"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"
+        app:srcCompat="@drawable/movie" />
+
+    <TextView
+        android:id="@+id/movie_title_text"
+        android:layout_width="76dp"
+        android:layout_height="35dp"
+
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="100dp"
+        android:layout_marginRight="100dp"
+        android:singleLine="true"
+        android:text="Title"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@+id/movie_year_text"
+        app:layout_constraintEnd_toStartOf="@+id/movie_year_text"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.428" />
+
+    <TextView
+        android:id="@+id/movie_year_text"
+        android:layout_width="73dp"
+        android:layout_height="36dp"
+
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:text="Year"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_movie"
+        android:layout_width="336dp"
+        android:layout_height="331dp"
+        app:layout_constraintStart_toStartOf="@+id/movie_image_text"
+        tools:layout_editor_absoluteY="116dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

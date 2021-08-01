@@ -71,13 +71,6 @@ public class MovieInfo extends AppCompatActivity {
 
     FragmentManager fMnger;
 
-//    RecyclerView movieList;
-
-//    MovieAdapter mvAdapter = new MovieAdapter();
-//    ArrayList<MovieMessage> movieArray = new ArrayList<>();
-
-
-
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -152,18 +145,11 @@ public class MovieInfo extends AppCompatActivity {
 
        prefs = getSharedPreferences("MyData", Context.MODE_PRIVATE);
        String titleSearch = prefs.getString("MovieTitle", "");
-       //
+
        movieSearchText = findViewById(R.id.searchTitle);
        movieSearchText.setText(titleSearch);
 
        searchBtn = findViewById(R.id.searchButton);
-//       movieList = findViewById(R.id.movieList);
-//       LinearLayoutManager llm = new LinearLayoutManager(this);
-//       llm.setStackFromEnd(true);
-//       llm.setReverseLayout(true);
-//
-//       movieList.setLayoutManager(llm);
-//       movieList.setAdapter(mvAdapter);
 
        searchBtn.setOnClickListener(clk -> {
            String movieTitle = movieSearchText.getText().toString();
@@ -283,7 +269,7 @@ public class MovieInfo extends AppCompatActivity {
         movieFragment = new MovieFragment_WPG(searchResult,image,detailType);
         fMnger = getSupportFragmentManager();
         tx = fMnger.beginTransaction();
-        tx.replace(R.id.result_Movie, favoriteFragment);
+        tx.replace(R.id.result_Movie, movieFragment);
         tx.commit();
     }
 
@@ -294,92 +280,6 @@ public class MovieInfo extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 }
-
-//   private class RowViews extends RecyclerView.ViewHolder {
-//       TextView mvInfo;
-//   //  TextView timeInfo;
-//       int position = -1;
-//
-//       RowViews(View itemView) {
-//           super(itemView);
-//       // timeInfo = itemView.findViewById(R.id.timeInfo);
-//           mvInfo = itemView.findViewById(R.id.movieInfo);
-//           itemView.setOnClickListener(clk -> {
-//               AlertDialog.Builder builder = new AlertDialog.Builder(MovieInfo.this);
-//               builder.setMessage("Do you want to delete this movie: " + mvInfo.getText())
-//                           .setPositiveButton("Yes", (dialog, cl) -> {
-//                           position = getAdapterPosition();
-//                           MovieMessage removeMsg = movieArray.get(position);
-//                               movieArray.remove(position);
-//                           mvAdapter.notifyItemRemoved(position);
-//                           Snackbar.make(mvInfo, "You deleted movie #" + position, Snackbar.LENGTH_LONG)
-//                                   .setAction("Undo", click -> {
-//                                       movieArray.add(position, removeMsg);
-//                                       mvAdapter.notifyItemInserted(position);
-//                                   })
-//                                   .show();
-//                 })
-//                       .setNegativeButton("No", (dialog, cl) -> {
-//               })
-//                       .create().show();
-//
-//           });
-//       }
-//
-//       public void setPosition(int position) {
-//           this.position = position;
-//       }
-//
-//   }
-//
-//       private class MovieAdapter extends RecyclerView.Adapter {
-//
-//           @Override
-//           public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-//               View vw = getLayoutInflater().inflate(R.layout.search_view_movie, parent, false);
-//               return new RowViews(vw);
-//           }
-//
-//           @Override
-//           public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-//               RowViews movieLayout = (RowViews) holder;
-//               movieLayout.mvInfo.setText(movieArray.get(position).getMessage());
-//       //       movieLayout.timeInfo.setText(sdf.format(movieMsgs.get(position).getTime()));
-//               movieLayout.setPosition(position);
-//           }
-//
-//           @Override
-//           public int getItemCount() {
-//               return movieArray.size();
-//           }
-//
-//       }
-//
-//       private class MovieMessage {
-//           String msg;
-//           int order;
-//           Date searchTime;
-//
-//           public MovieMessage(String msg, int order, Date searchTime) {
-//               this.msg = msg;
-//               this.order = order;
-//               this.searchTime = searchTime;
-//           }
-//
-//           public String getMessage() {
-//               return msg;
-//           }
-//
-//           public int getOrder() {
-//               return order;
-//           }
-//
-//           public Date getTime() {
-//               return searchTime;
-//           }
-//
-//       }
-//   }
 
 
 

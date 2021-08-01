@@ -65,5 +65,4 @@ public class MovieData {
         this.plot = plot;
         this.imageURL = imageURL;
     }
-
 }

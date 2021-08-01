@@ -101,7 +101,6 @@ public class MovieFragment_WPG extends Fragment {
                         Toast.makeText(getContext(), R.string.alreadyAdded_movie, Toast.LENGTH_LONG).show();
                     }else {
                         ContentValues newMovieRow = new ContentValues();
-                        newMovieRow.put(MyOpenHelper_movie.ID_COL, searchResult.getId());
                         newMovieRow.put(MyOpenHelper_movie.TITLE_COL, searchResult.getTitle());
                         newMovieRow.put(MyOpenHelper_movie.YEAR_COL, searchResult.getYear());
                         newMovieRow.put(MyOpenHelper_movie.RATING_COL, searchResult.getRating());
@@ -110,9 +109,7 @@ public class MovieFragment_WPG extends Fragment {
                         newMovieRow.put(MyOpenHelper_movie.PLOT_COL, searchResult.getPlot());
                         newMovieRow.put(MyOpenHelper_movie.IMAGE_COL, searchResult.getImageURL());
 
-                        long newIdMoive = db.insert(MyOpenHelper_movie.TABLE_NAME, MyOpenHelper_movie.TITLE_COL, newMovieRow);
-
-                        searchResult.setId(newIdMoive);
+                        long newIdMovie = db.insert(MyOpenHelper_movie.TABLE_NAME, MyOpenHelper_movie.TITLE_COL, newMovieRow);
 
                         Snackbar.make(saveBtn, "You saved movie " + searchResult.getTitle(), Snackbar.LENGTH_LONG)
                                 .setAction(R.string.undo_movie, clk -> {

@@ -100,7 +100,14 @@ public class SearchStation extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                    String key = "39b2b98f-7541-45b5-98eb-ac20b05f3362";
+                AlertDialog dialog = new AlertDialog.Builder(SearchStation.this)
+                        .setTitle("Getting Station List")
+                        .setMessage("Retrieving station list...")
+                        .setView(new ProgressBar(SearchStation.this))
+                        .show();
+
+
+                String key = "39b2b98f-7541-45b5-98eb-ac20b05f3362";
                     serverURL = "https://api.openchargemap.io/v3/poi/?output=json&countrycode=CA&latitude="
                             + latitude.getText().toString() + "&longitude=" + longitude.getText().toString() + "&maxresults=10" + "&key="+key;
 
@@ -136,7 +143,9 @@ public class SearchStation extends AppCompatActivity {
                                 carStationList.add(new StationObject(title, latitude,longitude,contacNo));
                             }
                             carStationAdapter = new StationAdapter(SearchStation.this, carStationList);
-                           runOnUiThread(()->{ carRecyclerView.setAdapter(carStationAdapter);});
+                           runOnUiThread(()->{ carRecyclerView.setAdapter(carStationAdapter);
+                               dialog.hide();
+                           });
                         }
                         catch (IOException | JSONException e) {
                             e.printStackTrace();

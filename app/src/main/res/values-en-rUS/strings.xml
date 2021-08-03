@@ -3,4 +3,13 @@
     <string name="app_name">GroupProject</string>
     <!--Car Charging -->
     <string name="findButtonText">Find Stations</string >
+    <string name="title">Title</string>
+    <string name="latitude">Latitude</string>
+    <string name="longitude">Longitude</string>
+    <string name="phone">Contact No</string>
+    <string name="loadMap">Load Ma</string>
+    <string name="add">Add to Favourites</string>
+    <string name="listOfFavourites">List of Favourites</string>
+    <string name="deleteButton">DELETE</string>
+
 </resources>

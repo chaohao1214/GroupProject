@@ -6,9 +6,10 @@ public class StationObject {
         private double mLatitude;
         private double mLongitude;
         private String mContactNo;
+        private long mId;
 
-    public StationObject(String Title, double latitude, double longitude, String contactNo) {
-            mTitle = Title;
+    public StationObject(long id, String title, double latitude, double longitude, String contactNo) {
+            mTitle = title;
             mLatitude = latitude;
             mLongitude = longitude;
             mContactNo = contactNo;
@@ -29,23 +30,9 @@ public class StationObject {
              return mContactNo;
         }
 
-//        public void setTitle(String setTitle) {
-//            mTitle = setTitle;
-//        }
-//
-//        public void setLatitude(double setLatitude) {
-//            mLatitude = setLatitude;
-//        }
-//
-//        public void setLongitude(double setLongitude) {
-//            mLongitude = setLongitude;
-//        }
-//
-//        public void setmContactNo(String setContactNo) {
-//            mContactNo = setContactNo;
-//        }
-
-
+        public long getId() {
+        return mId;
+    }
 
 
 }

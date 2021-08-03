@@ -15,7 +15,7 @@ public class StationAdapter extends RecyclerView.Adapter<StationAdapter.StationV
     private Context mContext;
     private ArrayList<StationObject> mStationList;
 
-    public StationAdapter(Context context, ArrayList<StationObject> stationList){
+    public StationAdapter(Context context, ArrayList<StationObject> stationList, boolean b){
         mContext = context;
         mStationList = stationList;
     }

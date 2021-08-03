@@ -2,17 +2,14 @@ package com.example.groupproject;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -22,8 +19,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.google.android.material.snackbar.Snackbar;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -35,7 +30,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -52,7 +46,7 @@ public class SearchStation extends AppCompatActivity {
     private EditText longitude;
     private SharedPreferences sharedPref;
     private Button searchStationBtn;
-    private ProgressBar progressBar;
+
     private String serverURL;
 
     @Override
@@ -73,10 +67,6 @@ public class SearchStation extends AppCompatActivity {
 
         //receive info from previous page
         Intent fromPreOC = getIntent();
-
-        //progress bar
-        progressBar = findViewById(R.id.progressBar);
-        progressBar.setVisibility(View.INVISIBLE);
 
         //Shared preference
         sharedPref = getSharedPreferences("SharedPreferencesCarChargingStation", MODE_PRIVATE);
@@ -140,9 +130,11 @@ public class SearchStation extends AppCompatActivity {
                                 double longitude = addressJSON.getDouble("Longitude");
                                 String contacNo = addressJSON.getString("ContactTelephone1");
 
-                                carStationList.add(new StationObject(title, latitude,longitude,contacNo));
+
+                                long id = i+1;
+                                carStationList.add(new StationObject(id, title, latitude,longitude,contacNo));
                             }
-                            carStationAdapter = new StationAdapter(SearchStation.this, carStationList);
+                            carStationAdapter = new StationAdapter(SearchStation.this, carStationList, true);
                            runOnUiThread(()->{ carRecyclerView.setAdapter(carStationAdapter);
                                dialog.hide();
                            });

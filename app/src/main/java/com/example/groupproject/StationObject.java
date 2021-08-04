@@ -15,6 +15,10 @@ public class StationObject {
             mContactNo = contactNo;
         }
 
+    public StationObject(String title) {
+        mTitle = title;
+    }
+
     public String getTitle(){
             return mTitle;
         }

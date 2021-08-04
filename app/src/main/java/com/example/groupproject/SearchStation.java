@@ -128,11 +128,12 @@ public class SearchStation extends AppCompatActivity {
                                 String title = addressJSON.getString("Title");
                                 double latitude = addressJSON.getDouble("Latitude");
                                 double longitude = addressJSON.getDouble("Longitude");
-                                String contacNo = addressJSON.getString("ContactTelephone1");
+                                String contactNo = addressJSON.getString("ContactTelephone1");
 
 
-                                long id = i+1;
-                                carStationList.add(new StationObject(id, title, latitude,longitude,contacNo));
+                                long id =0;
+                                carStationList.add(new StationObject(id, title, latitude,longitude,contactNo));
+//                                carStationList.add(new StationObject(title));
                             }
                             carStationAdapter = new StationAdapter(SearchStation.this, carStationList, true);
                            runOnUiThread(()->{ carRecyclerView.setAdapter(carStationAdapter);
@@ -154,6 +155,9 @@ public class SearchStation extends AppCompatActivity {
                 editor.apply();
                 Toast.makeText(getApplicationContext(),  "Station list is loading...", Toast.LENGTH_SHORT).show();
             }
+
+
+
         });
     }
 

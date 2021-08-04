@@ -6,7 +6,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +18,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -48,21 +51,30 @@ import java.util.stream.Collectors;
 
 /**
  * @author Chaohao
+ * @version 1.0
  */
 public class BusListFragment extends Fragment {
 
-    Button helpBtn;
-    private SharedPreferences busPref;
-    Button searchBusButton;
-    MyBusAdapter busAdt = new MyBusAdapter();
-    SimpleDateFormat sdf = new SimpleDateFormat("EEEE, dd-MMM-yyyy hh-mm-ss a", Locale.getDefault());
-    ArrayList<BusMessage> searchMessage = new ArrayList<>();
-    SQLiteDatabase db;
-    EditText searchBar;
-    ArrayList<BusRoute> busList = new ArrayList<>();
+
     // The strings represents the address of the server
     private String busStringURL;
     private String busDetailURL;
+    RecyclerView searchListView;
+    Button helpBtn;
+    Button searchBusButton;
+    MyBusAdapter busAdt = new MyBusAdapter();
+    SharedPreferences busPref;
+    SQLiteDatabase db;
+    Button favoriteButton;
+
+    SimpleDateFormat sdf = new SimpleDateFormat("EEEE, dd-MMM-yyyy hh-mm-ss a", Locale.getDefault());
+    ArrayList<BusMessage> searchMessage = new ArrayList<>();
+    EditText searchBar;
+    TextView information;
+
+    ArrayList<BusRoute> busList = new ArrayList<>();
+    ArrayList<BusRoute> favoriteList = new ArrayList<>();
+    FavoriteAdapter favorAdt = new FavoriteAdapter();
 
     public View onCreateView( LayoutInflater inflater,  ViewGroup container,  Bundle savedInstanceState) {
         View BusLayout = inflater.inflate(R.layout.bus_search, container, false);
@@ -70,24 +82,10 @@ public class BusListFragment extends Fragment {
 // create database
         BusOpenHelper opener = new BusOpenHelper(getContext());
         db = opener.getWritableDatabase();
-        Cursor results = db.rawQuery("Select * from " + BusOpenHelper.Bus_TABLE_NAME + ";", null);
-
-        //meta data
-        int _idCol = results.getColumnIndex("_id");
-        int routeCol = results.getColumnIndex(BusOpenHelper.col_routes);
-        int busInfoCol = results.getColumnIndex(BusOpenHelper.col_heading);
-        int dirCol = results.getColumnIndex(BusOpenHelper.col_direction);
 
         // set data attributes
-        while(results.moveToNext()){
-            long id = results.getInt(_idCol);
-            String message = results.getString(routeCol);
-            String time = results.getString(dirCol);
-            int searchButtonInfo = results.getInt(busInfoCol);
-            searchMessage.add(new BusMessage(message,searchButtonInfo,time,id));
-
-        }
-
+        searchListView = BusLayout.findViewById(R.id.searchView);
+        information = BusLayout.findViewById(R.id.info);
         helpBtn = BusLayout.findViewById(R.id.Bus_help);
         helpBtn.setOnClickListener(click -> {
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getContext());
@@ -98,11 +96,40 @@ public class BusListFragment extends Fragment {
                     })
                     .create().show();
         });
+        favoriteButton = BusLayout.findViewById(R.id.favoriteButton);
         busPref = getContext().getSharedPreferences("BusData", Context.MODE_PRIVATE);
+        favoriteButton.setOnClickListener(clk ->{
+            favoriteList.clear();
+            Cursor results = db.rawQuery("Select * from " + BusOpenHelper.Bus_TABLE_NAME + ";", null);
 
-        RecyclerView searchListView;
+            //meta data
+            int _idCol = results.getColumnIndex("_id");
+            int routeCol = results.getColumnIndex(BusOpenHelper.col_routes);
+            int busDesoCol = results.getColumnIndex(BusOpenHelper.col_heading);
+            int dirCol = results.getColumnIndex(BusOpenHelper.col_direction);
+            int directionIdCol = results.getColumnIndex(BusOpenHelper.col_directionID);
+
+            while(results.moveToNext()){
+                long id = results.getInt(_idCol);
+                String routeNumber = results.getString(routeCol);
+                String dest = results.getString(busDesoCol);
+                String direc = results.getString(dirCol);
+                String direcID = results.getString(directionIdCol);
+
+                favoriteList.add(new BusRoute(routeNumber, dest, direc, direcID,id));
+
+            }
+
+            getActivity().runOnUiThread(()->{
+
+                information.setText("Favorite list:");
+            });
+            searchListView.setAdapter(favorAdt);
+        });
+
+
         searchBusButton = BusLayout.findViewById(R.id.searchBusButton);
-        searchListView = BusLayout.findViewById(R.id.searchView);
+
         searchListView.setAdapter(busAdt);
         TextView info = BusLayout.findViewById(R.id.info);
 
@@ -247,10 +274,12 @@ public class BusListFragment extends Fragment {
                     // this is the 2nd thread
                     try {
                         String stopNumber = searchBar.getText().toString();
-                        String  routNo= busInfo.getText().toString().substring(6);
+                        String  routeNo= busInfo.getText().toString();
                         busDetailURL = "https://api.octranspo1.com/v2.0/GetNextTripsForStop?appID=223eb5c3&&apiKey=ab27db5b435b8c8819ffb8095328e775&stopNo="
-                                + URLEncoder.encode(stopNumber,"UTF-8") + "&routeNo="
-                                + URLEncoder.encode(routNo,"UTF-8") + "&format=json";
+                                + URLEncoder.encode(stopNumber, "UTF-8")
+                                + "&routeNo="
+                                + routeNo.substring(7)
+                                + "&format=json";
 
                         // create a URL object
                         URL url = new URL(busDetailURL);
@@ -265,13 +294,23 @@ public class BusListFragment extends Fragment {
                         JSONObject documentDetails = new JSONObject(textDetails);
                         JSONObject nextTripResults = documentDetails.getJSONObject("GetNextTripsForStopResult");
                         JSONObject routeInfo = nextTripResults.getJSONObject("Route");
-                        JSONArray routeDirection = routeInfo.getJSONArray("RouteDirection");
-                        for (int i=0; i < routeDirection.length(); i++){
-                            JSONObject arrayObject = routeDirection.getJSONObject(i);
-                            BusRoute routeDetails = new BusRoute();
-                            routeDetails.setBusNumber(arrayObject.getString("RouteNo"));
-                            routeDetails.setDestination(arrayObject.getString("RouteLabel"));
-                            JSONObject trips = arrayObject.getJSONObject("Trips");
+                        JSONObject routeDirection = null;
+
+                        try {
+                            routeDirection = routeInfo.getJSONArray("RouteDirection").getJSONObject(0);
+                        }catch (JSONException e){
+                            e.printStackTrace();
+                        }
+                        try{
+                            routeDirection = routeInfo.getJSONObject("RouteDirection");
+                        } catch(JSONException e){
+                            e.printStackTrace();
+                        }
+
+                            BusRoute routeDetails = busList.get(position);
+                            routeDetails.setBusNumber(routeDirection.getString("RouteNo"));
+                            routeDetails.setDestination(routeDirection.getString("RouteLabel"));
+                            JSONObject trips = routeDirection.getJSONObject("Trips");
                             JSONArray trip = trips.getJSONArray("Trip");
                             JSONObject firstElement = trip.getJSONObject(0);
                             routeDetails.setLongitude(firstElement.getString("Longitude"));
@@ -279,19 +318,20 @@ public class BusListFragment extends Fragment {
                             routeDetails.setGpsSpeed(firstElement.getString("GPSSpeed"));
                             routeDetails.setStartTime(firstElement.getString("TripStartTime"));
                             routeDetails.setAdjustedTime(firstElement.getString("AdjustedScheduleTime"));
-                            busList.add(routeDetails);
-                        }
+
+
 
                         getActivity().runOnUiThread(() ->{
-                            BusSearch parentAcitivty = (BusSearch)getContext();
-                            int position = getAdapterPosition();
-                            parentAcitivty.busUserClickedMsg(busList.get(position), position);
+
                             busAdt.notifyItemInserted(busList.size()-1);
                         });
-                    } catch (UnsupportedEncodingException | MalformedURLException e) {
-                        e.printStackTrace();
-                    } catch (IOException | JSONException e) {
-                        e.printStackTrace();
+                        BusSearch parentAcitivty = (BusSearch)getContext();
+                        parentAcitivty.runOnUiThread(()->{
+                            parentAcitivty.userClickedRoute(routeDetails,position);
+                        });
+
+                    } catch (IOException | JSONException ioe) {
+                        Log.e("Connection error:", ioe.getMessage());
                     }
                 });
 
@@ -368,4 +408,56 @@ public class BusListFragment extends Fragment {
 
     }
 
+    /**
+     * This class is an internal class represents an adapter object
+     */
+    private class FavoriteAdapter extends RecyclerView.Adapter<FavoriteRowViews>{
+        @RequiresApi(api = Build.VERSION_CODES.N)
+        @Override
+        public FavoriteRowViews onCreateViewHolder(ViewGroup parent, int viewType) {
+            LayoutInflater inflater = getLayoutInflater();
+            View loadedView = inflater.inflate(R.layout.search_view_bus,parent,false);
+            FavoriteRowViews initRow = new FavoriteRowViews(loadedView);
+            return initRow;
+        }
+        @Override
+        public void onBindViewHolder(FavoriteRowViews holder, int position) {
+
+            holder.specificRoute.setText(favoriteList.get(position).getBusNumber());
+            holder.headingDestination.setText(favoriteList.get(position).getDestination());
+            holder.setPosition(position);
+        }
+
+        @Override
+        public int getItemCount() {
+            return favoriteList.size();
+        }
+    }
+
+    /**
+     * This class is an internal class represents each row in the favorite list
+     */
+    private class FavoriteRowViews extends RecyclerView.ViewHolder{
+
+        TextView specificRoute;
+        TextView headingDestination;
+        int position = -1;
+
+        @RequiresApi(api = Build.VERSION_CODES.N)
+        public FavoriteRowViews(View itemView) {
+            super(itemView);
+            specificRoute = itemView.findViewById(R.id.destinationView);
+            headingDestination = itemView.findViewById(R.id.busInfo);
+
+            // When click the specific bus route, go to the detailed information
+            itemView.setOnClickListener(click ->{
+
+            });
+
+        }
+        public void setPosition(int position) {
+            this.position = position;
+        }
+
+    }
 }

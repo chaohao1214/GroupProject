@@ -117,7 +117,18 @@ public class BusSearch extends AppCompatActivity {
      * @param position
      */
 
-    public void busUserClickedMsg(BusRoute busRoute, int position){
+
+    /**
+     * this method can detele the bus number message in the search box
+     * @param busMessage this the message we typed in the search box
+     * @param busChosenPosition since it is an array, we can type several messages in the serach box, postion helps us to locate
+     *                          which message we need to delete.
+     */
+    public void notifyMessageDeleted(BusListFragment.BusMessage busMessage, int busChosenPosition) {
+        busChatFragment.notifyMessageDeleted(busMessage, busChosenPosition);
+    }
+
+    public void userClickedRoute(BusRoute busRoute, int position) {
         BusDetailsFragment busDetailsFragment = new BusDetailsFragment(busRoute,position);
 
         if (busTablet)
@@ -128,15 +139,5 @@ public class BusSearch extends AppCompatActivity {
         {
             getSupportFragmentManager().beginTransaction().add(R.id.fragmentRoomBus,busDetailsFragment).commit();
         }
-    }
-
-    /**
-     * this method can detele the bus number message in the search box
-     * @param busMessage this the message we typed in the search box
-     * @param busChosenPosition since it is an array, we can type several messages in the serach box, postion helps us to locate
-     *                          which message we need to delete.
-     */
-    public void notifyMessageDeleted(BusListFragment.BusMessage busMessage, int busChosenPosition) {
-        busChatFragment.notifyMessageDeleted(busMessage, busChosenPosition);
     }
 }

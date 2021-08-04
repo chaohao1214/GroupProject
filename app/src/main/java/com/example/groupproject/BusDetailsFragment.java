@@ -31,13 +31,13 @@ public class BusDetailsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View busDetailsView = inflater.inflate(R.layout.bus_detail_layout, container, false);
 
-        TextView busNumView = busDetailsView.findViewById(R.id.busNumView);
-        TextView destinationView = busDetailsView.findViewById(R.id.busDesView);
-        TextView latitudeView = busDetailsView.findViewById(R.id.busLatitudeView);
-        TextView longitudeView = busDetailsView.findViewById(R.id.busLongitudeView);
-        TextView gpsView = busDetailsView.findViewById(R.id.busGPSView);
-        TextView startTimeView = busDetailsView.findViewById(R.id.busStartTimeView);
-        TextView adjustedView = busDetailsView.findViewById(R.id.busAdjustedView);
+        TextView busNumView = busDetailsView.findViewById(R.id.tvRouteNo);
+        TextView destinationView = busDetailsView.findViewById(R.id.tvDestination);
+        TextView latitudeView = busDetailsView.findViewById(R.id.tvLatitude);
+        TextView longitudeView = busDetailsView.findViewById(R.id.tvLongitude);
+        TextView gpsView = busDetailsView.findViewById(R.id.tvGps);
+        TextView startTimeView = busDetailsView.findViewById(R.id.tvStartTime);
+        TextView adjustedView = busDetailsView.findViewById(R.id.tvAdjustedTime);
 
         busNumView.setText("Bus route is: " + chosenRoute.getBusNumber());
         destinationView.setText("Destination: " + chosenRoute.getDestination());
@@ -50,12 +50,12 @@ public class BusDetailsFragment extends Fragment {
 
 
 
-        Button closeButton = busDetailsView.findViewById(R.id.closeButton);
+        Button closeButton = busDetailsView.findViewById(R.id.closeBtn);
         closeButton.setOnClickListener(closeClicked -> {
             getParentFragmentManager().beginTransaction().remove(this).commit();
         });
 
-        Button deleteButton = busDetailsView.findViewById(R.id.deleteButton);
+        Button deleteButton = busDetailsView.findViewById(R.id.saveButton);
         deleteButton.setOnClickListener(deleteClicked -> {
             getParentFragmentManager().beginTransaction().remove(this).commit();
         });

@@ -12,6 +12,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.GroupProject">
         <activity android:name=".SearchStation"></activity>
+        <activity android:name=".StationFavorites"></activity>
+        <activity android:name=".StationDetailContainer"></activity>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

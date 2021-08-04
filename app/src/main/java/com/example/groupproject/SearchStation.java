@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -17,6 +18,8 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -29,6 +32,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.Serializable;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -47,12 +51,16 @@ public class SearchStation extends AppCompatActivity {
     private SharedPreferences sharedPref;
     private Button searchStationBtn;
 
+    boolean isTablet;
     private String serverURL;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.station_search);
+
+        isTablet = findViewById(R.id.detailsFragment) != null;
+
 
         carRecyclerView = findViewById(R.id.recycler_view);
         carRecyclerView.setHasFixedSize(true);
@@ -131,9 +139,9 @@ public class SearchStation extends AppCompatActivity {
                                 String contactNo = addressJSON.getString("ContactTelephone1");
 
 
-                                long id =0;
-                                carStationList.add(new StationObject(id, title, latitude,longitude,contactNo));
-//                                carStationList.add(new StationObject(title));
+ //                               long id =0;
+ //                               carStationList.add(new StationObject(id, title, latitude,longitude,contactNo));
+                                carStationList.add(new StationObject(title));
                             }
                             carStationAdapter = new StationAdapter(SearchStation.this, carStationList, true);
                            runOnUiThread(()->{ carRecyclerView.setAdapter(carStationAdapter);
@@ -155,9 +163,6 @@ public class SearchStation extends AppCompatActivity {
                 editor.apply();
                 Toast.makeText(getApplicationContext(),  "Station list is loading...", Toast.LENGTH_SHORT).show();
             }
-
-
-
         });
     }
 

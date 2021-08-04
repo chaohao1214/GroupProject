@@ -20,7 +20,7 @@ import com.google.android.material.snackbar.Snackbar;
 import java.util.ArrayList;
 
 
-class CarChargingFavouriteStations extends AppCompatActivity {
+class StationFavorites extends AppCompatActivity {
 
     ArrayList<StationObject> favStations = new ArrayList<>();
     private int positionClicked;

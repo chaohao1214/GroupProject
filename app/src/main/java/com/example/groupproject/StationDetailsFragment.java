@@ -18,6 +18,11 @@ import java.util.Locale;
 
 public class StationDetailsFragment extends Fragment {
 
+    public class StationFragment extends Fragment {
+        private boolean isTablet;
+        public void setTablet(boolean tablet) {
+            isTablet = tablet;
+        }
 
     int stationPosition;
 
@@ -85,6 +90,7 @@ public class StationDetailsFragment extends Fragment {
 
         return stationDetailsView;
     }
+}
 }
 
 

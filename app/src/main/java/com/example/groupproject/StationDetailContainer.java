@@ -9,12 +9,12 @@ public class StationDetailContainer extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.station_fragment_layout);
+        setContentView(R.layout.station_search);
 
         Bundle bundle = getIntent().getExtras();
 
         StationDetailsFragment detailFragment = new StationDetailsFragment();
-        detailFragment.setArguments(bundle); //pass data to the the fragment
+        detailFragment.setArguments(bundle);
 
 
         getSupportFragmentManager()

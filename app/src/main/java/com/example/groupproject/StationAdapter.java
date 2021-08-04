@@ -7,13 +7,18 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-public class StationAdapter extends RecyclerView.Adapter<StationAdapter.StationViewHolder> {
+
+public class StationAdapter extends RecyclerView.Adapter <StationAdapter.StationViewHolder> {
     private Context mContext;
     private ArrayList<StationObject> mStationList;
+
+
 
     public StationAdapter(Context context, ArrayList<StationObject> stationList, boolean b){
         mContext = context;
@@ -31,14 +36,14 @@ public class StationAdapter extends RecyclerView.Adapter<StationAdapter.StationV
         StationObject currentItem = mStationList.get(position);
 
         String title = currentItem.getTitle();
-        double latitude = currentItem.getLatitude();
+  /*      double latitude = currentItem.getLatitude();
         double longitude = currentItem.getLongitude();
         String contactNo = currentItem.getContactNo();
-
+*/
         holder.adtTitle.setText("Location: " + title);
-        holder.adtLatitude.setText("Latitude" + latitude);
+   /*     holder.adtLatitude.setText("Latitude" + latitude);
         holder.adtLongitude.setText("Longitude" + longitude);
-        holder.adtContactNo.setText("ContactNo" + contactNo);
+        holder.adtContactNo.setText("ContactNo" + contactNo);*/
     }
 
     @Override
@@ -49,17 +54,36 @@ public class StationAdapter extends RecyclerView.Adapter<StationAdapter.StationV
     public class StationViewHolder extends RecyclerView.ViewHolder{
 
         public TextView adtTitle;
-        public TextView adtLatitude;
+  /*      public TextView adtLatitude;
         public TextView adtLongitude;
         public TextView adtContactNo;
-
+*/
 
         public StationViewHolder(View itemView) {
             super(itemView);
             adtTitle = itemView.findViewById(R.id.stationTitle);
-            adtLatitude = itemView.findViewById(R.id.stationLatitude);
+   /*         adtLatitude = itemView.findViewById(R.id.stationLatitude);
             adtLongitude = itemView.findViewById(R.id.stationLongitude);
             adtContactNo = itemView.findViewById(R.id.stationContactNo);
+*/
+
+
+            int pos = getAbsoluteAdapterPosition();
+            //find the charging station that was selected,
+           // StationObject selectedStation = mStationList.get(pos) ;
+
+           // itemView.setOnClickListener( (click -> {
+
+            //fragment transaction:
+            // fragment object
+          //  FragmentManager fMgr = getSupportFragmentManager(); // one object
+            //FragmentTransaction tx = fMgr.beginTransaction();
+            // either add-remove or replace
+            //tx.add(R.id.detailsFragment,selectedStation);
+            // finally commit
+            //tx.commit(); // start loading fragment
+
+            //}));
 
         }
     }

@@ -8,10 +8,13 @@ import android.widget.Button;
 import android.widget.TextView;
 
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 /**
+ * This class is a fragment to display the detailed information of the routes
  * @author Chaohao
+ * @version 1.0
  */
 public class BusDetailsFragment extends Fragment {
     BusRoute chosenRoute;
@@ -55,10 +58,20 @@ public class BusDetailsFragment extends Fragment {
             getParentFragmentManager().beginTransaction().remove(this).commit();
         });
 
-        Button deleteButton = busDetailsView.findViewById(R.id.saveButton);
-        deleteButton.setOnClickListener(deleteClicked -> {
-            getParentFragmentManager().beginTransaction().remove(this).commit();
+
+        Button favoriteBtn = busDetailsView.findViewById(R.id.saveButton);
+        favoriteBtn.setOnClickListener(click -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+            builder.setMessage("Do you want to save this route?")
+                    .setTitle("Questions: ")
+                    .setPositiveButton("Yes", (dialog,cl) -> {
+                        BusSearch parent=(BusSearch) getContext();
+                        parent.notifyFavorite(chosenRoute);
+                    })
+                    .setNegativeButton("No",(dialog,cl) ->{})
+                    .create().show();
         });
+
 
         return busDetailsView;
     }

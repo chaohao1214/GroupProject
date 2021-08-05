@@ -5,25 +5,22 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.ProgressBar;
-
 import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
-
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-
 import com.google.android.material.navigation.NavigationView;
 
 /**
+ * final project: search bus route information by bus stop number.
+ * Users can search bus route information, which includes the route number, trip destination, latitude,
+ * longitude, gps speed, start time and adjusted schedule, by inputing bus stop number, and put the search
+ * result in the favorite list.
  * @author Chaohao
+ * @version 1.0
  *
  */
 public class BusSearch extends AppCompatActivity {
@@ -110,24 +107,19 @@ public class BusSearch extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-
     /**
-     * this method allow us to use different layout for phone mode and tablet mode
-     * @param busRoute
-     * @param position
+     *  This function is to insert the chosen route in the favorite list.
+     * @param chosenRoute the route that the user choose to put into the favorite list
      */
-
-
-    /**
-     * this method can detele the bus number message in the search box
-     * @param busMessage this the message we typed in the search box
-     * @param busChosenPosition since it is an array, we can type several messages in the serach box, postion helps us to locate
-     *                          which message we need to delete.
-     */
-    public void notifyMessageDeleted(BusListFragment.BusMessage busMessage, int busChosenPosition) {
-        busChatFragment.notifyMessageDeleted(busMessage, busChosenPosition);
+    public void notifyFavorite(BusRoute chosenRoute) {
+        busChatFragment.insertFavorite(chosenRoute);
     }
 
+    /**
+     * This function is to display different layout depending on if the emulator is a phone or tablet.
+     * @param busRoute the bus route that displayed on the screen
+     * @param position the position of the bus route in the list
+     */
     public void userClickedRoute(BusRoute busRoute, int position) {
         BusDetailsFragment busDetailsFragment = new BusDetailsFragment(busRoute,position);
 

@@ -55,357 +55,213 @@ import java.util.stream.Collectors;
  */
 public class BusListFragment extends Fragment {
 
+    /**The strings represents the address of the server we will connect to */
 
-    // The strings represents the address of the server
-    private String busStringURL;
-    private String busDetailURL;
-    RecyclerView searchListView;
-    Button helpBtn;
-    Button searchBusButton;
-    MyBusAdapter busAdt = new MyBusAdapter();
-    SharedPreferences busPref;
-    SQLiteDatabase db;
-    Button favoriteButton;
+    private String stringURL;
+    private String detailURL;
 
-    SimpleDateFormat sdf = new SimpleDateFormat("EEEE, dd-MMM-yyyy hh-mm-ss a", Locale.getDefault());
-    ArrayList<BusMessage> searchMessage = new ArrayList<>();
-    EditText searchBar;
+    /**
+     *  Declare search bar, search button, help button and search view
+     */
+
+    RecyclerView searchView;
     TextView information;
-
-    ArrayList<BusRoute> busList = new ArrayList<>();
-    ArrayList<BusRoute> favoriteList = new ArrayList<>();
+    EditText searchBar;
+    Button searchBtn;
+    Button helpBtn;
+    Button favoriteBtn;
+    MyAdapter adt = new MyAdapter();
     FavoriteAdapter favorAdt = new FavoriteAdapter();
+    SQLiteDatabase db;
 
-    public View onCreateView( LayoutInflater inflater,  ViewGroup container,  Bundle savedInstanceState) {
-        View BusLayout = inflater.inflate(R.layout.bus_search, container, false);
-        searchBar = BusLayout.findViewById(R.id.searchBox);
-// create database
+    /**
+     * create a list to hold the searching result
+     */
+    ArrayList<BusRoute> routeList = new ArrayList<>();
+    /**
+     * create a list to hold the favorite routes
+     */
+    ArrayList<BusRoute> favoriteList = new ArrayList<>();
+
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+        View routeLayout = inflater.inflate(R.layout.bus_search, container, false);
+
+        //Find the widgets
+        searchView = routeLayout.findViewById(R.id.searchView);
+        information = routeLayout.findViewById(R.id.info);
+        searchBar = routeLayout.findViewById(R.id.searchBox);
+        searchBtn = routeLayout.findViewById(R.id.searchBusButton);
+        favoriteBtn = routeLayout.findViewById(R.id.favoriteButton);
+        LinearLayoutManager manager = new LinearLayoutManager(getContext());
+        searchView.setLayoutManager(manager);
+
+        //Create an SQLiteOpenHelper object
         BusOpenHelper opener = new BusOpenHelper(getContext());
+
+        //Return a SQLiteDatabase object that allows inserting,updating and deleting
         db = opener.getWritableDatabase();
 
-        // set data attributes
-        searchListView = BusLayout.findViewById(R.id.searchView);
-        information = BusLayout.findViewById(R.id.info);
-        helpBtn = BusLayout.findViewById(R.id.Bus_help);
-        helpBtn.setOnClickListener(click -> {
-            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getContext());
 
-            alertDialogBuilder.setTitle(R.string.help_title_bus)
-                    .setMessage(R.string.help_content_bus)
-                    .setPositiveButton("close", (c, arg) -> {
-                    })
-                    .create().show();
-        });
-        favoriteButton = BusLayout.findViewById(R.id.favoriteButton);
-        busPref = getContext().getSharedPreferences("BusData", Context.MODE_PRIVATE);
-        favoriteButton.setOnClickListener(clk ->{
-            favoriteList.clear();
-            Cursor results = db.rawQuery("Select * from " + BusOpenHelper.Bus_TABLE_NAME + ";", null);
+        /**
+         * Create sharedPreferences object to save the bus route number that is typed in the search bar
+         */
 
-            //meta data
-            int _idCol = results.getColumnIndex("_id");
-            int routeCol = results.getColumnIndex(BusOpenHelper.col_routes);
-            int busDesoCol = results.getColumnIndex(BusOpenHelper.col_heading);
-            int dirCol = results.getColumnIndex(BusOpenHelper.col_direction);
-            int directionIdCol = results.getColumnIndex(BusOpenHelper.col_directionID);
-
-            while(results.moveToNext()){
-                long id = results.getInt(_idCol);
-                String routeNumber = results.getString(routeCol);
-                String dest = results.getString(busDesoCol);
-                String direc = results.getString(dirCol);
-                String direcID = results.getString(directionIdCol);
-
-                favoriteList.add(new BusRoute(routeNumber, dest, direc, direcID,id));
-
-            }
-
-            getActivity().runOnUiThread(()->{
-
-                information.setText("Favorite list:");
-            });
-            searchListView.setAdapter(favorAdt);
-        });
+        SharedPreferences preferences = getContext().getSharedPreferences("MyBusStopData", Context.MODE_PRIVATE);
+        String busInfo = preferences.getString("StopNumber","");
+        searchBar.setText(busInfo);
 
 
-        searchBusButton = BusLayout.findViewById(R.id.searchBusButton);
+        // When click the search button, pull the data from the server and put the date in the arrray list and database
+        searchBtn.setOnClickListener(click->{
+            searchView.setAdapter(adt);
+            String busStop = searchBar.getText().toString();
 
-        searchListView.setAdapter(busAdt);
-        TextView info = BusLayout.findViewById(R.id.info);
+            //Toast to show the application message
+            Toast.makeText(getContext(), "Ottawa bus route app, written by Chaohao Zhu", Toast.LENGTH_LONG).show();
 
-        searchBar.setText(busPref.getString("BusNumber", ""));
-
-
-        searchListView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL,false));
-
-        searchBusButton.setOnClickListener(clk ->{
-            Toast.makeText(getContext().getApplicationContext(),  "Bus route is loading...", Toast.LENGTH_SHORT).show();
-            BusMessage thisMessage = new BusMessage(searchBar.getText().toString(),1, sdf.format(new Date()));
-            searchMessage.add(thisMessage);
-            busAdt.notifyItemInserted(searchMessage.size()-1);
-            SharedPreferences.Editor editor = busPref.edit();
-
-            editor.putString("BusNumber", searchBar.getText().toString());
-            editor.apply();
-
-            // when the app is getting data from API, show this message
+            // Create a progress bar when the app is getting data from the server
             android.app.AlertDialog dialog = new android.app.AlertDialog.Builder(getContext())
-                    .setTitle("Getting bus stop information")
-                    .setMessage("We'are getting information for the bus stop " + searchBar.getText().toString() + "to check the route information for this stop")
+                    .setTitle("Bus Stop Information")
+                    .setMessage("We'are getting information for the bus stop  " + busStop + "to check the route information for this stop")
                     .setView(new ProgressBar(getContext()))
                     .show();
 
-
-            // new thread to connect to server
-            Executor busThread = Executors.newSingleThreadExecutor();
-            busThread.execute(() ->{
-                // this is runs on another thread
-                try {
-                    String busNumber = searchBar.getText().toString();
-                    busStringURL = "https://api.octranspo1.com/v2.0/GetRouteSummaryForStop?appID=223eb5c3&&apiKey=ab27db5b435b8c8819ffb8095328e775&stopNo="
-                            + URLEncoder.encode(busNumber, "UTF-8") + "&format=json";
-                    //create URL object
-                    URL url = new URL(busStringURL);
+            //Start a new thread to search from the server
+            Executor newThread = Executors.newSingleThreadExecutor();
+            newThread.execute(()->{
+                //This runs on another thread
+                try{
+                    String stopNumber = searchBar.getText().toString();
+                    stringURL = "https://api.octranspo1.com/v2.0/GetRouteSummaryForStop?appID=223eb5c3&&apiKey=ab27db5b435b8c8819ffb8095328e775&stopNo="
+                            + URLEncoder.encode(stopNumber, "UTF-8")
+                            + "&format=json";
+                    //Create a URL object
+                    URL url = new URL(stringURL);
+                    //Connect to the server
                     HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                    //Wait for a response from the server
                     InputStream in = new BufferedInputStream(urlConnection.getInputStream());
 
+                    //Convert to a string
                     String text = (new BufferedReader(
                             new InputStreamReader(in, StandardCharsets.UTF_8)))
                             .lines()
                             .collect(Collectors.joining("\n"));
-
+                    //Convert string to JSON object
                     JSONObject theDocument = new JSONObject(text);
-                    JSONObject busRouteSummary = theDocument.optJSONObject("GetRouteSummaryForStopResult");
+                    JSONObject routeSummary = theDocument.getJSONObject("GetRouteSummaryForStopResult");
+                    JSONObject routes = routeSummary.getJSONObject("Routes");
+                    String stopNo = routeSummary.getString("StopNo");
+                    String stopDescription = routeSummary.getString("StopDescription");
+                    //Get the array for the routes information
+                    JSONArray routeArray = routes.getJSONArray("Route");
 
-                        JSONObject busRoutes = busRouteSummary.getJSONObject("Routes");
-                        String stopNo = busRouteSummary.getString("StopNo");
-                        String stopDescription = busRouteSummary.getString("StopDescription");
 
-                        JSONArray routeArray = busRoutes.getJSONArray("Route");
-                        //use loop to get all the routes info from the bus stop and save it in the list.
-                        for (int i = 0; i < routeArray.length(); i++) {
-                            // save the routes info in the list
-                            JSONObject routeObject = routeArray.getJSONObject(i);
+                    for(int i = 0; i < routeArray.length(); i++){
+                        //put the routes information into the list
+                        JSONObject routeObject = routeArray.getJSONObject(i);
+                        BusRoute routeMsg = new BusRoute();
+                        routeMsg.setBusNumber("Route: " + routeObject.getString("RouteNo"));
+                        routeMsg.setDestination("Heading " + routeObject.getString("RouteHeading"));
+                        routeMsg.setDirection(routeObject.getString("Direction"));
+                        routeMsg.setDirectionID(routeObject.getString("DirectionID"));
+                        routeList.add(routeMsg);
+                    }
 
-                            BusRoute routMsg = new BusRoute();
-                            routMsg.setBusNumber("Route:" + routeObject.getString("RouteNo"));
-                            routMsg.setDestination("Heading" + routeObject.getString("RouteHeading"));
-                            routMsg.setDirection(routeObject.getString("Direction"));
-                            routMsg.setDirectionID(routeObject.getString("DirectionID"));
-                            busList.add(routMsg);
-                            // put the bus number info into database
-                            // get and insert data
-                            ContentValues newRow = new ContentValues();
-                            newRow.put(BusOpenHelper.col_routes, routeObject.getString("RouteNo"));
-                            newRow.put(BusOpenHelper.col_heading, routeObject.getString("RouteHeading"));
-                            newRow.put(BusOpenHelper.col_direction, routeObject.getString("Direction"));
-                            newRow.put(BusOpenHelper.col_directionID, routeObject.getString("DirectionID"));
-                            long id = db.insert(BusOpenHelper.Bus_TABLE_NAME, BusOpenHelper.col_routes, newRow);
-                            routMsg.setId(id);
-                        }
 
-                        //call the following functions on the main GUI thread
+                    //Call the following functions on the main GUI thread
                     getActivity().runOnUiThread(()->{
-                        info.setText("Bus Stop " + stopNo + " " +stopDescription );
 
-                        busAdt.notifyItemInserted(busList.size()-1);
+                        information.setText( stopNo + " " + stopDescription + " has the following routes. "
+                                + "Please click the routes for detailed information");
+
+                        adt.notifyItemInserted(routeList.size()-1);
+
                         dialog.hide();
                     });
-                } catch (UnsupportedEncodingException | MalformedURLException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (JSONException e) {
-                    e.printStackTrace();
+
                 }
+                catch (IOException | JSONException ioe) {
+                    Log.e("Connection error:", ioe.getMessage());
+                }
+
             });
+
+            //Save the inputed bus route to the String "BusNumber".
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putString("StopNumber",searchBar.getText().toString());
+            editor.apply();
+
         });
 
-        return BusLayout;
-    }
+        favoriteBtn.setOnClickListener(cl->{
+            //Put the information in the database to the favorite list
+            favoriteList.clear();
+            Cursor results = db.rawQuery("Select * from " + BusOpenHelper.Bus_TABLE_NAME + ";", null);
+            int _idCol = results.getColumnIndex("_id");
+            int routeNumber = results.getColumnIndex(BusOpenHelper.col_routes);
+            int destination = results.getColumnIndex(BusOpenHelper.col_heading);
+            int direction = results.getColumnIndex(BusOpenHelper.col_direction);
+            int directionId = results.getColumnIndex(BusOpenHelper.col_directionID);
 
-    // delete the message in detail frgament
-    public void notifyMessageDeleted(BusMessage busMessage, int busChosenPosition) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setMessage("Do you want to delete this message: " + busMessage.getMessage())
-                .setTitle("Questions:")
-                .setPositiveButton("Yes",(dialog, cl)->{
-                    BusListFragment.BusMessage removeMessage = searchMessage.get(busChosenPosition);
-                    searchMessage.remove(busChosenPosition);
-                    busAdt.notifyItemRemoved(busChosenPosition);
+            while(results.moveToNext()) {
+                long id = results.getInt(_idCol);
+                String rtNumber = results.getString(routeNumber);
+                String dest = results.getString(destination);
+                String direc = results.getString(direction);
+                String direcID = results.getString(directionId);
 
-                    //set to delete data in database
-                    db.delete(BusOpenHelper.Bus_TABLE_NAME, "_id=?", new String[]
-                            { Long.toString(removeMessage.getId())});
+                favoriteList.add(new BusRoute(rtNumber, dest, direc, direcID,id));
+            }
 
-                    Snackbar.make(searchBusButton,"You deleted message #" + busChosenPosition, Snackbar.LENGTH_LONG)
-                            .setAction("Undo", clk ->{
-                                searchMessage.add(busChosenPosition,removeMessage);
-                                busAdt.notifyItemInserted(busChosenPosition);
-                                // delete action for data
-                                db.execSQL("Insert into " + BusOpenHelper.Bus_TABLE_NAME + " values('" +
-                                        removeMessage.getId() + "','" + removeMessage.getMessage() + "','"
-                                        +removeMessage.getBusMesg() + "','" + removeMessage.getTimeSearch() +"');");
-                            })
-                            .show();
-                })
-                .setNegativeButton("No",(dialog, cl) ->{
+            //Call the following functions on the main GUI thread
+            getActivity().runOnUiThread(()->{
 
-                })
-                .create().show();
-    }
-
-    private class RowViews extends RecyclerView.ViewHolder {
-
-        TextView busInfo;
-        TextView busDestination;
-        int position = -1;
-
-        public RowViews(View itemView) {
-            super(itemView);
-
-            busInfo = itemView.findViewById(R.id.busInfo);
-            busDestination = itemView.findViewById(R.id.destinationView);
-
-            itemView.setOnClickListener(click ->{
-                //start a new thread to search form the server
-                Executor newThread2 = Executors.newSingleThreadExecutor();
-                newThread2.execute(()->{
-                    // this is the 2nd thread
-                    try {
-                        String stopNumber = searchBar.getText().toString();
-                        String  routeNo= busInfo.getText().toString();
-                        busDetailURL = "https://api.octranspo1.com/v2.0/GetNextTripsForStop?appID=223eb5c3&&apiKey=ab27db5b435b8c8819ffb8095328e775&stopNo="
-                                + URLEncoder.encode(stopNumber, "UTF-8")
-                                + "&routeNo="
-                                + routeNo.substring(7)
-                                + "&format=json";
-
-                        // create a URL object
-                        URL url = new URL(busDetailURL);
-                        HttpURLConnection urlConnection =(HttpURLConnection) url.openConnection();
-                        InputStream in = new BufferedInputStream(urlConnection.getInputStream());
-
-                        String textDetails = (new BufferedReader(
-                                new InputStreamReader(in, StandardCharsets.UTF_8)))
-                                .lines()
-                                .collect(Collectors.joining("\n"));
-                        //JSON object
-                        JSONObject documentDetails = new JSONObject(textDetails);
-                        JSONObject nextTripResults = documentDetails.getJSONObject("GetNextTripsForStopResult");
-                        JSONObject routeInfo = nextTripResults.getJSONObject("Route");
-                        JSONObject routeDirection = null;
-
-                        try {
-                            routeDirection = routeInfo.getJSONArray("RouteDirection").getJSONObject(0);
-                        }catch (JSONException e){
-                            e.printStackTrace();
-                        }
-                        try{
-                            routeDirection = routeInfo.getJSONObject("RouteDirection");
-                        } catch(JSONException e){
-                            e.printStackTrace();
-                        }
-
-                            BusRoute routeDetails = busList.get(position);
-                            routeDetails.setBusNumber(routeDirection.getString("RouteNo"));
-                            routeDetails.setDestination(routeDirection.getString("RouteLabel"));
-                            JSONObject trips = routeDirection.getJSONObject("Trips");
-                            JSONArray trip = trips.getJSONArray("Trip");
-                            JSONObject firstElement = trip.getJSONObject(0);
-                            routeDetails.setLongitude(firstElement.getString("Longitude"));
-                            routeDetails.setLatitude(firstElement.getString("Latitude"));
-                            routeDetails.setGpsSpeed(firstElement.getString("GPSSpeed"));
-                            routeDetails.setStartTime(firstElement.getString("TripStartTime"));
-                            routeDetails.setAdjustedTime(firstElement.getString("AdjustedScheduleTime"));
-
-
-
-                        getActivity().runOnUiThread(() ->{
-
-                            busAdt.notifyItemInserted(busList.size()-1);
-                        });
-                        BusSearch parentAcitivty = (BusSearch)getContext();
-                        parentAcitivty.runOnUiThread(()->{
-                            parentAcitivty.userClickedRoute(routeDetails,position);
-                        });
-
-                    } catch (IOException | JSONException ioe) {
-                        Log.e("Connection error:", ioe.getMessage());
-                    }
-                });
-
+                information.setText("My Favorite: ");
             });
-        }
+            searchView.setAdapter(favorAdt);
+        });
 
-        public void setPosition(int position) {
-            this.position = position;
-        }
+
+        // Show the hlep button information
+        helpBtn = routeLayout.findViewById(R.id.Bus_help);
+        helpBtn.setOnClickListener(click -> {
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getContext());
+
+            alertDialogBuilder.setTitle(R.string.bus_help)
+                    .setMessage(R.string.help_content_bus)
+                    .setPositiveButton(R.string.close, (c, arg) -> {
+                    })
+                    .create().show();
+        });
+
+        return routeLayout;
     }
 
+    /**
+     * This function is to save the chosen route to the favorite list
+     * @param chosenRoute the route that the user choose
+     */
+    public void insertFavorite(BusRoute chosenRoute) {
 
-    private class MyBusAdapter extends RecyclerView.Adapter{
-
-        @Override
-        public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View v = getLayoutInflater().inflate(R.layout.search_view_bus, parent,false);//row in a recyclerview, bus
-            return new RowViews(v);
-        }
-
-        @Override
-        public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-            RowViews busRowLayout = (RowViews) holder;
-            busRowLayout.busInfo.setText(busList.get(position).getBusNumber());
-            busRowLayout.busDestination.setText(busList.get(position).getDirection());
-            busRowLayout.setPosition(position);
-        }
-
-        @Override
-        public int getItemCount() {
-            return busList.size();
-        }
-    }
-
-
-     class BusMessage{
-        String message;
-        int busMesg;
-        String timeSearch;
-        long id;
-
-        public void setId(long l){
-            id = l;
-        }
-
-        public long getId(){
-            return id;
-        }
-
-        public BusMessage(String message, int busMsg, String timeSearch){
-            this.message = message;
-            this.busMesg = busMsg;
-            this.timeSearch = timeSearch;
-        }
-
-        public BusMessage(String message, int searchButtonInfo, String time, long id) {
-            this.message = message;
-            this.busMesg = searchButtonInfo;
-            this.timeSearch = time;
-            setId(id);
-
-        }
-
-        public String getMessage(){
-            return  message;
-        }
-        public int getBusMesg(){
-            return busMesg;
-        }
-
-        public String getTimeSearch() {
-            return timeSearch;
-        }
-
+        //put the routes information into the database
+        ContentValues newRow = new ContentValues();
+        newRow.put(BusOpenHelper.col_routes,chosenRoute.getBusNumber());
+        newRow.put(BusOpenHelper.col_heading,chosenRoute.getDestination());
+        newRow.put(BusOpenHelper.col_direction,chosenRoute.getDirection());
+        newRow.put(BusOpenHelper.col_directionID,chosenRoute.getDirectionID());
+        Long id=db.insert(BusOpenHelper.Bus_TABLE_NAME,BusOpenHelper.col_routes,newRow);
+        String[] arr={id.toString()};
+        Snackbar.make(searchView, "You have saved this route", Snackbar.LENGTH_LONG)
+                .setAction("Undo", clk ->{
+                    db.delete(BusOpenHelper.Bus_TABLE_NAME,"_id=?",arr);
+                    Toast.makeText(getContext(), "You have deleted this route", Toast.LENGTH_LONG).show();
+                })
+                .show();
     }
 
     /**
@@ -446,12 +302,127 @@ public class BusListFragment extends Fragment {
         @RequiresApi(api = Build.VERSION_CODES.N)
         public FavoriteRowViews(View itemView) {
             super(itemView);
-            specificRoute = itemView.findViewById(R.id.destinationView);
-            headingDestination = itemView.findViewById(R.id.busInfo);
+            specificRoute = itemView.findViewById(R.id.specificRoute);
+            headingDestination = itemView.findViewById(R.id.heading);
+
+        }
+        public void setPosition(int position) {
+            this.position = position;
+        }
+
+    }
+
+    /**
+     * This class is an internal class represents an adapter object
+     */
+    private class MyAdapter extends RecyclerView.Adapter<MyRowViews>{
+        @RequiresApi(api = Build.VERSION_CODES.N)
+        @Override
+        public MyRowViews onCreateViewHolder(ViewGroup parent, int viewType) {
+            LayoutInflater inflater = getLayoutInflater();
+            View loadedView = inflater.inflate(R.layout.search_view_bus,parent,false);
+            MyRowViews initRow = new MyRowViews(loadedView);
+            return initRow;
+        }
+        @Override
+        public void onBindViewHolder(MyRowViews holder, int position) {
+
+            holder.specificRoute.setText(routeList.get(position).getBusNumber());
+            holder.headingDestination.setText(routeList.get(position).getDestination());
+            holder.setPosition(position);
+        }
+
+        @Override
+        public int getItemCount() {
+            return routeList.size();
+        }
+    }
+
+
+    /**
+     * This class is an internal class represents each row in the list
+     */
+    private class MyRowViews extends RecyclerView.ViewHolder{
+
+        TextView specificRoute;
+        TextView headingDestination;
+        int position = -1;
+
+        @RequiresApi(api = Build.VERSION_CODES.N)
+        public MyRowViews(View itemView) {
+            super(itemView);
+            specificRoute = itemView.findViewById(R.id.specificRoute);
+            headingDestination = itemView.findViewById(R.id.heading);
 
             // When click the specific bus route, go to the detailed information
             itemView.setOnClickListener(click ->{
 
+                //Start a new thread to search from the server
+                Executor newThread1 = Executors.newSingleThreadExecutor();
+                int position = getAdapterPosition();
+                newThread1.execute(()->{
+                    //This runs on another thread
+                    try{
+                        String stopNumber = searchBar.getText().toString();
+                        String routeNo = specificRoute.getText().toString();
+                        detailURL = "https://api.octranspo1.com/v2.0/GetNextTripsForStop?appID=223eb5c3&&apiKey=ab27db5b435b8c8819ffb8095328e775&stopNo="
+                                + URLEncoder.encode(stopNumber, "UTF-8")
+                                + "&routeNo="
+                                + routeNo.substring(7)
+                                + "&format=json";
+
+                        URL url1 = new URL(detailURL);
+                        HttpURLConnection urlConnection1 = (HttpURLConnection) url1.openConnection();
+                        InputStream in1 = new BufferedInputStream(urlConnection1.getInputStream());
+                        String textDetails = (new BufferedReader(
+                                new InputStreamReader(in1, StandardCharsets.UTF_8)))
+                                .lines()
+                                .collect(Collectors.joining("\n"));
+                        JSONObject theDocumentDetails = new JSONObject(textDetails);
+                        JSONObject nextTripResults = theDocumentDetails.getJSONObject("GetNextTripsForStopResult");
+                        JSONObject routeInfo = nextTripResults.getJSONObject("Route");
+                        JSONObject routeDirection =null;
+                        try{
+                            routeDirection = routeInfo.getJSONArray("RouteDirection").getJSONObject(0);
+                        } catch(JSONException e){
+                            e.printStackTrace();
+                        }
+                        try{
+                            routeDirection = routeInfo.getJSONObject("RouteDirection");
+                        } catch(JSONException e){
+                            e.printStackTrace();
+                        }
+
+                        BusRoute routeDetails = routeList.get(position);
+                        routeDetails.setBusNumber(routeDirection.getString("RouteNo"));
+                        routeDetails.setDestination(routeDirection.getString("RouteLabel"));
+                        JSONObject trips = routeDirection.getJSONObject("Trips");
+                        JSONArray trip = trips.getJSONArray("Trip");
+                        JSONObject firstElement = trip.getJSONObject(0);
+                        routeDetails.setLongitude(firstElement.getString("Longitude"));
+                        routeDetails.setLatitude(firstElement.getString("Latitude"));
+                        routeDetails.setGpsSpeed(firstElement.getString("GPSSpeed"));
+                        routeDetails.setStartTime(firstElement.getString("TripStartTime"));
+                        routeDetails.setAdjustedTime(firstElement.getString("AdjustedScheduleTime"));
+
+
+                        //Call the following function on the main GUI thread
+                        getActivity().runOnUiThread(()->{
+
+                            adt.notifyItemInserted(routeList.size()-1);
+
+                        });
+                        BusSearch parentActivity = (BusSearch) getContext();
+                        parentActivity.runOnUiThread(()->{
+                            parentActivity.userClickedRoute(routeDetails, position);
+                        });
+
+                    }
+                    catch (IOException | JSONException ioe) {
+                        Log.e("Connection error:", ioe.getMessage());
+                    }
+
+                });
             });
 
         }

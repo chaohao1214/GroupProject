@@ -54,23 +54,41 @@ import java.util.Date;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
+/**
+ * This class displays all the major function buttons on movie app homepage.
+ * Users can search a movie by title, check for help and menu option.
+ * @author Weiping Guo
+ * @version 1.0
+ */
 
 public class MovieInfo extends AppCompatActivity {
-
+/** This holds search button*/
     Button searchBtn;
+    /** This holds search editText*/
     EditText movieSearchText;
+    /** This hold the image of saved list of movies*/
     ImageView saved;
+    /** This holds the image of homepage*/
     ImageView homePage;
+    /** This holds the image of help menu*/
     ImageView help;
+    /** This holds the SharedPreferences object*/
     private SharedPreferences prefs;
+    /** This string represents the address of the server to be connected */
     private String stringURL;
+    /** This holds the fragment to display the details of a searched movie */
     MovieFragment_WPG movieFragment;
+    /** This holds the fragment to display the list of the saved movies */
     FavoriteFragment_WPG favoriteFragment;
-
     FragmentTransaction tx;
-
     FragmentManager fMnger;
 
+    /**
+     * This method is called to select an item.
+     * @param item The item selected from the menu.
+     * @return boolean Return true to access the selected app,
+     *         false to proceed to next step.
+     */
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -265,20 +283,23 @@ public class MovieInfo extends AppCompatActivity {
            } );
        });
     }
-    public void clickedMessage(MovieData searchResult, Bitmap image, int detailType) {
-        movieFragment = new MovieFragment_WPG(searchResult,image,detailType);
+
+    /**
+     * This method displays the searched movie's details.
+     *
+     * @param searchResult searched movie's info
+     * @param image searched movie's image
+     * @param type type 1 for searched movie info, 2 for searched movie info from saved list
+     */
+    public void clickedMessage(MovieData searchResult, Bitmap image, int type) {
+        movieFragment = new MovieFragment_WPG(searchResult,image,type);
         fMnger = getSupportFragmentManager();
         tx = fMnger.beginTransaction();
         tx.replace(R.id.result_Movie, movieFragment);
         tx.commit();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_wpg, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
+
 }
 
 

@@ -22,28 +22,37 @@ import com.google.android.material.snackbar.Snackbar;
 import java.util.ArrayList;
 import java.util.Collections;
 
+/**
+ * This class is a fragment of the list of saved searched movies
+ * @author Weiping Guo
+ * @version 1.0
+ */
 public class FavoriteFragment_WPG extends Fragment {
+    /** This holds the MyOpenHelper_movie object */
         MyOpenHelper_movie opener;
+    /** This holds the SQLiteDatabase object */
         SQLiteDatabase db;
+    /** This holds the image of the saved movie */
         Bitmap image;
-
+    /** This holds an ArrayList of MovieData objects */
         ArrayList<MovieData> data = new ArrayList<>();
-        MyMovieAdapter adapter;
+    /** This holds the MovieAdapter object */
+        MovieAdapter adapter;
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+            //inflate a layout for saved movies list
             View movieLayout = inflater.inflate(R.layout.saved_list_movie,container, false);
-
+            //set a RecyclerView for the saved list
             RecyclerView movieList = movieLayout.findViewById(R.id.recycler_movie);
-
             LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
             movieList.setLayoutManager(layoutManager);
-            adapter = new MyMovieAdapter();
+            adapter = new MovieAdapter();
             movieList.setAdapter(adapter);
 
             opener = new MyOpenHelper_movie(getContext());
             db = opener.getWritableDatabase();
-
+            //retrieve the data from database
             Cursor results = db.rawQuery("Select * from " + MyOpenHelper_movie.TABLE_NAME + ";", null);
             int idCol = results.getColumnIndex("_id");
             int titleCol = results.getColumnIndex(MyOpenHelper_movie.TITLE_COL);
@@ -70,7 +79,10 @@ public class FavoriteFragment_WPG extends Fragment {
             return movieLayout;
         }
 
-    private class MyMovieAdapter extends RecyclerView.Adapter<MyRowViews>{
+    /**
+     * This is a private class to represent an adapter object
+     */
+    private class MovieAdapter extends RecyclerView.Adapter<MyRowViews>{
         @Override
         public MyRowViews onCreateViewHolder(ViewGroup parent, int viewType) {
             LayoutInflater inflater = getLayoutInflater();
@@ -96,12 +108,23 @@ public class FavoriteFragment_WPG extends Fragment {
         }
     }
 
+    /**
+     * This is a private class to represent rows of list
+     */
         private class MyRowViews extends RecyclerView.ViewHolder{
+            /** This holds the text of a movie title */
             TextView titleInfo;
+        /** This holds the text of the year of the movie */
             TextView timeInfo;
+        /** This holds the default value the position of a row */
              int position = -1;
+        /** This holds the image of a movie */
             ImageView imageURL;
 
+        /**
+         * Constructor of View
+         * @param itemView the view of a row
+         */
          public MyRowViews(View itemView) {
                 super(itemView);
                 titleInfo =  itemView.findViewById(R.id.movieName);
@@ -148,7 +171,12 @@ public class FavoriteFragment_WPG extends Fragment {
                             .create().show();
                 });
             }
-            public void setPosition(int p) {
+
+        /**
+         * Position setter
+         * @param p position of row number
+         */
+        public void setPosition(int p) {
                 position = p;
             }
         }

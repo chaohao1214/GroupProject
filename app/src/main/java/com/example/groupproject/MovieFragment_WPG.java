@@ -19,19 +19,33 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.snackbar.Snackbar;
 
-
+/**
+ * This class is a fragment to display the searched movies' details.
+ * @author Weiping Guo
+ * @version 1.0
+ */
 public class MovieFragment_WPG extends Fragment {
-
+    /** This holds the MovieData object */
     MovieData searchResult;
+    /** This holds the image of the searched movie */
     Bitmap image;
+    /** This holds the chosen type for searched movie info or for the one from the saved list */
     int type;
-
+    /** This holds the MyOpenHelper_movie object */
     MyOpenHelper_movie opener;
+    /** This holds the SQLiteDatabase object */
     SQLiteDatabase db;
-
+    /** This holds the image of saving a movie to the list */
     ImageView saveBtn;
+    /** This holds the image of clearing the movie info and returning to search */
     ImageView returnBtn;
 
+    /**
+     * Constructor of MovieFragment_WPG with 3 parameters.
+     * @param searchResult the MovieData object as searched result
+     * @param image the movie image of the searched movie
+     * @param type type 1 for searched movie info, 2 for searched movie info from saved list
+     */
     public MovieFragment_WPG(MovieData searchResult, Bitmap image, int type){
         this.searchResult = searchResult;
         this.image = image;
@@ -60,8 +74,7 @@ public class MovieFragment_WPG extends Fragment {
 
         returnBtn = movieView.findViewById(R.id.homePage);
 
-        if(type == 2){
-            returnBtn.setOnClickListener(clicked -> {
+        returnBtn.setOnClickListener(clicked -> {
                 getParentFragmentManager().beginTransaction().remove(this).commit();
                 MovieInfo parentActivity = (MovieInfo) getContext();
                 FavoriteFragment_WPG favoriteFragment = new FavoriteFragment_WPG();
@@ -71,7 +84,7 @@ public class MovieFragment_WPG extends Fragment {
                 tx.commit();
 
             });
-        }
+
         returnBtn.setOnClickListener(clicked -> {
             getParentFragmentManager().beginTransaction().remove(this).commit();
         });
@@ -87,6 +100,11 @@ public class MovieFragment_WPG extends Fragment {
         return movieView;
     }
 
+    /**
+     * This method builds an alert dialog when a movie added to saved list, users can chose to add
+     * or cancel adding to saved list. Undo option is also given when chose to add or cancel.
+     * @param searchResult the MovieData object as searched result
+     */
     public void saveMovies(MovieData searchResult) {
         AlertDialog.Builder builder = new AlertDialog.Builder( getContext() );
         builder.setMessage("Would you like to save this to your saved list: "+ searchResult.getTitle())

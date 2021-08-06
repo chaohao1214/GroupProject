@@ -15,9 +15,7 @@
         <activity android:name=".SoccerActivityThird"></activity>
         <activity android:name=".SoccerActivitySecond" />
 
-        <activity android:name=".SearchStation"></activity>
         <activity android:name=".MovieInfo"></activity>
-        <activity android:name=".SearchBus"></activity>
 
         <activity android:name=".MainActivity">
             <intent-filter>

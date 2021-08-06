@@ -84,11 +84,11 @@ public class MainActivity extends AppCompatActivity {
 
         ImageView OCTranspo = findViewById(R.id.busImage);
 
-        OCTranspo.setOnClickListener(clk -> {
-            //button to next page
-            Intent nextPageOC = new Intent(MainActivity.this, SearchBus.class);
-            startActivity(nextPageOC);
-        });
+//        OCTranspo.setOnClickListener(clk -> {
+//            //button to next page
+//            Intent nextPageOC = new Intent(MainActivity.this, SearchBus.class);
+//            startActivity(nextPageOC);
+//        });
 
         ImageView Soccer = findViewById(R.id.Soccer);
 
@@ -100,11 +100,11 @@ public class MainActivity extends AppCompatActivity {
 
         ImageView carCharge = findViewById(R.id.CarCharge);
 
-        carCharge.setOnClickListener(clk -> {
-
-            Intent nextPageCar = new Intent(MainActivity.this, SearchStation.class);
-            startActivity(nextPageCar);
-        });
+//        carCharge.setOnClickListener(clk -> {
+//
+//            Intent nextPageCar = new Intent(MainActivity.this, SearchStation.class);
+//            startActivity(nextPageCar);
+//        });
 
         //access to movie finder app by clicking the image
         ImageView movie = findViewById(R.id.movie_info);

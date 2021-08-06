@@ -33,8 +33,6 @@
     <string name="hiddenText">e.g The Matrix</string >
     <string name="movieSearched">Searched Movies here</string >
     <string name="search">Search</string >
-    <string name="open">open</string>
-    <string name="close">close</string>
     <string name="helpTitle_movie">Movie Finder App</string>
 
     <string name="app_desc_movie">"

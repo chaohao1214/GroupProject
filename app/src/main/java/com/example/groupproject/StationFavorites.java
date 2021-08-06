@@ -33,18 +33,18 @@ class StationFavorites extends AppCompatActivity {
         setContentView(R.layout.activity_car_charging_station_favourites);
         ListView listOfFavourites = (ListView)findViewById(R.id.listOfFavourites);
 
-        MyDatabaseOpenHelper dbOpener = new MyDatabaseOpenHelper(this);
+        StationDatabaseOpenHelper dbOpener = new StationDatabaseOpenHelper(this);
         SQLiteDatabase db = dbOpener.getWritableDatabase();
 
-        String [] columns = {MyDatabaseOpenHelper.COL_ID, MyDatabaseOpenHelper.COL_TITLE, MyDatabaseOpenHelper.COL_LATITUDE,
-                MyDatabaseOpenHelper.COL_LONGITUDE, MyDatabaseOpenHelper.COL_PHONE};
-        Cursor results = db.query(false, MyDatabaseOpenHelper.TABLE_NAME, columns, null, null, null, null, null, null);
+        String [] columns = {StationDatabaseOpenHelper.COL_ID, StationDatabaseOpenHelper.COL_TITLE, StationDatabaseOpenHelper.COL_LATITUDE,
+                StationDatabaseOpenHelper.COL_LONGITUDE, StationDatabaseOpenHelper.COL_PHONE};
+        Cursor results = db.query(false, StationDatabaseOpenHelper.TABLE_NAME, columns, null, null, null, null, null, null);
 
-        int titleColumnIndex = results.getColumnIndex(MyDatabaseOpenHelper.COL_TITLE);
-        int latitudeColIndex = results.getColumnIndex(MyDatabaseOpenHelper.COL_LATITUDE);
-        int idColIndex = results.getColumnIndex(MyDatabaseOpenHelper.COL_ID);
-        int longitudeColIndex = results.getColumnIndex(MyDatabaseOpenHelper.COL_LONGITUDE);
-        int phoneColIndex = results.getColumnIndex(MyDatabaseOpenHelper.COL_PHONE);
+        int titleColumnIndex = results.getColumnIndex(StationDatabaseOpenHelper.COL_TITLE);
+        int latitudeColIndex = results.getColumnIndex(StationDatabaseOpenHelper.COL_LATITUDE);
+        int idColIndex = results.getColumnIndex(StationDatabaseOpenHelper.COL_ID);
+        int longitudeColIndex = results.getColumnIndex(StationDatabaseOpenHelper.COL_LONGITUDE);
+        int phoneColIndex = results.getColumnIndex(StationDatabaseOpenHelper.COL_PHONE);
         while(results.moveToNext()) {
             String title = results.getString(titleColumnIndex);
             double latitude = results.getDouble(latitudeColIndex);
@@ -70,8 +70,8 @@ class StationFavorites extends AppCompatActivity {
                         public void onClick(DialogInterface dialog, int which) {
                             favStations.remove(positionClicked);
                             adapter.notifyDataSetChanged();
-                            int numDeleted = db.delete(MyDatabaseOpenHelper.TABLE_NAME,
-                                    MyDatabaseOpenHelper.COL_ID + "=?", new String[] {Long.toString(stationToDelete.getId())});
+                            int numDeleted = db.delete(StationDatabaseOpenHelper.TABLE_NAME,
+                                    StationDatabaseOpenHelper.COL_ID + "=?", new String[] {Long.toString(stationToDelete.getId())});
                             Log.i("StationView", "Deleted " + numDeleted + " rows");
                             Snackbar.make((View)findViewById(R.id.snackbar), "Station was successfully deleted", Snackbar.LENGTH_LONG).show();
                         }

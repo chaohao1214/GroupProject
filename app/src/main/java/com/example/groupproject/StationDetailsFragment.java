@@ -70,16 +70,16 @@ public class StationDetailsFragment extends Fragment {
             startActivity(mapIntent);
         });
 
-        MyDatabaseOpenHelper dbOpener = new MyDatabaseOpenHelper(this.getActivity());
+        StationDatabaseOpenHelper dbOpener = new StationDatabaseOpenHelper(this.getActivity());
         SQLiteDatabase db = dbOpener.getWritableDatabase();
         Button addBtn = (Button) stationDetailsView.findViewById(R.id.addButton);
         addBtn.setOnClickListener(click -> {
             ContentValues newRowValues = new ContentValues();
-            newRowValues.put(MyDatabaseOpenHelper.COL_TITLE, stationTitle);
-            newRowValues.put(MyDatabaseOpenHelper.COL_LATITUDE, latitudeValue);
-            newRowValues.put(MyDatabaseOpenHelper.COL_LONGITUDE, longitudeValue);
-            newRowValues.put(MyDatabaseOpenHelper.COL_PHONE, phoneNumber);
-            long newId = db.insert(MyDatabaseOpenHelper.TABLE_NAME, null, newRowValues);
+            newRowValues.put(StationDatabaseOpenHelper.COL_TITLE, stationTitle);
+            newRowValues.put(StationDatabaseOpenHelper.COL_LATITUDE, latitudeValue);
+            newRowValues.put(StationDatabaseOpenHelper.COL_LONGITUDE, longitudeValue);
+            newRowValues.put(StationDatabaseOpenHelper.COL_PHONE, phoneNumber);
+            long newId = db.insert(StationDatabaseOpenHelper.TABLE_NAME, null, newRowValues);
 
             AlertDialog.Builder builder = new AlertDialog.Builder(this.getContext());
             AlertDialog dialog = builder.setMessage("Station was added to the list of favourite stations")

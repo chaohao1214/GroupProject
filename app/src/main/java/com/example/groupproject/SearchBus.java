@@ -113,7 +113,7 @@ public class SearchBus extends AppCompatActivity {
         public RowViews(View itemView) {
             super(itemView);
 
-            busInfo = itemView.findViewById(R.id.busInfo);
+           // busInfo = itemView.findViewById(R.id.busInfo);
             timeInfo = itemView.findViewById(R.id.timeView);
 
             itemView.setOnClickListener(click ->{
@@ -160,8 +160,8 @@ public class SearchBus extends AppCompatActivity {
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = getLayoutInflater().inflate(R.layout.search_view, parent,false);//row in a recyclerview, bus
-        return new RowViews(v);
+      //  View v = getLayoutInflater().inflate(R.layout.search_view, parent,false);//row in a recyclerview, bus
+        return null;//new RowViews(v);
     }
 
     @Override

@@ -18,6 +18,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -37,6 +38,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
@@ -45,14 +47,15 @@ public class SearchStation extends AppCompatActivity {
 
     Toolbar main_menu;
     private RecyclerView carRecyclerView;
+    private RecyclerView carRecyclerView1;
     private StationAdapter carStationAdapter;
     private ArrayList<StationObject> carStationList;
     private EditText longitude;
     private SharedPreferences sharedPref;
     private Button searchStationBtn;
-
     boolean isTablet;
     private String serverURL;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +71,12 @@ public class SearchStation extends AppCompatActivity {
 
         carStationList = new ArrayList<>();
 
+        carRecyclerView1 = findViewById(R.id.recycler_view);
+        carRecyclerView1.setHasFixedSize(true);
+        carRecyclerView1.setLayoutManager(new LinearLayoutManager(this));
+
+
+
 
         // Toolbar
         main_menu = findViewById(R.id.carMenu);
@@ -75,6 +84,8 @@ public class SearchStation extends AppCompatActivity {
 
         //receive info from previous page
         Intent fromPreOC = getIntent();
+
+        //fragment
 
         //Shared preference
         sharedPref = getSharedPreferences("SharedPreferencesCarChargingStation", MODE_PRIVATE);
@@ -134,9 +145,9 @@ public class SearchStation extends AppCompatActivity {
                                 JSONObject addressJSON = stationJSON.getJSONObject("AddressInfo");
 
                                 String title = addressJSON.getString("Title");
-                                double latitude = addressJSON.getDouble("Latitude");
-                                double longitude = addressJSON.getDouble("Longitude");
-                                String contactNo = addressJSON.getString("ContactTelephone1");
+//                                double latitude = addressJSON.getDouble("Latitude");
+//                                double longitude = addressJSON.getDouble("Longitude");
+//                                String contactNo = addressJSON.getString("ContactTelephone1");
 
 
  //                               long id =0;
@@ -144,6 +155,7 @@ public class SearchStation extends AppCompatActivity {
                                 carStationList.add(new StationObject(title));
                             }
                             carStationAdapter = new StationAdapter(SearchStation.this, carStationList, true);
+
                            runOnUiThread(()->{ carRecyclerView.setAdapter(carStationAdapter);
                                dialog.hide();
                            });

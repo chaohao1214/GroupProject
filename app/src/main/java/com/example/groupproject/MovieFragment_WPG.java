@@ -52,6 +52,13 @@ public class MovieFragment_WPG extends Fragment {
         this.type = type;
     }
 
+    /**
+     * This method creates and returns the view associated with the fragment
+     * @param inflater layout inflater of XML file
+     * @param container container that used to contain other views, i.e. the different textview(s)
+     * @param savedInstanceState the saved instance in the bundle
+     * @return movieView of the searched movie
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View movieView = inflater.inflate(R.layout.activity_frag_movie, container, false);

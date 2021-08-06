@@ -114,6 +114,10 @@ public class MovieInfo extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * This method to initialize all activities.
+     * @param savedInstanceState  the saved instance in the bundle
+     */
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {

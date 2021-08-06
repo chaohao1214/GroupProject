@@ -44,36 +44,64 @@ public class MovieData {
         setId(id);
     }
 
+    /**
+     * setter of id
+     * @param l id of movie
+     */
     public void setId(long l){
         id = l;
     }
-
+    /**
+     * getter of id
+     * @return id of movie
+     */
     public long getId(){
         return id;
     }
-
+    /**
+     * getter of movie title
+     * @return title of movie
+     */
     public String getTitle() {
         return title;
     }
-
+    /**
+     * getter of the year of movie
+     * @return year of movie
+     */
     public String getYear() {
         return year;
     }
-
+    /**
+     * getter of movie rating
+     * @return rating of movie
+     */
     public String getRating() {
         return rating;
     }
-
+    /**
+     * getter of run time of movie
+     * @return runtime of movie
+     */
     public String getRuntime() { return runtime; }
-
+    /**
+     * getter of actors of movie
+     * @return actors of movie
+     */
     public String getActor() {
         return actor;
     }
-
+    /**
+     * getter of plot of movies
+     * @return plot of movies
+     */
     public String getPlot() {
         return plot;
     }
-
+    /**
+     * getter of image of movie
+     * @return image of movie
+     */
     public String getImageURL() {
         return imageURL;
     }

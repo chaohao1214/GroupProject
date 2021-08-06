@@ -5,7 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 /**
  * This class inherits from SQLiteOpenHelper
- * it allows to create and update database
+ * it allows to create and update database table
  * @author Weiping Guo
  * @version 1.0
  */
@@ -40,7 +40,10 @@ public class MyOpenHelper_movie extends SQLiteOpenHelper {
     public MyOpenHelper_movie(Context context) {
         super(context, MOVIE, null, VERSION);
     }
-
+    /**
+     * This method to create the table.
+     * @param db database of movie
+     */
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE " + TABLE_NAME + " ("
@@ -53,7 +56,12 @@ public class MyOpenHelper_movie extends SQLiteOpenHelper {
                 + PLOT_COL + " TEXT, "
                 + IMAGE_COL + " TEXT);");
     }
-
+    /**
+     * This method to drop table if exits, and then create the table
+     * @param db database
+     * @param oldVersion old version
+     * @param newVersion new version
+     */
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("drop table if exists " + TABLE_NAME + ";") ;

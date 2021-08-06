@@ -39,6 +39,13 @@ public class FavoriteFragment_WPG extends Fragment {
     /** This holds the MovieAdapter object */
         MovieAdapter adapter;
 
+    /**
+     * This method creates and returns the view associated with the fragment which is the list of saved movies.
+     * @param inflater layout inflater of XML file
+     * @param container container that used to contain other views
+     * @param savedInstanceState the saved instance in the bundle
+     * @return movieLayout of the saved movies list
+     */
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
             //inflate a layout for saved movies list

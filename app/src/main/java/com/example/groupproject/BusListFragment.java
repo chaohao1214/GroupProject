@@ -50,6 +50,7 @@ import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
 /**
+ * This class is a fragment to show the searched bus route result.
  * @author Chaohao
  * @version 1.0
  */

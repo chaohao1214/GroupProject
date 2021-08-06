@@ -5,6 +5,11 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+/**
+ * This class is a fragment to show the searched bus route result.
+ * @author Chaohao
+ * @version 1.0
+ */
 
 public class BusOpenHelper extends SQLiteOpenHelper {
     public static final String name ="BusDatabase";

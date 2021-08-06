@@ -5,81 +5,95 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    >
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
+        android:id="@+id/toolbarMain"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
-        android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme" />
-
+        android:visibility="visible"
+        app:layout_constraintTop_toTopOf="parent" />
     <androidx.drawerlayout.widget.DrawerLayout
-
-        android:id="@+id/drawer_layout"
+        android:id="@+id/main_drawer_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <LinearLayout
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:background="@color/cardview_shadow_start_color"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:context=".MainActivity"
-            android:orientation="vertical">
+            tools:context=".MainActivity">
 
 
             <ImageView
                 android:id="@+id/busImage"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:layout_width="168dp"
+                android:layout_height="115dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="20dp"
                 android:layout_weight="1"
-                app:srcCompat="@drawable/bus"
-
-                android:paddingTop="20dp"
                 android:clickable="true"
-                android:focusable="true"/>
-
-            <ImageView
-                android:id="@+id/imageView2"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                app:srcCompat="@drawable/gas_pump"
+                android:focusable="true"
                 android:paddingTop="20dp"
-                android:clickable="true"
-                android:focusable="true"/>
+                app:layout_constraintBottom_toTopOf="@+id/CarCharge"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/bus" />
 
             <ImageView
-                android:id="@+id/imageView3"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:id="@+id/CarCharge"
+                android:layout_width="156dp"
+                android:layout_height="127dp"
+                android:layout_marginBottom="20dp"
                 android:layout_weight="1"
-                app:srcCompat="@drawable/movie"
-                android:paddingTop="20dp"
                 android:clickable="true"
-                android:focusable="true"/>
+                android:focusable="true"
+                android:paddingTop="20dp"
+                app:layout_constraintBottom_toTopOf="@+id/movie_info"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:srcCompat="@drawable/gas_pump" />
 
             <ImageView
-                android:id="@+id/imageView4"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:id="@+id/Soccer"
+                android:layout_width="164dp"
+                android:layout_height="144dp"
+                android:layout_marginBottom="25dp"
                 android:layout_weight="1"
-                app:srcCompat="@drawable/football"
-                android:paddingTop="20dp"
                 android:clickable="true"
-                android:focusable="true"/>
-        </LinearLayout>
+                android:focusable="true"
+                android:paddingTop="20dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:srcCompat="@drawable/football" />
+
+            <ImageView
+                android:id="@+id/movie_info"
+                android:layout_width="163dp"
+                android:layout_height="124dp"
+                android:layout_marginBottom="20dp"
+                app:layout_constraintBottom_toTopOf="@+id/Soccer"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.493"
+                app:layout_constraintStart_toStartOf="parent"
+                app:srcCompat="@drawable/movie1" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <com.google.android.material.navigation.NavigationView
+            android:id="@+id/main_popout_menu"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:id="@+id/popout_menu"
+
             android:layout_gravity="start"
             android:fitsSystemWindows="true"
-            app:headerLayout="@layout/activity_main_author_app_info"
-            app:menu="@menu/main_activity_actions"
-            app:itemIconTint="@color/black">
-        </com.google.android.material.navigation.NavigationView>
+            app:headerLayout="@layout/main_popout_header"
+            app:menu="@menu/main_activity_actions" />
 
     </androidx.drawerlayout.widget.DrawerLayout>
 

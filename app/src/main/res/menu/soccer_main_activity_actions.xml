@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+<!--    <item-->
+<!--        android:id="@+id/hide_views"-->
+<!--        android:icon="@drawable/yardim"-->
+<!--        android:title="Need Help ?"-->
+<!--        app:showAsAction="always" />-->
+    <item
+        android:id="@+id/clickHelpbtn"
+        android:icon="@drawable/yardim"
+        android:title="@string/needHelp"
+        app:showAsAction="always" />
+    <item android:title="Click Help Icon" />
+
+
+</menu>

@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#FCFDFC">
+
+
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        />
+
+    <androidx.drawerlayout.widget.DrawerLayout
+        android:id="@+id/drawer_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context=".MovieInfo">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/fragment_Movie"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+
+                <TextView
+                    android:id="@+id/welcomgmsg"
+                    android:layout_width="379dp"
+                    android:layout_height="35dp"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginLeft="32dp"
+                    android:layout_marginEnd="32dp"
+                    android:layout_marginRight="32dp"
+                    android:layout_marginBottom="12dp"
+                    android:background="#FCFDFC"
+                    android:fontFamily="sans-serif-medium"
+                    android:lineSpacingExtra="8sp"
+                    android:text="@string/movieWelcome"
+                    android:textAllCaps="false"
+                    android:textColor="#663070"
+                    android:textSize="20sp"
+                    android:textStyle="italic"
+                    app:layout_constraintBottom_toTopOf="@+id/movieSearchText"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.411"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.15" />
+
+                <TextView
+                    android:id="@+id/movieSearchText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="4dp"
+                    android:layout_marginRight="4dp"
+                    android:layout_marginBottom="24dp"
+                    android:fontFamily="sans-serif-medium"
+                    android:text="@string/askTitle"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    android:textColor="#3F51B5"
+                    android:textSize="24sp"
+                    app:layout_constraintBottom_toTopOf="@+id/searchTitle"
+                    app:layout_constraintEnd_toEndOf="@+id/welcomgmsg" />
+
+                <Button
+                    android:id="@+id/searchButton"
+                    android:layout_width="141dp"
+                    android:layout_height="50dp"
+                    android:layout_marginStart="50dp"
+                    android:layout_marginLeft="50dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="44dp"
+                    android:layout_marginRight="44dp"
+                    android:layout_marginBottom="400dp"
+                    android:text="@string/search"
+                    app:backgroundTint="#FF9800"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/searchTitle"
+                    app:layout_constraintVertical_bias="0.0" />
+
+                <EditText
+                    android:id="@+id/searchTitle"
+                    android:layout_width="399dp"
+                    android:layout_height="41dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="168dp"
+                    android:ems="5"
+                    android:fontFamily="sans-serif-light"
+                    android:hint="@string/hiddenText"
+                    android:inputType="text"
+                    android:text="@string/hiddenText"
+                    android:textSize="16sp"
+                    android:textStyle="italic"
+                    android:visibility="visible"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:ignore="HardcodedText" />
+
+                <FrameLayout
+                    android:id="@+id/result_Movie"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:background="@color/white"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/searchButton"
+                    app:layout_constraintTop_toBottomOf="@+id/searchButton" />
+
+                <ImageView
+                    android:id="@+id/homePage"
+                    android:layout_width="42dp"
+                    android:layout_height="38dp"
+                    android:layout_marginTop="12dp"
+                    app:layout_constraintTop_toBottomOf="@+id/welcomgmsg"
+                    app:srcCompat="@drawable/home_movie"
+                    tools:layout_editor_absoluteX="20dp" />
+
+                <ImageView
+                    android:id="@+id/saved"
+                    android:layout_width="42dp"
+                    android:layout_height="39dp"
+                    android:layout_marginTop="12dp"
+                    app:layout_constraintEnd_toStartOf="@+id/help"
+                    app:layout_constraintHorizontal_bias="0.624"
+                    app:layout_constraintStart_toEndOf="@+id/homePage"
+                    app:layout_constraintTop_toBottomOf="@+id/welcomgmsg"
+                    app:srcCompat="@drawable/save_movie" />
+
+                <ImageView
+                    android:id="@+id/help"
+                    android:layout_width="37dp"
+                    android:layout_height="42dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="25dp"
+                    android:layout_marginRight="25dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/welcomgmsg"
+                    app:srcCompat="@drawable/help_movie" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </ScrollView>
+
+        <com.google.android.material.navigation.NavigationView
+            android:id="@+id/popout_menu"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:fitsSystemWindows="true"
+            app:headerLayout="@layout/popout_header_movie"
+            app:menu="@menu/menu_wpg">
+
+
+        </com.google.android.material.navigation.NavigationView>
+    </androidx.drawerlayout.widget.DrawerLayout>
+
+</LinearLayout>

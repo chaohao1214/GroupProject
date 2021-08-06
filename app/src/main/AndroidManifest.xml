@@ -11,7 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.GroupProject"
         >
-
+        <activity android:name=".BusSearch"></activity>
         <activity android:name=".SoccerActivityThird"></activity>
         <activity android:name=".SoccerActivitySecond" />
 
@@ -20,6 +20,7 @@
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

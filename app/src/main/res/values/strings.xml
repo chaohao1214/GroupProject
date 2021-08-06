@@ -62,4 +62,14 @@
         7-Click More Details to view more details\n
         8-Click Delete to remove from the saved list\n
         Created by Weiping Guo"</string>
+    <string name="open">open</string>
+    <string name="close">close</string>
+    <string name="bus_latitude">Latitude</string>
+    <string name="bus_Longitude">Longitude</string>
+    <string name="yes">yes</string>
+    <string name="no">no</string>
+    <string name="bus_search">search</string>
+    <string name="bus_help">help</string>
+    <string name="help_title_bus">Instruction</string>
+    <string name="help_content_bus">Please enter the bus number and click serach button</string>
 </resources>

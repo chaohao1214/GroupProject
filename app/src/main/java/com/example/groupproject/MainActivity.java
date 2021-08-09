@@ -35,39 +35,24 @@ public class MainActivity extends AppCompatActivity {
 
                 Intent intent = new Intent(this, SoccerActivitySecond.class);
                 startActivity(intent);
-
-
         }
-
         return super.onOptionsItemSelected(item);
-
     }
-
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu m) {
-
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main_activity_actions, m);
-
         return true;
     }
-
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-
         Toolbar myToolbarMain = findViewById(R.id.toolbarMain);
         setSupportActionBar(myToolbarMain);
-
         DrawerLayout drawerMain = findViewById(R.id.main_drawer_layout);
-
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerMain, myToolbarMain, R.string.openMain, R.string.closeMain);
         drawerMain.addDrawerListener(toggle);
         toggle.syncState();

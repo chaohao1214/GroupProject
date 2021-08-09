@@ -38,9 +38,9 @@ import java.util.concurrent.Executors;
 public class SoccerActivityThird extends AppCompatActivity {
     private RecyclerView recyclerView;
     private RecyclerAdapter recyclerAdapter;
-
     private List<String> itemList;
     private List<Article> articles ;
+    ProgressBar pb;
 
 
     @Override
@@ -52,7 +52,7 @@ public class SoccerActivityThird extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.recycler);
 
-        ProgressBar pb = findViewById(R.id.progressBar);
+        pb = findViewById(R.id.progressBar);
 
 
         recyclerAdapter = new RecyclerAdapter(itemList);
@@ -146,9 +146,13 @@ public class SoccerActivityThird extends AppCompatActivity {
         });
 
     }
+
+    /**
+     * ???
+     */
     class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
 
-        private static final String TAG = "RecyclerAdapter";
+
         List<String> itemList;
         public RecyclerAdapter(List<String> itemList) {
             this.itemList = itemList;
@@ -176,11 +180,20 @@ public class SoccerActivityThird extends AppCompatActivity {
             return itemList.size();
         }
 
+        /**
+         * ???
+         *
+         */
         class ViewHolder extends RecyclerView.ViewHolder{
 
 
             TextView title ;
 
+
+            /**
+             *
+             * @param itemView
+             */
             public ViewHolder(View itemView) {
                 super(itemView);
                 title = itemView.findViewById(R.id.titleText);
@@ -204,6 +217,9 @@ public class SoccerActivityThird extends AppCompatActivity {
 
     }
 
+    /**
+     *
+     */
      private class Article {
 
          private String title;

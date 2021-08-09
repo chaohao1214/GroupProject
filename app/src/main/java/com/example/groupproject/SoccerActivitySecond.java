@@ -23,18 +23,36 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
+/**
+ * @author Salih
+ * @version 1.0
+ *
+ */
 
 public class SoccerActivitySecond extends AppCompatActivity {
+    /** this variable holds the ratingbar*/
     RatingBar ratingBar ;
+    /** This holds alert Dialog for pop dialog*/
     AlertDialog.Builder popDialog;
+    /** This hold a toolbar which is at the top of screen*/
+    AlertDialog.Builder builder ;
+    /** This hold a builder of AlertDialog class*/
     Toolbar myToolbar;
+    /** This holds prefs to save values in the file*/
     SharedPreferences prefs;
+    /** this holds edit name variable so that people can edit */
     EditText editName ;
+    /** This is welcome variable starting of the app */
     TextView welcome;
+    /** this holds the button to edit the name*/
     Button editYourNameButton;
+    /** this holds the button when clicking it goes to the next page*/
     Button toNextPage ;
+    /** This is used to save the rating */
     float savedRating;
+    /** This holds the ratingbar when the app started*/
     RatingBar rateBar ;
+
 
 
 
@@ -66,9 +84,6 @@ public class SoccerActivitySecond extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.soccer_activity_second);
 
-
-
-
          myToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
 
@@ -87,10 +102,8 @@ public class SoccerActivitySecond extends AppCompatActivity {
         editName = findViewById(R.id.editName);
         welcome = findViewById(R.id.welcome);
         editYourNameButton = findViewById(R.id.editYourNameButton);
-
         toNextPage = findViewById(R.id.toNextPage);
 
-        //called methods
         showToastMessage();
         ratingBarDialogBox();
 
@@ -103,7 +116,7 @@ public class SoccerActivitySecond extends AppCompatActivity {
             welcome.setText(greeting.concat(" ")+editName.getText().toString().toUpperCase());
         });
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(SoccerActivitySecond.this);
+        builder = new AlertDialog.Builder(SoccerActivitySecond.this);
         toNextPage.setOnClickListener( clk ->{
             builder.setMessage("Are you sure you want to go to the next page ? \n" )
                     .setTitle("Question")
@@ -115,10 +128,18 @@ public class SoccerActivitySecond extends AppCompatActivity {
 
     }
 
+    /**
+     *This function uses intent object to help the user to get the next
+     * page. User can go from second activity to the third activity
+     */
     public void openSoccerGamesApiApp(){
         Intent intent = new Intent(this, SoccerActivityThird.class);
         startActivity(intent);
     }
+
+    /**
+     * This function shows a toast message when the app opened
+     */
     public void showToastMessage( ){
         Context context = getApplicationContext();
         CharSequence message = "Hello, Welcome to Salih's App!";
@@ -127,7 +148,10 @@ public class SoccerActivitySecond extends AppCompatActivity {
         toast.show();
     }
 
-
+    /**
+     * This functions shows a dialogbox when user start the app
+     * The alert dialog asks the user if he or she liked the app
+     */
     public void ratingBarDialogBox () {
         popDialog = new AlertDialog.Builder(this);
         ratingBar = new RatingBar(this);

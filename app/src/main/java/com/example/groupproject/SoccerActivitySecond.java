@@ -35,7 +35,7 @@ public class SoccerActivitySecond extends AppCompatActivity {
     Button toNextPage ;
     float savedRating;
     RatingBar rateBar ;
-    // AlertDialog.Builder buildera = new AlertDialog.Builder(SoccerActivitySecond.this);
+
 
 
     // HELP MENU SOCCER SECOND ACTIVITY
@@ -72,20 +72,7 @@ public class SoccerActivitySecond extends AppCompatActivity {
          myToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
 
-//        DrawerLayout drawer = findViewById(R.id.drawer_layout);
 
-//        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, myToolbar, R.string.open, R.string.close);
-//        drawer.addDrawerListener(toggle);
-//        toggle.syncState();
-//
-//        NavigationView navigationView = findViewById(R.id.popout_menu);
-//        navigationView.setNavigationItemSelectedListener( (item)-> {
-//
-//            onOptionsItemSelected(item);
-//            drawer.closeDrawer(GravityCompat.START);
-//
-//            return false;
-//        });
         rateBar = findViewById(R.id.ratingBar);
         prefs = getSharedPreferences("MyData", Context.MODE_PRIVATE);
         savedRating = prefs.getFloat("rating", -1);
@@ -140,7 +127,7 @@ public class SoccerActivitySecond extends AppCompatActivity {
         toast.show();
     }
 
-    @SuppressLint("ResourceType")
+
     public void ratingBarDialogBox () {
         popDialog = new AlertDialog.Builder(this);
         ratingBar = new RatingBar(this);

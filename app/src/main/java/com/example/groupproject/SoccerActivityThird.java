@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.android.material.snackbar.Snackbar;
@@ -35,20 +36,24 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 public class SoccerActivityThird extends AppCompatActivity {
-    RecyclerView recyclerView;
-    RecyclerAdapter recyclerAdapter;
+    private RecyclerView recyclerView;
+    private RecyclerAdapter recyclerAdapter;
 
-    List<String> itemList;
+    private List<String> itemList;
+    private List<Article> articles ;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.soccer_activity_third);
-        Intent fromPrePage = getIntent();
 
-        itemList = new ArrayList<>();
+        itemList = new LinkedList<>();
 
         recyclerView = findViewById(R.id.recycler);
+
+        ProgressBar pb = findViewById(R.id.progressBar);
+
 
         recyclerAdapter = new RecyclerAdapter(itemList);
 
@@ -57,13 +62,30 @@ public class SoccerActivityThird extends AppCompatActivity {
         recyclerView.setAdapter(recyclerAdapter);
 
         itemList.add("Football News, Live Scores, Results Transfers | Goal.com");
+        itemList.add("Transfer news and rumours LIVE: Inter eye Martial as Lukaku replacement");
+        itemList.add("Roma join Arsenal and Atalanta in race to sign Chelsea's Abraham");
+        itemList.add("Pique admits ‘Barcelona are a bit broken’ despite 3-0 Juventus victory");
+        itemList.add("Hearts of Oak beat Ashanti Gold in Ghana FA Cup final to seal season double");
+        itemList.add("Koeman: There’s no Messi but Barcelona are excited about this season");
+        itemList.add("LIVE: Barcelona vs Juventus");
+        itemList.add("Klopp hints at Liverpool transfers before summer window ends");
+        itemList.add("How Benni McCarthy helped improve Bafana Bafana hopeful Makhaula's game");
+        itemList.add("Reyna: Sancho told me to take the No. 7 shirt before Man Utd move");
+        itemList.add("Football News, Live Scores, Results Transfers | Goal.com");
+        itemList.add("Transfer news and rumours LIVE: Inter eye Martial as Lukaku replacement");
+        itemList.add("Roma join Arsenal and Atalanta in race to sign Chelsea's Abraham");
+        itemList.add("Pique admits ‘Barcelona are a bit broken’ despite 3-0 Juventus victory");
+        itemList.add("Hearts of Oak beat Ashanti Gold in Ghana FA Cup final to seal season double");
+        itemList.add("Koeman: There’s no Messi but Barcelona are excited about this season");
+        itemList.add("LIVE: Barcelona vs Juventus");
+        itemList.add("Klopp hints at Liverpool transfers before summer window ends");
+        itemList.add("How Benni McCarthy helped improve Bafana Bafana hopeful Makhaula's game");
+        itemList.add("Reyna: Sancho told me to take the No. 7 shirt before Man Utd move");
+
 
         Executor thread = Executors.newSingleThreadExecutor();
         thread.execute(() -> {
-            String title = null;
-            String pubDate = null;
-            String link = null;
-            String description = null;
+
             String stringUrl = "http://www.goal.com/en/feeds/news?fmt=rss";
 
             try {
@@ -77,6 +99,11 @@ public class SoccerActivityThird extends AppCompatActivity {
                 XmlPullParser xpp = factory.newPullParser();
                 xpp.setInput(in, "UTF-8");
 
+                String title = null;
+                String date = null;
+                String link = null;
+                String description = null;
+                String imgURL = null;
 
                 while (xpp.next() != XmlPullParser.END_DOCUMENT) {
                     switch (xpp.getEventType()) {
@@ -89,7 +116,7 @@ public class SoccerActivityThird extends AppCompatActivity {
                             } else if (xpp.getName().equals("pubDate")) {
                                 xpp.next();
 
-                                pubDate = xpp.getText();
+                                date = xpp.getText();
                             } else if (xpp.getName().equals("link")) {
                                 xpp.next();
                                 link = xpp.getText();
@@ -98,11 +125,12 @@ public class SoccerActivityThird extends AppCompatActivity {
                                 description = xpp.getText();
                             }
                             break;
-                        case XmlPullParser.END_TAG:
-                            if (xpp.getName().equals("item")) {
-                                //add article:
-                                //articles.add(new Article(title, pubDate, link, description));
-                            }
+
+                        case XmlPullParser.END_TAG: {
+                                if (title != null && date != null && link != null && description != null) {
+                                    articles.add(new Article(title, link, date, description, imgURL));
+                                }
+                        }
                             break;
                         case XmlPullParser.TEXT:
 
@@ -155,10 +183,7 @@ public class SoccerActivityThird extends AppCompatActivity {
 
             public ViewHolder(View itemView) {
                 super(itemView);
-
-                // imageView = itemView.findViewById(R.id.imageView);
                 title = itemView.findViewById(R.id.titleText);
-                //value = itemView.findViewById(R.id.valueText);
                 itemView.setOnClickListener(click -> {
                     AlertDialog.Builder builder = new AlertDialog.Builder(SoccerActivityThird.this);
 
@@ -170,9 +195,6 @@ public class SoccerActivityThird extends AppCompatActivity {
                             }).create().show();
 
                     Snackbar.make(click,"You deleted message #",Snackbar.LENGTH_LONG).setAction("Undo", clk ->{
-
-
-
                     }).show();
 
                 });
@@ -182,9 +204,42 @@ public class SoccerActivityThird extends AppCompatActivity {
 
     }
 
-     private class article {
+     private class Article {
 
-    }
+         private String title;
+         private String url;
+         private String date;
+         private String description;
+         private String imgLink;
+
+         public Article(String title, String url, String date, String description, String imgLink) {
+             this.title = title;
+             this.url = url;
+             this.date = date;
+             this.description = description;
+             this.imgLink = imgLink;
+         }
+
+         public String getTitle() {
+             return title;
+         }
+
+         public String getUrl() {
+             return url;
+         }
+
+         public String getDate() {
+             return date;
+         }
+
+         public String getDescription() {
+             return description;
+         }
+
+         public String getImgLink() {
+             return imgLink;
+         }
+     }
 
 }
 

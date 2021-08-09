@@ -1,4 +1,5 @@
 package com.example.groupproject;
+
 import android.app.Activity;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -7,7 +8,7 @@ import android.util.Log;
 /**
  * Class helps to create, update a database
  */
-public class StationDatabaseOpenHelper extends SQLiteOpenHelper {
+public class MyDatabaseOpenHelper extends SQLiteOpenHelper {
     /**
      * database name
      */
@@ -44,7 +45,7 @@ public class StationDatabaseOpenHelper extends SQLiteOpenHelper {
      * Constructor to create a database open helper
      * @param ctx activity
      */
-    public StationDatabaseOpenHelper(Activity ctx){
+    public MyDatabaseOpenHelper(Activity ctx){
         super(ctx, DATABASE_NAME, null, VERSION_NUM );
     }
     /**
@@ -80,5 +81,4 @@ public class StationDatabaseOpenHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 }
-
 

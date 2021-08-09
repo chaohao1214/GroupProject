@@ -4,10 +4,10 @@
     android:layout_height="match_parent">
 
     <TextView
+        android:id="@+id/textTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/textTitle"
-        android:text="@string/title"/>
+        android:text="@string/title" />
 
     <TextView
         android:layout_width="wrap_content"

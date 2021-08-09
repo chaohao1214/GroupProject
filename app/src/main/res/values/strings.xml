@@ -1,21 +1,31 @@
 <resources>
     <string name="app_name">GroupProject</string>
-    <string name="movieWelcome">Welcome to Movie Finder</string>
-    <string name="askTitle">Movie Title</string >
-    <string name="hiddenText">e.g The Matrix</string >
-    <string name="movieSearched">Searched Movies here</string >
+    <string name="main_menu_car_stations">Car Charging Stations Finder</string>
+    <string name="latitude">Latitude: </string>
+    <string name="latitudeInput">Enter latitude</string>
+    <string name="longitude">Longitude: </string>
+    <string name="longitudeInput">Enter longitude</string>
+    <string name="searchButton">Find</string>
+    <string name="deleteButton">Delete</string>
+    <string name="title">Location Title: </string>
+    <string name="phone">Contact Telephone Number: </string>
+    <string name="loadMap">Load Directions In Google Maps</string>
+    <string name="add">Add To Favourites</string>
+    <string name="listOfFavourites">See List Of Favourite Stations</string>
+    <string name="phoneNull">Not available</string>
+
+    <string name="description">Author: Shakib Ahmed\nVersion Number: 1.0 \nInstructions:\n 1 - Enter latitude and longitude\n
+                        2 - Press "Search" button\n
+                        3 - Click a station from the list and see detailed information\n
+                        4 - Click "Load location in Google Maps" to see location of a station\n
+                        5 - Click "Add to favourites" to add a location to the list of favourite stations\n
+                        6 - Click "See list of favourite station' to go to the next page with favourite stations\n
+                        7 - Click "Delete" to delete a station from the list of favourite stations</string>
 
 
-    <!--Car Charging -->
-    <string name="findButtonText">Find Stations</string >
-    <string name="title">Title</string>
-    <string name="latitude">Latitude</string>
-    <string name="longitude">Longitude</string>
-    <string name="phone">Contact No</string>
-    <string name="loadMap">Load Map</string>
-    <string name="add">Add to Favorites</string>
-    <string name="listOfFavourites">List of Favorites</string>
-    <string name="deleteButton">DELETE</string>
+
+
+
 
 
 </resources>

@@ -9,7 +9,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
@@ -28,19 +27,19 @@ public class MainActivity extends AppCompatActivity {
 
         carCharge.setOnClickListener(clk -> {
             // go to next page
-            Intent nextPageCar = new Intent(MainActivity.this,SearchStation.class);
+            Intent nextPageCar = new Intent(MainActivity.this, CarChargingStation.class);
             startActivity(nextPageCar);
         });
     }
 
     public void startCarChargingActivity() {
-        Intent chargingActivity = new Intent(this, SearchStation.class);
+        Intent chargingActivity = new Intent(this, CarChargingStation.class);
         startActivity(chargingActivity);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.car_menu, menu);
+        getMenuInflater().inflate(R.menu.main_menu, menu);
         return true;
     }
 

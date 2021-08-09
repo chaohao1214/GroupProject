@@ -21,18 +21,18 @@
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:background="@color/cardview_shadow_start_color"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@color/cardview_shadow_start_color"
             tools:context=".MainActivity">
 
 
             <ImageView
                 android:id="@+id/busImage"
-                android:layout_width="wrap_content"
-                android:layout_height="115dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="20dp"
+                android:layout_width="140dp"
+                android:layout_height="140dp"
+                android:layout_marginTop="32dp"
+                android:layout_marginBottom="8dp"
                 android:layout_weight="1"
                 android:clickable="true"
                 android:focusable="true"
@@ -45,9 +45,10 @@
 
             <ImageView
                 android:id="@+id/CarCharge"
-                android:layout_width="156dp"
-                android:layout_height="127dp"
-                android:layout_marginBottom="20dp"
+                android:layout_width="140dp"
+                android:layout_height="140dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
                 android:layout_weight="1"
                 android:clickable="true"
                 android:focusable="true"
@@ -55,31 +56,35 @@
                 app:layout_constraintBottom_toTopOf="@+id/movie_info"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/busImage"
                 app:srcCompat="@drawable/gas_pump" />
 
             <ImageView
                 android:id="@+id/Soccer"
-                android:layout_width="164dp"
+                android:layout_width="144dp"
                 android:layout_height="144dp"
-                android:layout_marginBottom="25dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="64dp"
                 android:layout_weight="1"
                 android:clickable="true"
                 android:focusable="true"
                 android:paddingTop="20dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.509"
                 app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/movie_info"
                 app:srcCompat="@drawable/football" />
 
             <ImageView
                 android:id="@+id/movie_info"
-                android:layout_width="163dp"
-                android:layout_height="124dp"
-                android:layout_marginBottom="20dp"
+                android:layout_width="140dp"
+                android:layout_height="140dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
                 app:layout_constraintBottom_toTopOf="@+id/Soccer"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.493"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/Soccer"
+                app:layout_constraintTop_toBottomOf="@+id/CarCharge"
                 app:srcCompat="@drawable/movie1" />
 
 

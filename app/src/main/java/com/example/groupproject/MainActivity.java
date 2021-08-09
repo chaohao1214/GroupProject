@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected( MenuItem item) {
 
         switch (item.getItemId()) {
-            case R.id.mainSoccerImageButton:
+            case R.id.soccerApp_movie:
 
                 Intent intent = new Intent(this, SoccerActivitySecond.class);
                 startActivity(intent);

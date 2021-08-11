@@ -11,6 +11,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 
+/**
+ * This class has the menu and buttons for starting the activities.
+ */
 public class MainActivity extends AppCompatActivity {
 
     Toolbar main_menu;
@@ -20,21 +23,25 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Button carCharge = findViewById(R.id.CarCharge);
+        Button stationLocator = findViewById(R.id.stationLocatorButton);
 
-        main_menu = findViewById(R.id.carMenu);
+        main_menu = findViewById(R.id.stationMenu);
         setSupportActionBar(main_menu);
 
-        carCharge.setOnClickListener(clk -> {
+        stationLocator.setOnClickListener(clk -> {
             // go to next page
-            Intent nextPageCar = new Intent(MainActivity.this, StationSearch.class);
-            startActivity(nextPageCar);
+            Intent nextPageStation = new Intent(MainActivity.this, StationSearch.class);
+            startActivity(nextPageStation);
         });
     }
 
-    public void startCarChargingActivity() {
-        Intent chargingActivity = new Intent(this, StationSearch.class);
-        startActivity(chargingActivity);
+    /**
+     * This method starts the Electric Car Charging Station Locator Activity
+     */
+
+    public void startStationLocatorActivity() {
+        Intent stationLocatorActivity = new Intent(this, StationSearch.class);
+        startActivity(stationLocatorActivity);
     }
 
     @Override
@@ -48,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
 
         switch(item.getItemId()){
             case R.id.car_charge_activity_opener:
-                startCarChargingActivity();
+                startStationLocatorActivity();
                 break;
 
             case R.id.show_help:

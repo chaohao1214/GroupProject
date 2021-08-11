@@ -252,27 +252,5 @@ public class StationSearch extends AppCompatActivity {
         }
         return true;
     }
-
-    /**
-     * Methods goes to the next activity (Currency)
-     */
-//    public void startCurrencyActivity() {
-//        Intent currencyActivity = new Intent(this, CurrencyConverter.class);
-//        startActivity(currencyActivity);
-//    }
-    /**
-     * Methods goes to the next activity (News)
-     */
-//    public void startNewsActivity() {
-//        Intent currencyActivity = new Intent(this, NewsModule.class);
-//        startActivity(currencyActivity);
-//    }
-    /**
-     * Methods goes to the next activity (Recipe)
-     */
-//    public void startRecipeActivity() {
-//        Intent currencyActivity = new Intent(this, RecipeFinder.class);
-//        startActivity(currencyActivity);
-//    }
 }
 

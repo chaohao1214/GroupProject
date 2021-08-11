@@ -11,19 +11,20 @@ import java.util.ArrayList;
 
 
 /**
- * Class is an adapter for ListView
+ * This Class is the adapter for the ListView
  */
 public class StationAdapter extends BaseAdapter {
     /**
-     * list to hold car charging stations objects
+     * list to hold the car charging station objects.
      */
-    private ArrayList<StationObject> chargingStationList;
+    private ArrayList<StationObject> StationList;
     /**
      * context of the current state of an application
      */
     private Context mContext;
     /**
-     * marker of a full or partial information of a car charging station displayed in an item view (needed for getView() method)
+     * marker of a full or partial information of a car charging station displayed
+     * in an item view (needed for getView() method)
      */
     private Boolean fullInfo;
 
@@ -36,7 +37,7 @@ public class StationAdapter extends BaseAdapter {
     public StationAdapter(Context context, ArrayList<StationObject> chargingStationList, Boolean fullInfo) {
         super();
         this.mContext = context;
-        this.chargingStationList = chargingStationList;
+        this.StationList = chargingStationList;
         this.fullInfo = fullInfo;
     }
 
@@ -46,7 +47,7 @@ public class StationAdapter extends BaseAdapter {
      */
     @Override
     public int getCount() {
-        return chargingStationList.size();
+        return StationList.size();
     }
 
     /**
@@ -56,7 +57,7 @@ public class StationAdapter extends BaseAdapter {
      */
     @Override
     public StationObject getItem(int i) {
-        return chargingStationList.get(i);
+        return StationList.get(i);
     }
 
     /**
@@ -93,5 +94,5 @@ public class StationAdapter extends BaseAdapter {
         }
         return newView;
     }
-}//class
+}
 

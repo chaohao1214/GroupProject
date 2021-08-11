@@ -36,6 +36,8 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 /**
+ *  * @author Salih
+ *  * @version 1.0
  * This class is created for the third page of Soccer api games
  * It includes nested classes, private variables and abstract, parent classes
  * In the oncreate method ,

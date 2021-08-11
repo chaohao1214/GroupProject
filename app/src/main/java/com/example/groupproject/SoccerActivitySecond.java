@@ -23,12 +23,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
-/**
- * @author Salih
- * @version 1.0
- *
- */
 
+/**
+ * This class is a welcome page.it includes help instruction in a toolbar,
+ * edit text, and a rating bar, alert dialog and toast message.
+ */
 public class SoccerActivitySecond extends AppCompatActivity {
     /** this variable holds the ratingbar*/
     RatingBar ratingBar ;

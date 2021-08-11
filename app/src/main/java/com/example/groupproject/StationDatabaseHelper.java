@@ -8,7 +8,7 @@ import android.util.Log;
 /**
  * Class helps to create, update a database
  */
-public class MyDatabaseOpenHelper extends SQLiteOpenHelper {
+public class StationDatabaseHelper extends SQLiteOpenHelper {
     /**
      * database name
      */
@@ -45,7 +45,7 @@ public class MyDatabaseOpenHelper extends SQLiteOpenHelper {
      * Constructor to create a database open helper
      * @param ctx activity
      */
-    public MyDatabaseOpenHelper(Activity ctx){
+    public StationDatabaseHelper(Activity ctx){
         super(ctx, DATABASE_NAME, null, VERSION_NUM );
     }
     /**

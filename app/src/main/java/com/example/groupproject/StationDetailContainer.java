@@ -4,7 +4,7 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class DetailContainer extends AppCompatActivity {
+public class StationDetailContainer extends AppCompatActivity {
     /**
      * Method sets the layout, loads data to the fragment
      * @param savedInstanceState saved instance state

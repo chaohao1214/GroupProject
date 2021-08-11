@@ -27,13 +27,13 @@ public class MainActivity extends AppCompatActivity {
 
         carCharge.setOnClickListener(clk -> {
             // go to next page
-            Intent nextPageCar = new Intent(MainActivity.this, CarChargingStation.class);
+            Intent nextPageCar = new Intent(MainActivity.this, StationSearch.class);
             startActivity(nextPageCar);
         });
     }
 
     public void startCarChargingActivity() {
-        Intent chargingActivity = new Intent(this, CarChargingStation.class);
+        Intent chargingActivity = new Intent(this, StationSearch.class);
         startActivity(chargingActivity);
     }
 

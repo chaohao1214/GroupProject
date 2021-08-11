@@ -21,11 +21,11 @@ import java.util.ArrayList;
 /**
  * Class shows a list of favourite car charging stations, allows user to delete a station from the list
  */
-public class CarChargingFavouriteStations extends AppCompatActivity {
+public class StationFavourite extends AppCompatActivity {
     /**
      * list with user's favourite car charging stations
      */
-    ArrayList<ChargingStationObject> favStations = new ArrayList<ChargingStationObject>();
+    ArrayList<StationObject> favStations = new ArrayList<StationObject>();
     /**
      * position of a station in a list which user clicks
      */
@@ -33,7 +33,7 @@ public class CarChargingFavouriteStations extends AppCompatActivity {
     /**
      * adapter for the ListView
      */
-    CarChargingStationAdapter adapter;
+    StationAdapter adapter;
 
     /**
      * Method loads a list of favourite stations on the screen, allows to delete stations from the list
@@ -45,26 +45,26 @@ public class CarChargingFavouriteStations extends AppCompatActivity {
         setContentView(R.layout.activity_car_charging_station_favourites);
         ListView listOfFavourites = (ListView)findViewById(R.id.listOfFavourites);
 
-        MyDatabaseOpenHelper dbOpener = new MyDatabaseOpenHelper(this);
+        StationDatabaseHelper dbOpener = new StationDatabaseHelper(this);
         SQLiteDatabase db = dbOpener.getWritableDatabase();
 
-        String [] columns = {MyDatabaseOpenHelper.COL_ID, MyDatabaseOpenHelper.COL_TITLE, MyDatabaseOpenHelper.COL_LATITUDE,
-                MyDatabaseOpenHelper.COL_LONGITUDE, MyDatabaseOpenHelper.COL_PHONE};
-        Cursor results = db.query(false, MyDatabaseOpenHelper.TABLE_NAME, columns, null, null, null, null, null, null);
+        String [] columns = {StationDatabaseHelper.COL_ID, StationDatabaseHelper.COL_TITLE, StationDatabaseHelper.COL_LATITUDE,
+                StationDatabaseHelper.COL_LONGITUDE, StationDatabaseHelper.COL_PHONE};
+        Cursor results = db.query(false, StationDatabaseHelper.TABLE_NAME, columns, null, null, null, null, null, null);
 
-        int titleColumnIndex = results.getColumnIndex(MyDatabaseOpenHelper.COL_TITLE);
-        int latitudeColIndex = results.getColumnIndex(MyDatabaseOpenHelper.COL_LATITUDE);
-        int idColIndex = results.getColumnIndex(MyDatabaseOpenHelper.COL_ID);
-        int longitudeColIndex = results.getColumnIndex(MyDatabaseOpenHelper.COL_LONGITUDE);
-        int phoneColIndex = results.getColumnIndex(MyDatabaseOpenHelper.COL_PHONE);
+        int titleColumnIndex = results.getColumnIndex(StationDatabaseHelper.COL_TITLE);
+        int latitudeColIndex = results.getColumnIndex(StationDatabaseHelper.COL_LATITUDE);
+        int idColIndex = results.getColumnIndex(StationDatabaseHelper.COL_ID);
+        int longitudeColIndex = results.getColumnIndex(StationDatabaseHelper.COL_LONGITUDE);
+        int phoneColIndex = results.getColumnIndex(StationDatabaseHelper.COL_PHONE);
         while(results.moveToNext()) {
             String title = results.getString(titleColumnIndex);
             double latitude = results.getDouble(latitudeColIndex);
             double longitude = results.getDouble(longitudeColIndex);
             long id = results.getLong(idColIndex);
             String phone = results.getString(phoneColIndex);
-            favStations.add(new ChargingStationObject(id, title, latitude, longitude, phone));
-            adapter = new CarChargingStationAdapter(getApplicationContext(), favStations, true);
+            favStations.add(new StationObject(id, title, latitude, longitude, phone));
+            adapter = new StationAdapter(getApplicationContext(), favStations, true);
             listOfFavourites.setAdapter(adapter);
         }
         listOfFavourites.setOnItemClickListener(( parent,  view,  position,  id) -> {
@@ -73,7 +73,7 @@ public class CarChargingFavouriteStations extends AppCompatActivity {
         });
         Button delete = (Button)findViewById(R.id.deleteButton);
         delete.setOnClickListener(clk -> {
-            ChargingStationObject stationToDelete = favStations.get(positionClicked);
+            StationObject stationToDelete = favStations.get(positionClicked);
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             AlertDialog dialog = builder.setTitle("Alert!")
                     .setMessage("Do you want to delete?")
@@ -82,13 +82,13 @@ public class CarChargingFavouriteStations extends AppCompatActivity {
                         public void onClick(DialogInterface dialog, int which) {
                             favStations.remove(positionClicked);
                             adapter.notifyDataSetChanged();
-                            int numDeleted = db.delete(MyDatabaseOpenHelper.TABLE_NAME,
-                                    MyDatabaseOpenHelper.COL_ID + "=?", new String[] {Long.toString(stationToDelete.getId())});
+                            int numDeleted = db.delete(StationDatabaseHelper.TABLE_NAME,
+                                    StationDatabaseHelper.COL_ID + "=?", new String[] {Long.toString(stationToDelete.getId())});
                             Log.i("StationView", "Deleted " + numDeleted + " rows");
                             Snackbar.make((View)findViewById(R.id.snackbar), "Station was successfully deleted", Snackbar.LENGTH_LONG).show();
                         }
                     })
-                    .setNegativeButton("Cancel", (d,w) -> {  /* nothing */})
+                    .setNegativeButton("Cancel", (d,w) -> {  })
                     .create();
             dialog.show();
         });

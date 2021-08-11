@@ -5,17 +5,13 @@ import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 
@@ -42,7 +38,7 @@ public class StationFragment extends Fragment {
     @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         Bundle bundle = getArguments();
-        ChargingStationObject station = (ChargingStationObject) bundle.getSerializable("Station");
+        StationObject station = (StationObject) bundle.getSerializable("Station");
         View result = inflater.inflate(R.layout.activity_car_charging_station_item_details, container, false);
 
         TextView title = (TextView) result.findViewById(R.id.title);
@@ -73,16 +69,16 @@ public class StationFragment extends Fragment {
             mapIntent.setPackage("com.google.android.apps.maps");
             startActivity(mapIntent);
         });
-        MyDatabaseOpenHelper dbOpener = new MyDatabaseOpenHelper(this.getActivity());
+        StationDatabaseHelper dbOpener = new StationDatabaseHelper(this.getActivity());
         SQLiteDatabase db = dbOpener.getWritableDatabase();
         Button addBtn = (Button) result.findViewById(R.id.addButton);
         addBtn.setOnClickListener(click -> {
             ContentValues newRowValues = new ContentValues();
-            newRowValues.put(MyDatabaseOpenHelper.COL_TITLE, stationTitle);
-            newRowValues.put(MyDatabaseOpenHelper.COL_LATITUDE, latitudeValue);
-            newRowValues.put(MyDatabaseOpenHelper.COL_LONGITUDE, longitudeValue);
-            newRowValues.put(MyDatabaseOpenHelper.COL_PHONE, phoneNumber);
-            long newId = db.insert(MyDatabaseOpenHelper.TABLE_NAME, null, newRowValues);
+            newRowValues.put(StationDatabaseHelper.COL_TITLE, stationTitle);
+            newRowValues.put(StationDatabaseHelper.COL_LATITUDE, latitudeValue);
+            newRowValues.put(StationDatabaseHelper.COL_LONGITUDE, longitudeValue);
+            newRowValues.put(StationDatabaseHelper.COL_PHONE, phoneNumber);
+            long newId = db.insert(StationDatabaseHelper.TABLE_NAME, null, newRowValues);
 
             AlertDialog.Builder builder = new AlertDialog.Builder(this.getContext());
             AlertDialog dialog = builder.setMessage("Station was added to the list of favourite stations")
@@ -92,7 +88,7 @@ public class StationFragment extends Fragment {
         });
         Button seeListBtn = (Button)result.findViewById(R.id.listOfFavouritesButton);
         seeListBtn.setOnClickListener(clk -> {
-            Intent nextPage = new Intent(this.getContext(), CarChargingFavouriteStations.class);
+            Intent nextPage = new Intent(this.getContext(), StationFavourite.class);
             startActivity(nextPage);
         });
 

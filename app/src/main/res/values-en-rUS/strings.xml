@@ -6,22 +6,22 @@
     <string name="latitudeInput">Enter latitude</string>
     <string name="longitude">Longitude: </string>
     <string name="longitudeInput">Enter longitude</string>
-    <string name="searchButton">Find</string>
+    <string name="searchButton">Find Stations</string>
     <string name="deleteButton">Delete</string>
-    <string name="title">Location Title: </string>
+    <string name="title">Location: </string>
     <string name="phone">Contact Telephone Number: </string>
     <string name="loadMap">Load Directions In Google Maps</string>
     <string name="add">Add To Favorites</string>
     <string name="listOfFavourites">See List Of Favorite Stations</string>
+    <string name="addToFavourites">Station added to favorite</string>
     <string name="phoneNull">Not available</string>
 
     <string name="description">Author: Shakib Ahmed\nVersion Number: 1.0 \nInstructions:\n 1 - Enter latitude and longitude\n
                         2 - Press "Search" button\n
-                        3 - Click a station from the list and see detailed information\n
-                        4 - Click "Load location in Google Maps" to see location of a station\n
-                        5 - Click "Add to favourites" to add a location to the list of favourite stations\n
-                        6 - Click "See list of favourite station' to go to the next page with favourite stations\n
-                        7 - Click "Delete" to delete a station from the list of favourite stations</string>
-
+                        3 - Click a station from the list to see details\n
+                        4 - Click "Load location in Google Maps" to see location in google map\n
+                        5 - Click "Add to favorites" to add a station to favourites\n
+                        6 - Click "See list of favorite stations' to see the list of favourite stations\n
+                        7 - Click "Delete" to delete a station from the favorites</string>
 
 </resources>

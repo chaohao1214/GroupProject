@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * Class represents a car charging station
  */
-public class ChargingStationObject implements Serializable {
+public class StationObject implements Serializable {
     /**
      * unique identifier for a car charging station
      */
@@ -30,7 +30,7 @@ public class ChargingStationObject implements Serializable {
     /**
      * no-argument constructor for a car charging station
      */
-    public ChargingStationObject(){}
+    public StationObject(){}
 
     /**
      * Constructor to create a car charging station
@@ -41,7 +41,7 @@ public class ChargingStationObject implements Serializable {
      * @param phone contact phone of a station
      */
 
-    public ChargingStationObject(long id, String title, double latitude, double longitude, String phone) {
+    public StationObject(long id, String title, double latitude, double longitude, String phone) {
         this.id = id;
         this.title = title;
         this.latitude = latitude;

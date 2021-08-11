@@ -11,9 +11,9 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Theme.GroupProject">
-        <activity android:name=".CarChargingStation"></activity>
-        <activity android:name=".StationFavorites"></activity>
-        <activity android:name=".DetailContainer"></activity>
+        <activity android:name=".StationSearch"></activity>
+        <activity android:name=".StationFavourite"></activity>
+        <activity android:name=".StationDetailContainer"></activity>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

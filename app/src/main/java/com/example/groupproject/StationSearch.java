@@ -4,54 +4,44 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.TextView;
-
 
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.Serializable;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Activity accepts latitude and longitude input from the user, searches for car charging stations and displays results on the screen
  */
-public class CarChargingStation extends AppCompatActivity {
+public class StationSearch extends AppCompatActivity {
     /**
      * name of current activity
      */
-    public static final String ACTIVITY_NAME = "CAR_CHARGING_STATION";
+    public static final String ACTIVITY_NAME = "STATION_SEARCH";
     /**
      * list of car charging stations
      */
-    ArrayList<ChargingStationObject> stations = new ArrayList<ChargingStationObject>();
+    ArrayList<StationObject> stations = new ArrayList<StationObject>();
     /**
      * Field from the screen accepts longitude from a user
      */
@@ -113,7 +103,7 @@ public class CarChargingStation extends AppCompatActivity {
             }
         });
         theList.setOnItemClickListener(( parent,  view,  position,  id) ->{
-            ChargingStationObject chosenOne = stations.get(position);
+            StationObject chosenOne = stations.get(position);
             Bundle dataToPass = new Bundle();
             dataToPass.putSerializable("Station", chosenOne);
 
@@ -131,7 +121,7 @@ public class CarChargingStation extends AppCompatActivity {
                         .commit(); //actually load the fragment.
             } else //isPhone
             {
-                Intent nextActivity = new Intent(CarChargingStation.this, DetailContainer.class);
+                Intent nextActivity = new Intent(StationSearch.this, StationDetailContainer.class);
                 nextActivity.putExtras(dataToPass); //send data to next activity
                 startActivity(nextActivity); //make the transition
             }
@@ -206,7 +196,7 @@ public class CarChargingStation extends AppCompatActivity {
                     JSONObject stationJSON = jsonArray.getJSONObject(i);
                     JSONObject addressJSON = stationJSON.getJSONObject("AddressInfo");
 
-                    ChargingStationObject stationObject = new ChargingStationObject();
+                    StationObject stationObject = new StationObject();
                     stationObject.setTitle(addressJSON.getString("Title"));
                     stationObject.setLatitude(addressJSON.getDouble("Latitude"));
                     stationObject.setLongitude(addressJSON.getDouble("Longitude"));
@@ -216,7 +206,7 @@ public class CarChargingStation extends AppCompatActivity {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            CarChargingStationAdapter adapter = new CarChargingStationAdapter(getApplicationContext(), stations, false);
+            StationAdapter adapter = new StationAdapter(getApplicationContext(), stations, false);
             theList.setAdapter(adapter);
             progressBar.setVisibility(View.INVISIBLE);
         }
@@ -254,7 +244,7 @@ public class CarChargingStation extends AppCompatActivity {
                 break;
 
             case R.id.show_help:
-                AlertDialog.Builder helpAlertBuilder = new AlertDialog.Builder(CarChargingStation.this);
+                AlertDialog.Builder helpAlertBuilder = new AlertDialog.Builder(StationSearch.this);
                 helpAlertBuilder.setTitle("Help");
                 helpAlertBuilder.setMessage(R.string.description);
                 helpAlertBuilder.show();

@@ -13,11 +13,11 @@ import java.util.ArrayList;
 /**
  * Class is an adapter for ListView
  */
-public class CarChargingStationAdapter extends BaseAdapter {
+public class StationAdapter extends BaseAdapter {
     /**
      * list to hold car charging stations objects
      */
-    private ArrayList<ChargingStationObject> chargingStationList;
+    private ArrayList<StationObject> chargingStationList;
     /**
      * context of the current state of an application
      */
@@ -33,7 +33,7 @@ public class CarChargingStationAdapter extends BaseAdapter {
      * @param chargingStationList list of car charging stations objects
      * @param fullInfo marker of a full details for an item view displayed on screen
      */
-    public CarChargingStationAdapter(Context context, ArrayList<ChargingStationObject> chargingStationList, Boolean fullInfo) {
+    public StationAdapter(Context context, ArrayList<StationObject> chargingStationList, Boolean fullInfo) {
         super();
         this.mContext = context;
         this.chargingStationList = chargingStationList;
@@ -55,7 +55,7 @@ public class CarChargingStationAdapter extends BaseAdapter {
      * @return ChargingStationObject car charging station
      */
     @Override
-    public ChargingStationObject getItem(int i) {
+    public StationObject getItem(int i) {
         return chargingStationList.get(i);
     }
 
@@ -81,7 +81,7 @@ public class CarChargingStationAdapter extends BaseAdapter {
         LayoutInflater inflater = LayoutInflater.from(mContext);
         View newView = inflater.inflate(R.layout.activity_car_charging_station_row, viewGroup, false);
 
-        ChargingStationObject row = getItem(i);
+        StationObject row = getItem(i);
         TextView rowDetails = (TextView) newView.findViewById(R.id.row_title);
 
         if(fullInfo) {

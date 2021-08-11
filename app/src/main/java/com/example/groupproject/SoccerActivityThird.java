@@ -35,11 +35,21 @@ import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
+/**
+ * This class is created for the third page of Soccer api games
+ * It includes nested classes, private variables and abstract, parent classes
+ * In the oncreate method ,
+ */
 public class SoccerActivityThird extends AppCompatActivity {
+    /** This holds recyclerView */
     private RecyclerView recyclerView;
+    /** This holds recyclerAdapter */
     private RecyclerAdapter recyclerAdapter;
+    /** This holds the list of the item listed on the left side of the screen */
     private List<String> itemList;
+    /** This holds the list of the article news that are retrieved from XML file */
     private List<Article> articles ;
+    /** This holds the progressbar. It is used when loading data from XML  */
     ProgressBar pb;
 
 
@@ -148,7 +158,7 @@ public class SoccerActivityThird extends AppCompatActivity {
     }
 
     /**
-     * ???
+     *
      */
     class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
 
@@ -181,8 +191,8 @@ public class SoccerActivityThird extends AppCompatActivity {
         }
 
         /**
-         * ???
-         *
+         * This class shows an item description
+         * inside the recyclerView
          */
         class ViewHolder extends RecyclerView.ViewHolder{
 
@@ -191,7 +201,11 @@ public class SoccerActivityThird extends AppCompatActivity {
 
 
             /**
-             *
+             * This method has a event role
+             * whenever user click on the item
+             * alert dialog will pop up
+             * Also inside the method AlertDialog object
+             * created.
              * @param itemView
              */
             public ViewHolder(View itemView) {
@@ -218,7 +232,8 @@ public class SoccerActivityThird extends AppCompatActivity {
     }
 
     /**
-     *
+     * This class stores variable, constructors and getters for the
+     * article news.
      */
      private class Article {
 
